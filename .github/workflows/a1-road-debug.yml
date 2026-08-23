@@ -1,0 +1,42 @@
+name: A1 Road Building Debug
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp2-exterior-qa
+    paths:
+      - tools/plot_road_building_debug.py
+      - .github/workflows/a1-road-debug.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/plot_road_building_debug.py
+      - .github/workflows/a1-road-debug.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SOURCE_ZIP_URL: https://at.adobe.com/aXK6C7lAS2lRSKjj
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp2-exterior-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install tools
+        run: pip install --disable-pip-version-check 'numpy<2.0' matplotlib shapely trimesh requests
+      - name: Plot source plan
+        run: python tools/plot_road_building_debug.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-road-building-debug
+          path: road_debug/
+          retention-days: 1
+          compression-level: 0
