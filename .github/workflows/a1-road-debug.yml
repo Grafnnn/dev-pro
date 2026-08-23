@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   debug:
@@ -34,6 +34,15 @@ jobs:
         run: pip install --disable-pip-version-check 'numpy<2.0' matplotlib shapely trimesh requests
       - name: Plot source plan
         run: python tools/plot_road_building_debug.py
+      - name: Commit temporary debug plot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p audit/road_debug
+          cp road_debug/* audit/road_debug/
+          git add audit/road_debug/
+          git diff --cached --quiet || git commit -m "Store temporary A1 road/building debug [skip ci]"
+          git push origin HEAD:tmp-a1-revp2-exterior-qa
       - uses: actions/upload-artifact@v4
         with:
           name: a1-road-building-debug
