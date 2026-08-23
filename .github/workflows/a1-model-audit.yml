@@ -33,12 +33,13 @@ jobs:
           python tools/extract_source_snippets.py
           python tools/critical_geometry.py
           python tools/road_vertex_diag.py
+          python tools/road_context_report.py
       - name: Commit temporary audit reports
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audit/model_audit.json audit/exterior_inventory.md audit/exterior_inventory.json audit/source_snippets.txt audit/critical_geometry.md audit/road_vertex_diag.txt
-          git diff --cached --quiet || git commit -m "Store temporary A1 road topology diagnostics [skip ci]"
+          git add audit/model_audit.json audit/exterior_inventory.md audit/exterior_inventory.json audit/source_snippets.txt audit/critical_geometry.md audit/road_vertex_diag.txt audit/road_context_report.md
+          git diff --cached --quiet || git commit -m "Store temporary A1 road context report [skip ci]"
           git push origin HEAD:tmp-a1-revp2-exterior-qa
       - name: Upload audit
         uses: actions/upload-artifact@v4
