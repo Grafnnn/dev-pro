@@ -9,6 +9,14 @@ on:
       - tools/render_revp2_blender.py
       - tools/package_revp2.py
       - .github/workflows/a1-revp2-build.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp2_exterior.py
+      - tools/render_revp2_blender.py
+      - tools/package_revp2.py
+      - .github/workflows/a1-revp2-build.yml
   workflow_dispatch:
 
 permissions:
