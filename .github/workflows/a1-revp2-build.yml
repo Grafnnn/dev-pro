@@ -8,6 +8,7 @@ on:
       - tools/build_revp2_exterior.py
       - tools/render_revp2_blender.py
       - tools/package_revp2.py
+      - tools/patch_revp2_runtime.py
       - .github/workflows/a1-revp2-build.yml
   pull_request:
     branches:
@@ -16,6 +17,7 @@ on:
       - tools/build_revp2_exterior.py
       - tools/render_revp2_blender.py
       - tools/package_revp2.py
+      - tools/patch_revp2_runtime.py
       - .github/workflows/a1-revp2-build.yml
   workflow_dispatch:
 
@@ -38,8 +40,9 @@ jobs:
           python-version: '3.12'
       - name: Install Python geometry tools
         run: pip install --disable-pip-version-check requests 'numpy<2.0' scipy shapely trimesh pygltflib pillow
-      - name: Patch 2D cross-product compatibility
+      - name: Apply controlled Rev.P2 runtime corrections
         run: |
+          python tools/patch_revp2_runtime.py
           python - <<'PY'
           from pathlib import Path
           p = Path('tools/build_revp2_exterior.py')
@@ -51,6 +54,10 @@ jobs:
           PY
       - name: Build corrected Rev.P2 models and run geometric QA
         run: python tools/build_revp2_exterior.py
+      - name: Preserve reproducible correction scripts
+        run: |
+          mkdir -p revp2_output/reproducible_scripts
+          cp tools/build_revp2_exterior.py tools/render_revp2_blender.py tools/package_revp2.py tools/patch_revp2_runtime.py revp2_output/reproducible_scripts/
       - name: Print geometric QA summary
         run: cat revp2_output/20_Exterior_QA_Report.json
       - name: Install Blender for controlled QA renders
@@ -58,7 +65,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
       - name: Render six corrected exterior views
-        run: blender -b --python tools/render_revp2_blender.py
+        run: |
+          blender -b --python tools/render_revp2_blender.py
+          test "$(find revp2_output/renders -maxdepth 1 -name '*.png' | wc -l)" -eq 6
       - name: Package corrected model, reports and renders
         run: python tools/package_revp2.py
       - name: Generate checksums
@@ -93,7 +102,6 @@ jobs:
           path: revp2_output/20_Модель_A1_RevP2_ExteriorQA.obj
           retention-days: 1
           compression-level: 0
-          if-no-files-found: warn
       - name: Upload QA reports
         uses: actions/upload-artifact@v4
         with:
