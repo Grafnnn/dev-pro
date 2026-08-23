@@ -1,0 +1,53 @@
+name: A1 RevP2 Exterior Build
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp2-exterior-qa
+    paths:
+      - tools/build_revp2_exterior.py
+      - tools/render_revp2_blender.py
+      - tools/package_revp2.py
+      - .github/workflows/a1-revp2-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      SOURCE_ZIP_URL: https://at.adobe.com/aXK6C7lAS2lRSKjj
+      OUT_ROOT: revp2_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp2-exterior-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python geometry tools
+        run: pip install --disable-pip-version-check requests numpy scipy shapely trimesh pygltflib pillow
+      - name: Build corrected Rev.P2 models and run geometric QA
+        run: python tools/build_revp2_exterior.py
+      - name: Install Blender for controlled QA renders
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+      - name: Render six corrected exterior views
+        run: blender -b --python tools/render_revp2_blender.py
+      - name: Package corrected model, reports and renders
+        run: python tools/package_revp2.py
+      - name: Generate checksums
+        run: |
+          cd revp2_output
+          find . -type f ! -name '20_SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum > 20_SHA256SUMS.txt
+      - name: Upload corrected A1 Rev.P2 package
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-exterior-qa
+          path: revp2_output/
+          retention-days: 1
+          compression-level: 6
