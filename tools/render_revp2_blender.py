@@ -22,8 +22,6 @@ def setup_scene():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(GLB.resolve()))
     scene = bpy.context.scene
-    # Render engine compatibility for Blender 3.x and 4.x.
-    engines = {x.identifier for x in scene.bl_rna.properties['render'].fixed_type.properties['engine'].enum_items} if False else set()
     try:
         scene.render.engine = 'BLENDER_EEVEE_NEXT'
     except Exception:
@@ -34,10 +32,15 @@ def setup_scene():
     scene.render.image_settings.file_format = 'PNG'
     scene.render.film_transparent = False
     scene.render.image_settings.color_mode = 'RGBA'
-    scene.view_settings.look = 'AgX - Medium High Contrast' if bpy.app.version >= (4,0,0) else 'Medium High Contrast'
+    try:
+        if bpy.app.version >= (4, 0, 0):
+            scene.view_settings.look = 'AgX - Medium High Contrast'
+        else:
+            scene.view_settings.look = 'Medium High Contrast'
+    except Exception:
+        pass
     scene.world.color = (0.82, 0.88, 0.94)
 
-    # Sun and fill lights.
     bpy.ops.object.light_add(type='SUN', location=(350, 100, 500))
     sun = bpy.context.object
     sun.name = 'QA_SUN'
@@ -54,7 +57,6 @@ def setup_scene():
     area.data.size = 220
     look_at(area, (350, 220, 115))
 
-    # Camera.
     bpy.ops.object.camera_add()
     cam = bpy.context.object
     cam.data.lens = 52
@@ -90,6 +92,7 @@ def main():
     for args in views:
         render_view(scene, cam, *args)
     print('RENDER_DONE')
+
 
 if __name__ == '__main__':
     main()
