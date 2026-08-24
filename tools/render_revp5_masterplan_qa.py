@@ -38,6 +38,13 @@ def look_at(obj, target):
     obj.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
 
 
+def set_optional(target, attribute: str, value) -> None:
+    try:
+        setattr(target, attribute, value)
+    except (AttributeError, TypeError):
+        pass
+
+
 def setup(path: Path):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(path.resolve()))
@@ -53,16 +60,16 @@ def setup(path: Path):
         scene.world = bpy.data.worlds.new("REV_P5_QA_WORLD")
     scene.world.color = (0.87, 0.89, 0.91)
     shading = scene.display.shading
-    shading.light = "STUDIO"
-    shading.color_type = "OBJECT"
-    shading.show_shadows = True
-    shading.show_cavity = True
-    shading.cavity_type = "WORLD"
-    shading.curvature_ridge_factor = 1.4
-    shading.curvature_valley_factor = 1.2
-    shading.show_outline = True
-    shading.show_specular_highlight = False
-    shading.background_type = "WORLD"
+    set_optional(shading, "light", "STUDIO")
+    set_optional(shading, "color_type", "OBJECT")
+    set_optional(shading, "show_shadows", True)
+    set_optional(shading, "show_cavity", True)
+    set_optional(shading, "cavity_type", "WORLD")
+    set_optional(shading, "curvature_ridge_factor", 1.4)
+    set_optional(shading, "curvature_valley_factor", 1.2)
+    set_optional(shading, "show_outline", True)
+    set_optional(shading, "show_specular_highlight", False)
+    set_optional(shading, "background_type", "WORLD")
 
     bpy.ops.object.camera_add()
     camera = bpy.context.object
