@@ -11,8 +11,9 @@ old = '''    d5_spur_xy = sample_line((558.0, 189.0), (570.0, 189.0), 0.6)
     ]'''
 new = '''    # Rev.P5 value-engineered product circulation is one continuous one-way
     # through-route rather than a closed annulus with two T-branches. It enters
-    # from D4, serves the south side of BLD_09/07/08 and exits to D3. This
-    # removes the pinched/non-manifold loop topology and also reduces paved area.
+    # from D4, serves the south side of BLD_09/07/08 and exits into D3. The
+    # centreline terminates inside the D3 junction surface, so clipping by D3
+    # produces one clean connected D5 contour without cap/crescent fragments.
     d5_parts = [np.array([[338.0, 128.0]], dtype=float)]
     d5_shift_angle = math.acos(1.0 - 22.0 / (2.0 * 15.0))
     d5_sbend, _ = sample_s_bend((338.0, 128.0), 0.0, 15.0, d5_shift_angle, +1, 0.70)
@@ -23,16 +24,16 @@ new = '''    # Rev.P5 value-engineered product circulation is one continuous one
     d5_parts.append(sample_line(tuple(d5_arc_east[-1]), (562.0, 176.0), 0.65)[1:])
     d5_arc_exit, _ = arc_from_pose((562.0, 176.0), math.pi / 2.0, 13.0, -math.pi / 2.0, 0.65)
     d5_parts.append(d5_arc_exit[1:])
+    d5_parts.append(sample_line(tuple(d5_arc_exit[-1]), (583.0, 189.0), 0.50)[1:])
     d5_xy = dedupe_points(np.vstack(d5_parts))
     roads["D5"] = [assign_linear_z(d5_xy, 108.7, 110.7)]'''
 if old not in text:
     raise RuntimeError("Generated branched D5 block not found")
 text = text.replace(old, new, 1)
 
-# Align all generated D3/D5 node checks and roadside-detail clear zones with
-# the smooth D5 exit point. The D3 centreline is close enough that the final
-# non-overlapping partition has a common finite-width junction.
-text = text.replace("570.0, 189.0", "575.0, 189.0")
+# Align D3/D5 vertical-profile split, junction QA and roadside-detail break to
+# the centreline point inside the common D3 surface.
+text = text.replace("570.0, 189.0", "583.0, 189.0")
 
 path.write_text(text, encoding="utf-8")
 print("REV_P5_D5_THROUGH_ROUTE_PATCHED")
