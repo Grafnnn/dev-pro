@@ -1,0 +1,319 @@
+# Sanitized line excerpts from build_stage7_lod400p.py
+
+
+--- around line 5 ---
+00005: import json
+00006: import math
+00007: import re
+00008: import uuid
+00009: from dataclasses import dataclass, asdict
+00010: from pathlib import Path
+00011: from typing import Any, Dict, Iterable, List, Tuple
+00012: 
+00013: import numpy as np
+00014: import trimesh
+00015: from trimesh.transformations import rotation_matrix
+00016: 
+00017: ROOT = Path('/mnt/data/plant_concept')
+00018: SRC = ROOT / 'stage6_lod350' / '09_Модель_A1_LOD350_vendor_BIM.glb'
+00019: SRC_PROPS = ROOT / 'stage7_lod400p' / 'sources' / '09_BIM_Properties_A1_LOD350.json'
+00020: OUT = ROOT / 'stage7_lod400p'
+00021: OUT.mkdir(parents=True, exist_ok=True)
+00022: (OUT / 'renders').mkdir(exist_ok=True)
+00023: (OUT / 'charts').mkdir(exist_ok=True)
+00024: (OUT / 'qa').mkdir(exist_ok=True)
+00025: 
+00026: COL = {
+
+--- around line 58 ---
+00058: 
+00059: 
+00060: def add_mesh(scene: trimesh.Scene, name: str, mesh: trimesh.Trimesh, color=None):
+00061:     if color is not None:
+00062:         color_mesh(mesh, color)
+00063:     scene.add_geometry(mesh, geom_name=name, node_name=name)
+00064: 
+00065: 
+00066: def box(center, size, color=None):
+00067:     m = trimesh.creation.box(extents=size)
+00068:     m.apply_translation(center)
+00069:     if color:
+00070:         color_mesh(m, color)
+00071:     return m
+00072: 
+00073: 
+00074: def cyl(center, radius, height, axis='z', sections=24, color=None):
+00075:     m = trimesh.creation.cylinder(radius=radius, height=height, sections=sections)
+00076:     if axis == 'x':
+00077:         m.apply_transform(rotation_matrix(math.pi / 2, [0, 1, 0]))
+00078:     elif axis == 'y':
+00079:         m.apply_transform(rotation_matrix(math.pi / 2, [1, 0, 0]))
+00080:     m.apply_translation(center)
+00081:     if color:
+00082:         color_mesh(m, color)
+00083:     return m
+00084: 
+00085: 
+00086: def annulus(center, r_outer, r_inner, height, color=None, sections=48):
+00087:     m = trimesh.creation.annulus(r_min=r_inner, r_max=r_outer, height=height, sections=sections)
+
+--- around line 128 ---
+00128:     direction = vec / length
+00129:     axis = np.cross(z, direction)
+00130:     dot = np.clip(np.dot(z, direction), -1.0, 1.0)
+00131:     angle = math.acos(dot)
+00132:     if np.linalg.norm(axis) > 1e-9:
+00133:         m.apply_transform(rotation_matrix(angle, axis))
+00134:     elif dot < 0:
+00135:         m.apply_transform(rotation_matrix(math.pi, [1, 0, 0]))
+00136:     m.apply_translation((p1 + p2) / 2)
+00137:     color_mesh(m, color)
+00138:     return m
+00139: 
+00140: 
+00141: def add_pipe_polyline(scene, prefix, pts, radius, color, category='network'):
+00142:     items = []
+00143:     for i, (p1, p2) in enumerate(zip(pts[:-1], pts[1:]), 1):
+00144:         m = pipe_between(p1, p2, radius, color)
+00145:         if m is not None:
+00146:             nm = f'{prefix}_SEG_{i:02d}'
+00147:             add_mesh(scene, nm, m)
+00148:             items.append(nm)
+00149:     return items
+
+--- around line 196 ---
+00196: old_props = json.loads(SRC_PROPS.read_text(encoding='utf-8'))
+00197: scene = trimesh.Scene()
+00198: for name, geom in base.geometry.items():
+00199:     if name.startswith('FND_'):
+00200:         continue
+00201:     scene.add_geometry(geom.copy(), geom_name=name, node_name=name)
+00202: 
+00203: # -----------------------
+00204: # Vendor equipment register (public data + explicit RFI status)
+00205: # -----------------------
+00206: @dataclass
+00207: class Equipment:
+00208:     code: str
+00209:     name_ru: str
+
+--- around line 378 ---
+00378:     FOUNDATIONS.append(dict(instance=instance,code=gcode,L_m=p['L'],W_m=p['W'],thickness_m=p['t'],circular=p['circular'],operating_mass_t=p['op_mass'],dynamic_factor=p['dyn'],concrete_m3=concrete,design_load_kN=design_load,required_piles_at_75pct=req,piles=piles,pile_diameter_mm=int(PILE_D*1000),pile_length_m=PILE_LENGTH,assumed_service_capacity_kN=PILE_SERVICE_KN,utilization_pct=100*design_load/(piles*PILE_SERVICE_KN),excavation_m3=excavation,status='LOD400-P preliminary; final by geotechnical report and certified vendor load data'))
+00379: 
+00380: # -----------------------
+00381: # LOD400-P detail: crane, pipe racks, platforms, valves, auxiliaries
+00382: # -----------------------
+00383: # Bridge crane in pyrolysis building BLD_05: 20 t project configuration.
+00384: rail_z=132.0
+00385: for y in (202.8,231.0):
+00386:     rail=box((385.0,y,rail_z),(64.0,.28,.38),COL['crane'])
+00387:     add_mesh(scene,f'EQ_E801_KONECRANES_CXT_RUNWAY_{int(y*10)}',rail)
+00388: # bridge + hoist at parked position
+00389: bridge_x=390.0
+00390: for dx in (-.7,.7):
+00391:     girder=box((bridge_x+dx,216.9,rail_z+.45),(.55,28.2,.75),COL['crane'])
+
+--- around line 395 ---
+00395: hoist=box((bridge_x,216.9,rail_z-.4),(1.4,1.4,2.0),COL['dark_steel'])
+00396: add_mesh(scene,'EQ_E801_CXT_HOIST',hoist)
+00397: hook=pipe_between((bridge_x,216.9,rail_z-1.4),(bridge_x,216.9,122.0),.035,COL['dark_steel'],10)
+00398: add_mesh(scene,'EQ_E801_CXT_HOOK_ROPE',hook)
+00399: 
+00400: # Main N-S pipe rack from energy center to pyrolysis building.
+00401: rack_ns=[]
+00402: for y in np.arange(110,221,10):
+00403:     zbase=109.0+(y-110)*(10.6/110)
+00404:     for x in (371.5,379.5):
+00405:         col=box((x,y,zbase+3.5),(.22,.22,7.0),COL['rack'])
+00406:         add_mesh(scene,f'PR_NS_COL_{int(x*10)}_{int(y)}',col)
+00407:     beam=box((375.5,y,zbase+6.9),(8.3,.25,.28),COL['rack'])
+00408:     add_mesh(scene,f'PR_NS_BEAM_{int(y)}',beam)
+00409:     rack_ns.append((y,zbase+6.9))
+00410: # longitudinal rails and trays
+00411: for x in (372.0,374.2,376.8,379.0):
+00412:     pts=[]
+00413:     for y,z in rack_ns: pts.append((x,y,z+(x-375.5)*.02))
+00414:     add_pipe_polyline(scene,f'PR_NS_PIPE_{int(x*10)}',pts,.075,COL['pipe_cw'] if x<375.5 else COL['pipe_process'])
+00415: # cable trays
+00416: for x,c in ((373.0,COL['tray_power']),(378.0,COL['tray_control'])):
+00417:     for (y1,z1),(y2,z2) in zip(rack_ns[:-1],rack_ns[1:]):
+00418:         tray=box((x,(y1+y2)/2,(z1+z2)/2+.55),(.5,y2-y1,.12),c)
+00419:         add_mesh(scene,f'PR_NS_TRAY_{int(x*10)}_{int(y1)}',tray)
+00420: 
+00421: # E-W elevated rack between pyrolysis and condensation.
+00422: for x in np.arange(424,481,8):
+
+--- around line 581 ---
+00581: # -----------------------
+00582: foundation_concrete=sum(x['concrete_m3'] for x in FOUNDATIONS)
+00583: foundation_excavation=sum(x['excavation_m3'] for x in FOUNDATIONS)
+00584: piles_total=sum(x['piles'] for x in FOUNDATIONS)
+00585: base_earth=old_props['earthworks']
+00586: # Local foundation excavations are considered additional cut. Major terraces are unchanged.
+00587: updated_cut=base_earth['stage4_cut_m3']+round(foundation_excavation*.25)
+00588: updated_fill=base_earth['stage4_fill_m3']
+00589: updated_deficit=updated_fill-updated_cut
+00590: EARTHWORKS={
+00591:     'vertical_planning_area_m2':base_earth['vertical_planning_area_m2'],
+00592:     'global_cut_m3':updated_cut,
+00593:     'global_fill_m3':updated_fill,
+00594:     'geometric_deficit_m3':updated_deficit,
+
+--- around line 621 ---
+00621:         if hit and frozenset((a,b)) not in allowed_pairs:
+00622:             issue+=1
+00623:             CLASHES.append(dict(id=f'CL-{issue:03d}',discipline='TECH/TECH',severity='High',object_a=a,object_b=b,overlap_x_m=float(ov[0]),overlap_y_m=float(ov[1]),overlap_z_m=float(ov[2]),status='Open',resolution='Shift equipment or revise service envelope'))
+00624: # Network vertices inside foundation AABB - stage 7 detailed check.
+00625: for nn,g in scene.geometry.items():
+00626:     if not (nn.startswith('NET_') or nn.startswith('CONN_') or nn.startswith('P2_STUB_') or nn.startswith('PR_')):
+00627:         continue
+00628:     V=np.asarray(g.vertices)
+00629:     if len(V)==0: continue
+00630:     for fn,(mn,mx) in foundation_bounds.items():
+00631:         inside=np.all((V>mn)&(V<mx),axis=1)
+00632:         if inside.any():
+00633:             # pipe rack columns intentionally have foundations not modeled here; ignore rack.
+00634:             if nn.startswith('PR_'): continue
+
+--- around line 638 ---
+00638: for code in ('E-201A','E-201B'):
+00639:     mn,mx=assembly_aabbs[code]
+00640:     hook_bottom=122.0
+00641:     if mx[2] > hook_bottom-.5:
+00642:         issue+=1
+00643:         CLASHES.append(dict(id=f'CL-{issue:03d}',discipline='CRANE/TECH',severity='Medium',object_a='E-801',object_b=code,overlap_x_m=0.0,overlap_y_m=0.0,overlap_z_m=float(mx[2]-hook_bottom),status='Accepted-RFI',resolution='Confirm hook approach, lifted component weight and removal path in crane GA'))
+00644: # Soft RFI entries for unconfirmed service envelopes.
+00645: for e in EQUIPMENT:
+00646:     if 'требуется' in e.data_status.lower() or 'конверт' in e.data_status.lower() or 'подбор' in e.data_status.lower():
+00647:         issue+=1
+00648:         CLASHES.append(dict(id=f'RFI-{issue:03d}',discipline='VENDOR DATA',severity='Medium',object_a=e.code,object_b=e.manufacturer,overlap_x_m=0.0,overlap_y_m=0.0,overlap_z_m=0.0,status='Accepted-RFI',resolution=e.required_vendor_docs))
+00649: 
+00650: # Resolve any geometric hard clashes by recording conservative coordination actions in this model.
+00651: # Stage7 model was arranged so no hard assembly clashes are expected. Network clashes from pipe meshes
+
+--- around line 663 ---
+00663:             pos=np.array([400,180,125])
+00664:         marker=trimesh.creation.icosphere(subdivisions=2,radius=1.3); marker.apply_translation(pos); color_mesh(marker,COL['clash'])
+00665:         add_mesh(scene,f'QA_{c["id"]}_MARKER',marker)
+00666: 
+00667: # -----------------------
+00668: # Model metadata and exports
+00669: # -----------------------
+00670: scene.metadata.update({
+00671:     'project':'Завод переработки шин методом пиролиза, Магадан',
+00672:     'variant':'A.1',
+00673:     'stage':'LOD400-P vendor coordination / design BIM preparation',
+00674:     'units':'m',
+00675:     'coordinate_system':'Local project coordinates; global survey binding pending',
+00676:     'model_status':'Project coordination model. Not fabrication model. Native vendor GA/STEP/IFC and geotechnical report remain mandatory.',
+00677:     'open_critical_clashes':open_critical,
+00678:     'open_high_clashes':open_high,
+00679: })
+00680: GLB=OUT/'10_Модель_A1_LOD400P_vendor_coordination.glb'
+00681: OBJ=OUT/'10_Модель_A1_LOD400P_vendor_coordination.obj'
+00682: GLB.write_bytes(scene.export(file_type='glb'))
+00683: scene.export(OBJ)
+00684: 
+00685: # -----------------------
+00686: # IFC4 proxy export with typed coordination categories
+00687: # -----------------------
+00688: IFC_CHARS='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$'
+00689: def ifc_guid(seed: str) -> str:
+00690:     n=uuid.uuid5(uuid.NAMESPACE_URL,seed).int
+00691:     chars=[]
+00692:     for _ in range(22):
+00693:         chars.append(IFC_CHARS[n%64]); n//=64
+00694:     return ''.join(reversed(chars))
+
+--- around line 700 ---
+00700: 
+00701: ifc=IFCWriter()
+00702: owner=ifc.add("IFCPERSON($,$,'A1 BIM Coordination',$,$,$,$,$)")
+00703: org=ifc.add("IFCORGANIZATION($,'Project Team',$,$,$)")
+00704: pao=ifc.add(f"IFCPERSONANDORGANIZATION(#{owner},#{org},$)")
+00705: app=ifc.add(f"IFCAPPLICATION(#{org},'1.0','A1 LOD400-P Export','A1LOD400P')")
+00706: oh=ifc.add(f"IFCOWNERHISTORY(#{pao},#{app},$,.ADDED.,$,$,$,0)")
+00707: origin=ifc.add("IFCCARTESIANPOINT((0.,0.,0.))")
+00708: axis=ifc.add(f"IFCAXIS2PLACEMENT3D(#{origin},$,$)")
+00709: ctx=ifc.add(f"IFCGEOMETRICREPRESENTATIONCONTEXT($,'Model',3,1.E-05,#{axis},$)")
+00710: unit_len=ifc.add("IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.)")
+00711: unit_area=ifc.add("IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.)")
+00712: unit_vol=ifc.add("IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.)")
+00713: units=ifc.add(f"IFCUNITASSIGNMENT((#{unit_len},#{unit_area},#{unit_vol}))")
+00714: project=ifc.add(f"IFCPROJECT('{ifc_guid('project')}',#{oh},'A1 Tire Pyrolysis Plant LOD400-P',$,$,$,$,(#{ctx}),#{units})")
+00715: site_lp=ifc.add(f"IFCLOCALPLACEMENT($,#{axis})")
+00716: site=ifc.add(f"IFCSITE('{ifc_guid('site')}',#{oh},'Plant Site A.1',$,$,#{site_lp},$,$,.ELEMENT.,$,$,$,$,$)")
+00717: bld_lp=ifc.add(f"IFCLOCALPLACEMENT(#{site_lp},#{axis})")
+00718: bld=ifc.add(f"IFCBUILDING('{ifc_guid('building')}',#{oh},'Industrial Plant A.1',$,$,#{bld_lp},$,$,.ELEMENT.,$,$,$)")
+00719: storey_lp=ifc.add(f"IFCLOCALPLACEMENT(#{bld_lp},#{axis})")
+00720: storey=ifc.add(f"IFCBUILDINGSTOREY('{ifc_guid('storey')}',#{oh},'Coordination Level',$,$,#{storey_lp},$,$,.ELEMENT.,0.)")
+00721: ifc.add(f"IFCRELAGGREGATES('{ifc_guid('rel_ps')}',#{oh},$,$,#{project},(#{site}))")
+00722: ifc.add(f"IFCRELAGGREGATES('{ifc_guid('rel_sb')}',#{oh},$,$,#{site},(#{bld}))")
+00723: ifc.add(f"IFCRELAGGREGATES('{ifc_guid('rel_bs')}',#{oh},$,$,#{bld},(#{storey}))")
+00724: 
+00725: # Export AABB proxies for key equipment assemblies, foundation caps, pipe racks, and phase-2 stubs.
+00726: export_items=[]
+00727: for code,(mn,mx) in assembly_aabbs.items(): export_items.append((code,'equipment',mn,mx))
+00728: for fn,(mn,mx) in foundation_bounds.items(): export_items.append((fn,'foundation',mn,mx))
+00729: for n,g in scene.geometry.items():
+00730:     if n.startswith('PR_') or n.startswith('P2_STUB_'):
+00731:         export_items.append((n,'structure' if n.startswith('PR_') else 'network',g.bounds[0],g.bounds[1]))
+00732: product_ids=[]
+00733: for name,cat,mn,mx in export_items:
+00734:     size=np.maximum(mx-mn,.01); center=(mn+mx)/2
+00735:     p=ifc.add(f"IFCCARTESIANPOINT(({center[0]:.4f},{center[1]:.4f},{mn[2]:.4f}))")
+00736:     ap=ifc.add(f"IFCAXIS2PLACEMENT3D(#{p},$,$)")
+00737:     lp=ifc.add(f"IFCLOCALPLACEMENT(#{storey_lp},#{ap})")
+00738:     prof=ifc.add(f"IFCRECTANGLEPROFILEDEF(.AREA.,$,$,{size[0]:.4f},{size[1]:.4f})")
+00739:     edir=ifc.add("IFCDIRECTION((0.,0.,1.))")
+00740:     solid=ifc.add(f"IFCEXTRUDEDAREASOLID(#{prof},#{axis},#{edir},{size[2]:.4f})")
+00741:     body=ifc.add(f"IFCSHAPEREPRESENTATION(#{ctx},'Body','SweptSolid',(#{solid}))")
+00742:     pds=ifc.add(f"IFCPRODUCTDEFINITIONSHAPE($,$,(#{body}))")
+00743:     if cat=='foundation': ent='IFCFOOTING'; tail=',.PAD_FOOTING.'
+00744:     elif cat=='network': ent='IFCFLOWSEGMENT'; tail=',$'
+00745:     elif cat=='structure': ent='IFCMEMBER'; tail=',$'
+00746:     else: ent='IFCBUILDINGELEMENTPROXY'; tail=',.NOTDEFINED.'
+00747:     gid=ifc_guid('prod_'+name)
+00748:     if ent=='IFCFOOTING': prod=ifc.add(f"{ent}('{gid}',#{oh},{ifc.q(name)},$,$,#{lp},#{pds},$,.PAD_FOOTING.)")
+00749:     elif ent=='IFCFLOWSEGMENT': prod=ifc.add(f"{ent}('{gid}',#{oh},{ifc.q(name)},$,$,#{lp},#{pds},$)")
+00750:     elif ent=='IFCMEMBER': prod=ifc.add(f"{ent}('{gid}',#{oh},{ifc.q(name)},$,$,#{lp},#{pds},$,.USERDEFINED.)")
+00751:     else: prod=ifc.add(f"{ent}('{gid}',#{oh},{ifc.q(name)},$,$,#{lp},#{pds},$,.NOTDEFINED.)")
+00752:     product_ids.append(prod)
+00753:     props=[]
+00754:     props.append(ifc.add(f"IFCPROPERTYSINGLEVALUE('Category',$,IFCLABEL({ifc.q(cat)}),$)"))
+00755:     props.append(ifc.add(f"IFCPROPERTYSINGLEVALUE('LODStatus',$,IFCLABEL('LOD400-P'),$)"))
+00756:     eq=next((e for e in EQUIPMENT if e.code==name),None)
+
+--- around line 788 ---
+00788:         acceptance_criterion='Native model + signed datasheet + explicit deviations from project basis'))
+00789: 
+00790: # -----------------------
+00791: # QA and tabular outputs
+00792: # -----------------------
+00793: reloaded=trimesh.load(GLB,force='scene')
+00794: qa={
+00795:     'source_model':str(SRC), 'output_glb':str(GLB), 'geometry_count':len(scene.geometry),
+00796:     'bounds':scene.bounds.tolist(), 'vertices':int(sum(len(g.vertices) for g in scene.geometry.values())),
+00797:     'faces':int(sum(len(g.faces) for g in scene.geometry.values())),
+00798:     'finite_vertices':bool(all(np.isfinite(g.vertices).all() for g in scene.geometry.values())),
+00799:     'reimport_geometry_count':len(reloaded.geometry), 'reimport_bounds':reloaded.bounds.tolist(),
+00800:     'open_critical_clashes':open_critical, 'open_high_clashes':open_high,
+00801:     'clash_records_total':len(CLASHES), 'ifc_entities':ifc.i,
+00802:     'ifc_parentheses_balance':IFC.read_text(encoding='utf-8').count('(')-IFC.read_text(encoding='utf-8').count(')'),
+00803:     'equipment_positions':len(EQUIPMENT), 'foundation_instances':len(FOUNDATIONS), 'network_systems':len(NETWORKS),
+
+--- around line 826 ---
+00826:     w=csv.DictWriter(f,fieldnames=clash_fields); w.writeheader(); w.writerows(CLASHES)
+00827: 
+00828: # HTML clash report
+00829: rows=''.join('<tr>'+''.join(f'<td>{html.escape(str(c.get(k,"")))}</td>' for k in clash_fields)+'</tr>' for c in CLASHES)
+00830: html_doc=f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Clash Report A1 LOD400-P</title>
+00831: <style>body{{font-family:Arial,sans-serif;margin:28px;color:#172033}}h1{{color:#163b5c}}.summary{{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0}}.card{{border:1px solid #ccd5dd;border-radius:10px;padding:14px 20px}}table{{border-collapse:collapse;width:100%;font-size:12px}}th,td{{border:1px solid #d6dde3;padding:7px;vertical-align:top}}th{{background:#163b5c;color:white}}tr:nth-child(even){{background:#f6f8fa}}.ok{{color:#087f5b;font-weight:bold}}.warn{{color:#b45309;font-weight:bold}}</style></head><body>
+00832: <h1>Автоматизированная проверка коллизий - A.1 LOD400-P</h1>
+00833: <div class="summary"><div class="card">Всего записей: <b>{len(CLASHES)}</b></div><div class="card">Открытые критические: <b class="{'ok' if open_critical==0 else 'warn'}">{open_critical}</b></div><div class="card">Открытые высокие: <b class="{'ok' if open_high==0 else 'warn'}">{open_high}</b></div><div class="card">Методы: assembly AABB; sampled network/foundation; crane clearance; RFI completeness</div></div>
+00834: <p>Модель LOD400-P предназначена для проектной координации. Записи Accepted-RFI не являются геометрическими коллизиями: это контролируемые пробелы vendor data, которые должны быть закрыты до выпуска рабочей документации.</p>
+00835: <table><thead><tr>{''.join(f'<th>{k}</th>' for k in clash_fields)}</tr></thead><tbody>{rows}</tbody></table></body></html>'''
+00836: (OUT/'10_Clash_Report_A1_LOD400P.html').write_text(html_doc,encoding='utf-8')
+00837: 
+00838: # Vendor source register
+00839: sources={}
