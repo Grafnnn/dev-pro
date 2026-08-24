@@ -8,6 +8,13 @@ on:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_prebuild.py
       - .github/workflows/a1-revp3-numeric.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - .github/workflows/a1-revp3-numeric.yml
   workflow_dispatch:
 
 permissions:
