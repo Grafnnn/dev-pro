@@ -45,7 +45,9 @@ new = '''    # Variable-width serpentine: wide upper legs recover the required r
             point = line[-1]
     final_arc, heading = arc_from_pose(point, heading, 13.0, math.pi / 2.0, 0.65)
     d3_parts.append(final_arc[1:])
-    d3_parts.append(sample_line(tuple(final_arc[-1]), (557.0, 84.0), 0.55)[1:])
+    # The final southbound tangent remains at x=577; the former diagonal to
+    # x=557 created the last sub-12 m local radius and a visible kink.
+    d3_parts.append(sample_line(tuple(final_arc[-1]), (577.0, 84.0), 0.55)[1:])
     d3_xy = dedupe_points(np.vstack(d3_parts))'''
 
 if old not in text:
