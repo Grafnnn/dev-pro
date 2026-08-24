@@ -8,6 +8,7 @@ on:
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
       - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp3_boolean_slivers.py
       - tools/diagnose_revp3_paths.py
       - tools/diagnose_revp3_polygons.py
       - .github/workflows/a1-revp3-pathdiag.yml
@@ -18,6 +19,7 @@ on:
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
       - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp3_boolean_slivers.py
       - tools/diagnose_revp3_paths.py
       - tools/diagnose_revp3_polygons.py
       - .github/workflows/a1-revp3-pathdiag.yml
@@ -46,6 +48,7 @@ jobs:
           sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
           sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_boolean_slivers.py
       - name: Print precise path diagnostics
         run: python tools/diagnose_revp3_paths.py
       - name: Print asphalt component diagnostics
