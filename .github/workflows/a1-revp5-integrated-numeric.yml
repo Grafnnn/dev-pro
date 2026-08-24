@@ -39,7 +39,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install geometry dependencies
-        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut triangle requests rtree networkx pillow
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
       - name: Apply accepted road correction chain
         run: |
           python tools/patch_revp3_prebuild.py
@@ -50,6 +50,7 @@ jobs:
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_apron_grading.py
           python tools/patch_revp3_resolution.py
+          sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
           python tools/patch_revp5_road_finalize.py
           python tools/patch_revp3_boolean_slivers.py
           python tools/patch_revp3_post_apron_sliver.py
@@ -60,7 +61,6 @@ jobs:
           python tools/patch_revp3_conforming_refinement.py
           python tools/patch_revp3_degenerate_cleanup.py
           python tools/patch_revp3_final_extrusion.py
-          python tools/patch_revp5_triangle_meshing.py
           python tools/patch_revp3_qa_hardening.py
       - name: Build accepted RoadQA geometry
         run: python tools/build_revp3_roadqa.py
