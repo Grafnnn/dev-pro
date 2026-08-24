@@ -18,8 +18,11 @@ CORE = [
     "26_Модель_A1_RevP5_Integrated_preFEED.glb",
     "26_Модель_A1_RevP5_Integrated_preFEED.obj",
     "26_Integrated_QA_Report_RevP5.json",
+    "26_Road_QA_Report_RevP5.json",
+    "26_Blender_Road_Mesh_QA_RevP5.json",
     "26_Masterplan_Change_Register_RevP5.json",
     "26_Masterplan_Change_Register_RevP5.csv",
+    "26_Release_Status_RevP5.txt",
 ]
 
 
@@ -123,6 +126,8 @@ def main() -> None:
     qa = json.loads((ROOT / "26_Integrated_QA_Report_RevP5.json").read_text(encoding="utf-8"))
     if qa.get("status") != "PASS_CONTROLLED_PRE_FEED":
         raise RuntimeError("Integrated QA is not PASS_CONTROLLED_PRE_FEED")
+    if qa.get("blender_road_mesh_qa", {}).get("status") != "PASS":
+        raise RuntimeError("Final Blender road-mesh QA is not PASS")
 
     pairs = build_comparisons()
     sheet = contact_sheet(sorted(COMPARE.glob("*.png")))
@@ -138,6 +143,7 @@ def main() -> None:
 
     readme = ROOT / "26_README_RevP5.md"
     acceptance = qa["acceptance"]
+    road_acceptance = qa["road_acceptance_reused"]
     readme.write_text(
         "# A.1 / Rev.P5 Integrated pre-FEED Masterplan\n\n"
         "Статус: контролируемая координационная модель pre-FEED; не для строительства.\n\n"
@@ -162,6 +168,9 @@ def main() -> None:
         f"- non_adjacent_road_triangle_self_intersections: `{acceptance['non_adjacent_road_triangle_self_intersections']}`\n"
         f"- duplicated_top_faces: `{acceptance['duplicated_top_faces']}`\n"
         f"- non_manifold_edges: `{acceptance['non_manifold_edges']}`\n"
+        f"- Blender BVH road self-intersections: `{acceptance['blender_non_adjacent_road_triangle_self_intersections']}`\n"
+        f"- maximum road grade: `{road_acceptance['maximum_longitudinal_grade_pct']:.3f}%`\n"
+        f"- minimum horizontal radius: `{road_acceptance['minimum_horizontal_radius_m']:.3f} m`\n"
         f"- BLD_05 service ramp grade: `{acceptance['bld05_ramp_grade_pct']:.3f}%`\n\n"
         "Открытые vendor/survey/process/safety hold points перечислены в QA JSON и не скрыты моделью.\n",
         encoding="utf-8",
@@ -178,11 +187,19 @@ def main() -> None:
     }
     for path in [ROOT / name for name in CORE] + [visual_path, sheet, readme]:
         manifest["files"][path.name] = {"size_bytes": path.stat().st_size, "sha256": sha256_file(path)}
+    isolated_road_source = ROOT / "26_Модель_A1_RevP5_RoadQA_Source.glb"
+    if isolated_road_source.exists():
+        manifest["files"][isolated_road_source.name] = {
+            "size_bytes": isolated_road_source.stat().st_size,
+            "sha256": sha256_file(isolated_road_source),
+            "role": "isolated accepted road-coordination source",
+        }
     manifest_path = ROOT / "26_RevP5_Version_Manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     targets = [
         *[ROOT / name for name in CORE], visual_path, sheet, readme, manifest_path,
+        *([isolated_road_source] if isolated_road_source.exists() else []),
         *sorted(PNG.glob("*.png")), *sorted(COMPARE.glob("*.png")),
     ]
     sums = ROOT / "26_SHA256SUMS_RevP5.txt"
@@ -204,6 +221,7 @@ def main() -> None:
         f"{sha256_file(ROOT / CORE[0])}  {CORE[0]}\n"
         f"{sha256_file(ROOT / CORE[1])}  {CORE[1]}\n"
         f"{sha256_file(ROOT / CORE[2])}  {CORE[2]}\n"
+        f"{sha256_file(ROOT / CORE[3])}  {CORE[3]}\n"
         f"{sha256_file(manifest_path)}  {manifest_path.name}\n",
         encoding="utf-8",
     )
