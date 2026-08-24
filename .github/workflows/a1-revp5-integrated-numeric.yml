@@ -6,7 +6,7 @@ on:
     paths:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_*.py
-      - tools/patch_revp5_road_finalize.py
+      - tools/patch_revp5_*.py
       - tools/integrate_revp5_masterplan.py
       - .github/workflows/a1-revp5-integrated-numeric.yml
   pull_request:
@@ -14,7 +14,7 @@ on:
     paths:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_*.py
-      - tools/patch_revp5_road_finalize.py
+      - tools/patch_revp5_*.py
       - tools/integrate_revp5_masterplan.py
       - .github/workflows/a1-revp5-integrated-numeric.yml
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install geometry dependencies
-        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut triangle requests rtree networkx pillow
       - name: Apply accepted road correction chain
         run: |
           python tools/patch_revp3_prebuild.py
@@ -60,6 +60,7 @@ jobs:
           python tools/patch_revp3_conforming_refinement.py
           python tools/patch_revp3_degenerate_cleanup.py
           python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp5_triangle_meshing.py
           python tools/patch_revp3_qa_hardening.py
       - name: Build accepted RoadQA geometry
         run: python tools/build_revp3_roadqa.py
