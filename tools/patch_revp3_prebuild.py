@@ -19,12 +19,13 @@ text = replace_once(
     "D1 early gatehouse bypass",
 )
 
-# D2 is expanded south/east/north and uses a 12 m tangent connector plus
-# 15 m loop corners.  The resulting widest subbase clears BLD_02/02A.
+# D2 is expanded south/east/north and uses a 13 m tangent connector plus
+# 15 m loop corners.  The resulting widest subbase clears BLD_02/02A and the
+# discretized numerical radius remains strictly above 12 m.
 text = replace_once(
     text,
     '    d2_connector_parts = [sample_line((245.0, 310.0), (275.0, 310.0), 1.0)]\n    arc, _ = arc_from_pose((275.0, 310.0), 0.0, 14.5, math.pi / 2.0, 0.8)\n    d2_connector_parts.append(arc[1:])\n    d2_connector_parts.append(sample_line(tuple(arc[-1]), (290.0, 324.5), 0.5)[1:])\n    d2_conn_xy = dedupe_points(np.vstack(d2_connector_parts))\n    d2_loop_xy = rounded_rectangle_centerline(290.0, 310.0, 436.0, 379.0, 14.5, 0.9)',
-    '    d2_connector_parts = [sample_line((245.0, 310.0), (275.0, 310.0), 1.0)]\n    arc, _ = arc_from_pose((275.0, 310.0), 0.0, 12.0, math.pi / 2.0, 0.7)\n    d2_connector_parts.append(arc[1:])\n    d2_conn_xy = dedupe_points(np.vstack(d2_connector_parts))\n    d2_loop_xy = rounded_rectangle_centerline(287.0, 307.0, 439.0, 382.0, 15.0, 0.9)',
+    '    d2_connector_parts = [sample_line((245.0, 310.0), (275.0, 310.0), 1.0)]\n    arc, _ = arc_from_pose((275.0, 310.0), 0.0, 13.0, math.pi / 2.0, 0.7)\n    d2_connector_parts.append(arc[1:])\n    d2_conn_xy = dedupe_points(np.vstack(d2_connector_parts))\n    d2_loop_xy = rounded_rectangle_centerline(288.0, 308.0, 439.0, 382.0, 15.0, 0.9)',
     "D2 expanded fixed-building clearance",
 )
 
@@ -48,20 +49,20 @@ text = replace_once(
     "D2-D3 curb break",
 )
 
-# D5 north side is lowered to clear BLD_05. A 12 m loop corner keeps the
-# widest road structure out of the top-right corner of BLD_08 while meeting
-# the minimum-radius acceptance criterion. The connector ends tangentially at
-# the new west-side tangent point y=167 m.
+# D5 north side is lowered to clear BLD_05. A 13 m loop corner keeps the
+# widest road structure out of the top-right corner of BLD_08 and leaves a
+# numerical radius margin above the 12 m criterion. The connector ends at the
+# corresponding west tangent y=168 m.
 text = replace_once(
     text,
     '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 170.0), 1.0)[1:])',
-    '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 167.0), 1.0)[1:])',
+    '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 168.0), 1.0)[1:])',
     "D5 connector tangent",
 )
 text = replace_once(
     text,
     'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 202.0, 15.0, 0.9)',
-    'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 199.0, 12.0, 0.9)',
+    'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 199.0, 13.0, 0.9)',
     "D5 fixed-building clearance",
 )
 
