@@ -1,0 +1,48 @@
+name: A1 RevP3 Numeric QA v2
+
+on:
+  push:
+    branches: [tmp-a1-revp3-road-qa]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_alignment_v3.py
+      - tools/patch_revp3_final.py
+      - .github/workflows/a1-revp3-numeric-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OUT_ROOT: revp3_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp3-road-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree
+      - name: Apply controlled Rev.P3 patches
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp3_alignment_v3.py
+          if [ -f tools/patch_revp3_final.py ]; then python tools/patch_revp3_final.py; fi
+      - name: Build Rev.P3 and enforce numerical acceptance
+        run: python tools/build_revp3_roadqa.py
+      - name: Print QA
+        run: cat revp3_output/20_Road_QA_Report_RevP3.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp3-numeric-v2
+          path: revp3_output/
+          retention-days: 1
+          compression-level: 3
