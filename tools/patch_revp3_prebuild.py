@@ -48,13 +48,21 @@ text = replace_once(
     "D2-D3 curb break",
 )
 
-# D5 north side is lowered just enough to clear the fixed pyrolysis building
-# BLD_05 while retaining 15 m loop corners and access to BLD_07/08/09.
+# D5 north side is lowered to clear BLD_05. A 12 m loop corner keeps the
+# widest road structure out of the top-right corner of BLD_08 while meeting
+# the minimum-radius acceptance criterion. The connector ends tangentially at
+# the new west-side tangent point y=167 m.
+text = replace_once(
+    text,
+    '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 170.0), 1.0)[1:])',
+    '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 167.0), 1.0)[1:])',
+    "D5 connector tangent",
+)
 text = replace_once(
     text,
     'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 202.0, 15.0, 0.9)',
-    'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 199.0, 15.0, 0.9)',
-    "D5 clearance to BLD_05",
+    'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 199.0, 12.0, 0.9)',
+    "D5 fixed-building clearance",
 )
 
 path.write_text(text, encoding="utf-8")
