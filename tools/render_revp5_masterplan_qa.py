@@ -92,8 +92,11 @@ def style_objects(clay: bool = False):
         obj.hide_viewport = hide
         if hide:
             continue
-        obj.show_wire = clay
-        obj.show_all_edges = clay
+        # Blender 3.4 GLTF imports may expose mesh objects without the legacy
+        # show_wire/show_all_edges attributes. Wireframe is optional evidence;
+        # the clay view remains valid even when those display flags are absent.
+        set_optional(obj, "show_wire", clay)
+        set_optional(obj, "show_all_edges", clay)
         if clay:
             obj.color = (0.72, 0.73, 0.74, 1)
             continue
