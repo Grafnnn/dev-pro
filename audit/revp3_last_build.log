@@ -140,3 +140,76 @@ CDT_PLAN_DONE vertices=54 faces=52
 CDT_SOLID_PASS vertices=108 faces=212
 CDT_SOLID_START area=115.573378 bounds=(446.335, 194.1173, 606.1754, 348.18) holes=0 thickness=0.240
 CDT_PLAN_DONE vertices=1811 faces=1809
+CDT_SOLID_PASS vertices=3622 faces=7240
+CDT_SOLID_START area=77.387348 bounds=(553.8246, 80.8204, 606.6755, 192.18) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=1913 faces=1911
+CDT_SOLID_PASS vertices=3826 faces=7648
+CDT_SOLID_START area=115.260338 bounds=(446.335, 187.8923, 599.9954, 342.0) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=1777 faces=1775
+CDT_SOLID_PASS vertices=3554 faces=7104
+CDT_SOLID_START area=269.832827 bounds=(446.1269, 194.2659, 606.6154, 348.62) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2170 faces=2168
+CDT_SOLID_PASS vertices=4340 faces=8676
+CDT_SOLID_START area=181.117163 bounds=(553.3846, 80.3813, 607.1155, 192.62) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2364 faces=2362
+CDT_SOLID_PASS vertices=4728 faces=9452
+CDT_SOLID_START area=269.038751 bounds=(446.1269, 187.338, 599.7954, 341.8) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2117 faces=2115
+CDT_SOLID_PASS vertices=4234 faces=8464
+CDT_SOLID_START area=62.592210 bounds=(172.8204, 96.32, 329.1029, 131.9287) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=888 faces=886
+CDT_SOLID_PASS vertices=1776 faces=3548
+CDT_SOLID_START area=146.602084 bounds=(172.3813, 95.88, 329.3216, 132.4069) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=1065 faces=1063
+CDT_SOLID_PASS vertices=2130 faces=4256
+CDT_SOLID_START area=13.521517 bounds=(345.1307, 134.8708, 362.1581, 202.39) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=204 faces=202
+CDT_SOLID_PASS vertices=408 faces=812
+CDT_SOLID_START area=47.596208 bounds=(347.9823, 127.6407, 562.9015, 185.5) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=530 faces=528
+CDT_SOLID_PASS vertices=1060 faces=2116
+CDT_SOLID_START area=26.389536 bounds=(422.61, 188.1165, 562.0533, 202.68) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=258 faces=256
+CDT_SOLID_PASS vertices=516 faces=1028
+CDT_SOLID_START area=30.552446 bounds=(417.41, 158.5, 554.5, 194.0005) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=224 faces=222
+CDT_SOLID_PASS vertices=448 faces=892
+CDT_SOLID_START area=9.719890 bounds=(358.6482, 158.5, 412.39, 160.281) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=70 faces=68
+CDT_SOLID_PASS vertices=140 faces=276
+CDT_SOLID_START area=39.637469 bounds=(354.5, 163.9848, 547.6751, 195.5) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=271 faces=269
+CDT_SOLID_PASS vertices=542 faces=1080
+CDT_SOLID_START area=30.968104 bounds=(344.8102, 135.0202, 360.8175, 202.39) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=237 faces=235
+CDT_SOLID_PASS vertices=474 faces=944
+CDT_SOLID_START area=110.887760 bounds=(347.9545, 127.0734, 563.1537, 185.3) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=629 faces=627
+CDT_SOLID_PASS vertices=1258 faces=2512
+CDT_SOLID_START area=61.557597 bounds=(422.61, 188.3576, 562.0316, 203.12) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=281 faces=279
+CDT_SOLID_PASS vertices=562 faces=1120
+CDT_SOLID_START area=70.856547 bounds=(417.41, 158.7, 554.3, 193.7613) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=224 faces=222
+CDT_SOLID_PASS vertices=448 faces=892
+CDT_SOLID_START area=22.582613 bounds=(358.8034, 158.7, 412.39, 160.8057) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=88 faces=86
+CDT_SOLID_PASS vertices=176 faces=348
+CDT_SOLID_START area=78.792144 bounds=(354.7, 163.8314, 546.8532, 195.3) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=300 faces=298
+CDT_SOLID_PASS vertices=600 faces=1196
+CDT_SOLID_START area=76.435844 bounds=(347.9939, 124.32, 553.6796, 145.68) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=766 faces=764
+CDT_SOLID_PASS vertices=1532 faces=3060
+CDT_SOLID_START area=178.764355 bounds=(347.9686, 123.88, 554.1187, 146.12) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=875 faces=873
+CDT_SOLID_PASS vertices=1750 faces=3496
+Traceback (most recent call last):
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1934, in <module>
+    main()
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1899, in main
+    target, qa = build_scene()
+                 ^^^^^^^^^^^^^
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1779, in build_scene
+    raise RuntimeError(f"Long edge in {name}: {quality['max_edge_m']:.3f} m")
+RuntimeError: Long edge in REV_P3_EXT_BLD_05_SERVICE_APRON: 8.593 m
