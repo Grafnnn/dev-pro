@@ -8,6 +8,7 @@ on:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_qa_hardening.py
       - .github/workflows/a1-revp3-numeric.yml
   pull_request:
     branches:
@@ -16,6 +17,7 @@ on:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_qa_hardening.py
       - .github/workflows/a1-revp3-numeric.yml
   workflow_dispatch:
 
@@ -37,10 +39,11 @@ jobs:
           python-version: '3.12'
       - name: Install geometry dependencies
         run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests
-      - name: Apply controlled alignment patches
+      - name: Apply controlled alignment and QA patches
         run: |
           python tools/patch_revp3_prebuild.py
           python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp3_qa_hardening.py
       - name: Build Rev.P3 and enforce numerical acceptance
         run: python tools/build_revp3_roadqa.py
       - name: Print QA
