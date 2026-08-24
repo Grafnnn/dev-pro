@@ -18,3 +18,4 @@ CDT_SOLID_START area=3248.863411 bounds=(246.9272, 304.5, 442.5, 385.5) holes=1 
 CDT_PLAN_DONE vertices=3612 faces=6609
 CDT_SOLID_PASS vertices=7224 faces=14448
 CDT_SOLID_START area=7848.119076 bounds=(444.0, 79.5, 607.9955, 349.5) holes=0 thickness=0.550
+CDT_PLAN_DONE vertices=20193 faces=38343
