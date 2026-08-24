@@ -9,14 +9,6 @@ on:
       - tools/patch_revp5_*.py
       - tools/integrate_revp5_masterplan.py
       - .github/workflows/a1-revp5-integrated-numeric.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - tools/build_revp3_roadqa.py
-      - tools/patch_revp3_*.py
-      - tools/patch_revp5_*.py
-      - tools/integrate_revp5_masterplan.py
-      - .github/workflows/a1-revp5-integrated-numeric.yml
   workflow_dispatch:
 
 concurrency:
