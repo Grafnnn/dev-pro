@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 
 MODULE_PATH = Path("tools/build_revp3_roadqa.py")
 spec = importlib.util.spec_from_file_location("revp3_builder", MODULE_PATH)
-module = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
+module = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = module
 spec.loader.exec_module(module)
 
 
