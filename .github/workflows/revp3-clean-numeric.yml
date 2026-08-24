@@ -11,6 +11,16 @@ on:
       - tools/patch_revp3_junction_trim.py
       - tools/patch_revp3_qa_hardening.py
       - .github/workflows/revp3-clean-numeric.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_junction_trim.py
+      - tools/patch_revp3_qa_hardening.py
+      - .github/workflows/revp3-clean-numeric.yml
   workflow_dispatch:
 
 permissions:
