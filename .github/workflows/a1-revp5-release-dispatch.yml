@@ -1,0 +1,21 @@
+name: A1 RevP5 Release Dispatch
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/a1-revp5-release-dispatch.yml
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Dispatch isolated release publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run a1-revp5-release-branch-publish.yml --repo Grafnnn/dev-pro --ref release-a1-revp5-integrated-prefeed

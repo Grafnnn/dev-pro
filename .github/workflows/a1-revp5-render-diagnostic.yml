@@ -1,0 +1,69 @@
+name: A1 RevP5 Render Diagnostic
+
+on:
+  push:
+    branches: [tmp-a1-revp5-integrated-bim]
+    paths:
+      - tools/render_revp5_masterplan_qa.py
+      - .github/workflows/a1-revp5-render-diagnostic.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/render_revp5_masterplan_qa.py
+      - .github/workflows/a1-revp5-render-diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp5-integrated-bim
+          fetch-depth: 0
+      - name: Prepare committed source and candidate models
+        run: |
+          rm -rf work_revp3 revp5_output audit/revp5_render_diag
+          mkdir -p work_revp3 revp5_output audit/revp5_render_diag
+          cp transfer_ready/20_Модель_A1_RevP2_ExteriorQA.glb work_revp3/
+          cp audit/revp5_integrated_numeric/26_Модель_A1_RevP5_Integrated_preFEED.glb revp5_output/
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Render with captured diagnostic
+        id: render
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          blender -b --python tools/render_revp5_masterplan_qa.py 2>&1 | tee audit/revp5_render_diag/render.log
+          status=${PIPESTATUS[0]}
+          echo "$status" > audit/revp5_render_diag/exit_code.txt
+          find revp5_output -maxdepth 3 -type f -printf '%P;%s\n' | sort > audit/revp5_render_diag/files.txt || true
+          exit $status
+      - name: Persist render diagnostic
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/revp5_render_diag/
+          git diff --cached --quiet || git commit -m "Store Rev.P5 render diagnostic [skip ci]"
+          git pull --rebase origin tmp-a1-revp5-integrated-bim
+          git push origin HEAD:tmp-a1-revp5-integrated-bim
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a1-revp5-render-diagnostic
+          path: |
+            audit/revp5_render_diag/
+            revp5_output/qa_png/
+          retention-days: 3
+      - name: Fail after persistence
+        if: steps.render.outcome != 'success'
+        run: exit 1
