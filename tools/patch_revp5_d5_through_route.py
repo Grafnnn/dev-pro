@@ -31,18 +31,23 @@ text = text.replace(old, new, 1)
 # check with the actual first centreline crossing used by the new D5 route.
 text = text.replace("580.5, 163.0", "557.0394602011489, 150.0")
 
-# The lower D3 reach between the junction and the site toe is comparatively
-# short.  A 110.7 m junction created a 7.346% local grade.  The controlled
-# junction elevation 109.0 m keeps both D3 reaches below the 6% acceptance
-# limit while matching the new D5 profile at the common seam.
-text = text.replace(
-    "assign_linear_z(d3_xy[: d3_junction_index + 1], 133.7, 110.7)",
-    "assign_linear_z(d3_xy[: d3_junction_index + 1], 133.7, 109.0)",
-)
-text = text.replace(
-    "assign_linear_z(d3_xy[d3_junction_index:], 110.7, 102.2)",
-    "assign_linear_z(d3_xy[d3_junction_index:], 109.0, 102.2)",
-)
+# The interface-completion patch names the split index d3_node_index.  Regrade
+# both pieces to the common 109.0 m junction elevation, retaining smooth
+# vertical tangency and keeping the local longitudinal grade below 6%.
+replacements = [
+    (
+        "d3_upper = assign_linear_z(d3_xy[: d3_node_index + 1], 133.7, 110.7)",
+        "d3_upper = assign_linear_z(d3_xy[: d3_node_index + 1], 133.7, 109.0)",
+    ),
+    (
+        "d3_lower = assign_linear_z(d3_xy[d3_node_index:], 110.7, 102.2)",
+        "d3_lower = assign_linear_z(d3_xy[d3_node_index:], 109.0, 102.2)",
+    ),
+]
+for old_text, new_text in replacements:
+    if old_text not in text:
+        raise RuntimeError(f"D3 grade patch target not found: {old_text}")
+    text = text.replace(old_text, new_text, 1)
 
 path.write_text(text, encoding="utf-8")
-print("REV_P5_D5_FIRST_CROSSING_AND_GRADE_PATCHED")
+print("REV_P5_D5_FIRST_CROSSING_AND_ACTUAL_D3_GRADE_PATCHED")
