@@ -8,19 +8,88 @@ end = text.find("\ndef solid_from_polygon", start)
 if start < 0 or end < 0:
     raise RuntimeError("Rev.P3 solid function not found for Shapely CDT patch")
 
-replacement = r'''def _conforming_watertight_solid(
+replacement = r'''def _split_disconnected_vertex_fans(
+    vertices: np.ndarray,
+    faces: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, list[dict]]:
+    """Split coincident but topologically disconnected triangle fans.
+
+    Boolean subtraction of an apron can leave two boundary cycles touching at a
+    single coordinate.  A coordinate-only vertex merge then creates one vertical
+    edge used four times after extrusion.  Each disconnected incident-face fan
+    receives its own vertex index while retaining the exact same XY coordinate.
+    """
+    vertices_out = np.asarray(vertices, dtype=float).tolist()
+    faces_out = np.asarray(faces, dtype=int).copy()
+    split_report: list[dict] = []
+    original_vertex_count = len(vertices_out)
+
+    for vertex_index in range(original_vertex_count):
+        incident = [
+            int(face_index)
+            for face_index in np.where(np.any(faces_out == vertex_index, axis=1))[0]
+        ]
+        if len(incident) <= 1:
+            continue
+
+        adjacency: dict[int, set[int]] = {face_index: set() for face_index in incident}
+        by_other_vertex: dict[int, list[int]] = {}
+        for face_index in incident:
+            face = faces_out[face_index]
+            for other in face:
+                other = int(other)
+                if other == vertex_index:
+                    continue
+                by_other_vertex.setdefault(other, []).append(face_index)
+        for face_indices in by_other_vertex.values():
+            for first in face_indices:
+                adjacency[first].update(second for second in face_indices if second != first)
+
+        remaining = set(incident)
+        components: list[list[int]] = []
+        while remaining:
+            seed = remaining.pop()
+            stack = [seed]
+            component_faces = [seed]
+            while stack:
+                current = stack.pop()
+                for neighbour in adjacency[current]:
+                    if neighbour in remaining:
+                        remaining.remove(neighbour)
+                        stack.append(neighbour)
+                        component_faces.append(neighbour)
+            components.append(sorted(component_faces))
+
+        if len(components) <= 1:
+            continue
+        components.sort(key=len, reverse=True)
+        created = []
+        for component_faces in components[1:]:
+            replacement_index = len(vertices_out)
+            vertices_out.append(list(vertices_out[vertex_index]))
+            created.append(replacement_index)
+            for face_index in component_faces:
+                locations = np.where(faces_out[face_index] == vertex_index)[0]
+                faces_out[face_index, locations] = replacement_index
+        split_report.append(
+            {
+                "source_vertex": int(vertex_index),
+                "xy": [float(value) for value in vertices_out[vertex_index]],
+                "fan_count": int(len(components)),
+                "created_vertices": created,
+            }
+        )
+
+    return np.asarray(vertices_out, dtype=float), faces_out, split_report
+
+
+def _conforming_watertight_solid(
     component: Polygon,
     z_function: Callable[[float, float], float],
     thickness: float,
     max_edge: float,
 ) -> trimesh.Trimesh:
-    """Build a closed warped solid from Shapely constrained Delaunay faces.
-
-    The Triangle C extension can segfault on the Boolean-heavy road polygons
-    containing multiple apron holes. Shapely/GEOS constrained Delaunay gives a
-    deterministic, hole-respecting planar complex. Its triangle coordinates are
-    globally indexed and then refined with the existing conforming edge splitter.
-    """
+    """Build a closed warped solid from Shapely constrained Delaunay faces."""
     import shapely
 
     if not component.is_valid:
@@ -78,7 +147,6 @@ replacement = r'''def _conforming_watertight_solid(
     if len(vertices_2d) < 3 or len(faces_2d) < 1:
         raise RuntimeError("Indexed CDT contains no usable triangulation")
 
-    # Verify the planar complex is neither missing area nor crossing holes.
     union = unary_union(triangle_geometries)
     missing_area = float(component.difference(union).area)
     excess_area = float(union.difference(component).area)
@@ -100,6 +168,44 @@ replacement = r'''def _conforming_watertight_solid(
     reverse = signed < 0.0
     if np.any(reverse):
         faces_2d[reverse] = faces_2d[reverse][:, ::-1]
+
+    vertices_2d, faces_2d, fan_splits = _split_disconnected_vertex_fans(
+        vertices_2d,
+        faces_2d,
+    )
+    if fan_splits:
+        print(
+            "CDT_VERTEX_FANS_SPLIT " + json.dumps(fan_splits, ensure_ascii=False),
+            flush=True,
+        )
+
+    # A conforming planar manifold may have boundary edges once and interior
+    # edges twice, but never an edge used more than twice.  Each boundary cycle
+    # must have degree two after splitting all pinched point contacts.
+    planar_edges = np.sort(
+        np.vstack(
+            [faces_2d[:, [0, 1]], faces_2d[:, [1, 2]], faces_2d[:, [2, 0]]]
+        ),
+        axis=1,
+    )
+    unique_planar, planar_counts = np.unique(planar_edges, axis=0, return_counts=True)
+    if np.any(planar_counts > 2):
+        raise RuntimeError(
+            f"CDT planar complex has {int(np.count_nonzero(planar_counts > 2))} non-manifold edges"
+        )
+    boundary_planar = unique_planar[planar_counts == 1]
+    boundary_degree: dict[int, int] = {}
+    for a, b in boundary_planar:
+        boundary_degree[int(a)] = boundary_degree.get(int(a), 0) + 1
+        boundary_degree[int(b)] = boundary_degree.get(int(b), 0) + 1
+    bad_boundary_vertices = {
+        vertex: degree for vertex, degree in boundary_degree.items() if degree != 2
+    }
+    if bad_boundary_vertices:
+        raise RuntimeError(
+            "CDT boundary remains pinched/open after fan split: "
+            + json.dumps(bad_boundary_vertices, ensure_ascii=False)
+        )
 
     vertices_2d, faces_2d = _refine_triangulation_conforming(
         vertices_2d,
@@ -142,13 +248,14 @@ replacement = r'''def _conforming_watertight_solid(
 
     edge_rows = np.sort(np.asarray(mesh.edges, dtype=int), axis=1)
     _, edge_counts = np.unique(edge_rows, axis=0, return_counts=True)
-    open_or_nonmanifold = int(np.count_nonzero(edge_counts != 2))
-    if open_or_nonmanifold != 0 or not mesh.is_watertight:
+    bad_edge_count = int(np.count_nonzero(edge_counts != 2))
+    if bad_edge_count != 0 or not mesh.is_watertight:
+        values, frequencies = np.unique(edge_counts[edge_counts != 2], return_counts=True)
+        distribution = {int(v): int(n) for v, n in zip(values, frequencies)}
         raise RuntimeError(
             "Shapely-CDT road solid is not watertight: "
-            f"open/non-manifold edges={open_or_nonmanifold}; "
-            f"area={component.area:.6f}; bounds={bounds_text}; "
-            f"holes={len(component.interiors)}"
+            f"bad edges={bad_edge_count}; count distribution={distribution}; "
+            f"area={component.area:.6f}; bounds={bounds_text}; holes={len(component.interiors)}"
         )
     if not mesh.is_winding_consistent:
         raise RuntimeError("Shapely-CDT road solid has inconsistent winding")
