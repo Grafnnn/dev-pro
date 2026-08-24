@@ -1,0 +1,61 @@
+name: A1 RevP5 D3-D5 Junction Diagnostic
+
+on:
+  push:
+    branches: [tmp-a1-revp5-integrated-bim]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp5_d2_topology.py
+      - tools/patch_revp5_d5_topology.py
+      - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp5_d5_through_route.py
+      - tools/diagnose_revp5_d3_d5_junction.py
+      - .github/workflows/a1-revp5-junction-diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp5-integrated-bim
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install path dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx
+      - name: Apply alignment patches used by the integrated build
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp5_d2_topology.py
+          python tools/patch_revp5_d5_topology.py
+          sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
+          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp5_d5_through_route.py
+      - name: Calculate exact D3-D5 geometry
+        run: python tools/diagnose_revp5_d3_d5_junction.py
+      - name: Persist diagnostic report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git restore tools/build_revp3_roadqa.py tools/patch_revp3_interface_completion.py
+          git add audit/revp5_d3_d5_junction.json
+          git diff --cached --quiet || git commit -m "Store Rev.P5 D3-D5 junction diagnostic [skip ci]"
+          git pull --rebase origin tmp-a1-revp5-integrated-bim
+          git push origin HEAD:tmp-a1-revp5-integrated-bim
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp5-d3-d5-junction
+          path: audit/revp5_d3_d5_junction.json
+          retention-days: 3
