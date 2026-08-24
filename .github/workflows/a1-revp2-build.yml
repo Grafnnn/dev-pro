@@ -1,0 +1,131 @@
+name: A1 RevP2 Exterior Build
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp2-exterior-qa
+    paths:
+      - tools/build_revp2_exterior.py
+      - tools/render_revp2_blender.py
+      - tools/package_revp2.py
+      - tools/patch_revp2_runtime.py
+      - .github/workflows/a1-revp2-build.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp2_exterior.py
+      - tools/render_revp2_blender.py
+      - tools/package_revp2.py
+      - tools/patch_revp2_runtime.py
+      - .github/workflows/a1-revp2-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      SOURCE_ZIP_URL: https://at.adobe.com/aXK6C7lAS2lRSKjj
+      OUT_ROOT: revp2_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp2-exterior-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python geometry tools
+        run: pip install --disable-pip-version-check requests 'numpy<2.0' scipy shapely trimesh pygltflib pillow
+      - name: Apply controlled Rev.P2 runtime corrections
+        run: |
+          python tools/patch_revp2_runtime.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('tools/build_revp2_exterior.py')
+          s = p.read_text(encoding='utf-8')
+          old = "area=abs(np.cross(b-a,c-a))/2.0"
+          new = "area=abs((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]))/2.0"
+          if old in s:
+              p.write_text(s.replace(old, new), encoding='utf-8')
+          PY
+      - name: Build corrected Rev.P2 models and run geometric QA
+        run: python tools/build_revp2_exterior.py
+      - name: Preserve reproducible correction scripts
+        run: |
+          mkdir -p revp2_output/reproducible_scripts
+          cp tools/build_revp2_exterior.py tools/render_revp2_blender.py tools/package_revp2.py tools/patch_revp2_runtime.py revp2_output/reproducible_scripts/
+      - name: Print geometric QA summary
+        run: cat revp2_output/20_Exterior_QA_Report.json
+      - name: Install Blender for controlled QA renders
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+      - name: Render six corrected exterior views
+        run: |
+          blender -b --python tools/render_revp2_blender.py
+          test "$(find revp2_output/renders -maxdepth 1 -name '*.png' | wc -l)" -eq 6
+      - name: Package corrected model, reports and renders
+        run: python tools/package_revp2.py
+      - name: Generate checksums
+        run: |
+          cd revp2_output
+          find . -type f ! -name '20_SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum > 20_SHA256SUMS.txt
+      - name: Upload complete corrected A1 Rev.P2 package
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-exterior-qa
+          path: revp2_output/
+          retention-days: 1
+          compression-level: 6
+      - name: Upload exterior GLB
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-exterior-glb
+          path: revp2_output/20_Модель_A1_RevP2_ExteriorQA.glb
+          retention-days: 1
+          compression-level: 0
+      - name: Upload coordination GLB
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-coordination-glb
+          path: revp2_output/20_Модель_A1_RevP2_Coordination.glb
+          retention-days: 1
+          compression-level: 0
+      - name: Upload exterior OBJ
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-exterior-obj
+          path: revp2_output/20_Модель_A1_RevP2_ExteriorQA.obj
+          retention-days: 1
+          compression-level: 0
+      - name: Upload QA reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-qa-reports
+          path: |
+            revp2_output/20_Exterior_QA_Report.*
+            revp2_output/20_Ведомость_исправлений_RevP2.csv
+            revp2_output/20_Итог_повторного_аудита_RevP2.md
+            revp2_output/20_README_RevP2.md
+            revp2_output/20_SHA256SUMS.txt
+          retention-days: 1
+      - name: Upload QA renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-qa-renders
+          path: |
+            revp2_output/renders/
+            revp2_output/20_Монтаж_контрольных_ракурсов_RevP2.jpg
+          retention-days: 1
+          compression-level: 3
+      - name: Upload user ZIP package
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp2-user-package
+          path: revp2_output/20_Комплект_A1_RevP2_ExteriorQA.zip
+          retention-days: 1
+          compression-level: 0

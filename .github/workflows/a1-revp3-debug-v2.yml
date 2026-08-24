@@ -1,0 +1,76 @@
+name: A1 RevP3 Persistent Diagnostics v2
+
+on:
+  push:
+    branches: [tmp-a1-revp3-road-qa]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_alignment_v3.py
+      - tools/patch_revp3_final.py
+      - .github/workflows/a1-revp3-debug-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OUT_ROOT: revp3_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp3-road-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree
+      - name: Apply all patches and build with captured output
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          rm -rf revp3_debug_v2 revp3_output work_revp3
+          mkdir -p revp3_debug_v2
+          {
+            python tools/patch_revp3_prebuild.py
+            python tools/patch_revp3_alignment_v2.py
+            python tools/patch_revp3_alignment_v3.py
+            python tools/patch_revp3_final.py
+            python tools/build_revp3_roadqa.py
+          } 2>&1 | tee revp3_debug_v2/build.log
+          status=${PIPESTATUS[0]}
+          echo "$status" > revp3_debug_v2/exit_code.txt
+          if [ -f revp3_output/20_Road_QA_Report_RevP3.json ]; then cp revp3_output/20_Road_QA_Report_RevP3.json revp3_debug_v2/qa.json; fi
+          if [ -f revp3_output/20_Модель_A1_RevP3_RoadQA.glb ]; then sha256sum revp3_output/20_Модель_A1_RevP3_RoadQA.glb > revp3_debug_v2/model_sha256.txt; fi
+          exit $status
+      - name: Persist diagnostic state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf audit/revp3_debug_v2
+          mkdir -p audit/revp3_debug_v2
+          cp -f revp3_debug_v2/* audit/revp3_debug_v2/ 2>/dev/null || true
+          git add audit/revp3_debug_v2/
+          git diff --cached --quiet || git commit -m "Store full Rev.P3 diagnostic [skip ci]"
+          git push origin HEAD:tmp-a1-revp3-road-qa
+      - name: Upload diagnostic and partial outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp3-diagnostic-v2
+          path: |
+            revp3_debug_v2/
+            revp3_output/
+          retention-days: 1
+          compression-level: 3
+      - name: Fail if build failed
+        if: steps.build.outcome != 'success'
+        run: exit 1
