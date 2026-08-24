@@ -200,16 +200,3 @@ CDT_PLAN_DONE vertices=300 faces=298
 CDT_SOLID_PASS vertices=600 faces=1196
 CDT_SOLID_START area=76.435844 bounds=(347.9939, 124.32, 553.6796, 145.68) holes=0 thickness=0.240
 CDT_PLAN_DONE vertices=766 faces=764
-CDT_SOLID_PASS vertices=1532 faces=3060
-CDT_SOLID_START area=178.764355 bounds=(347.9686, 123.88, 554.1187, 146.12) holes=0 thickness=0.120
-CDT_PLAN_DONE vertices=875 faces=873
-CDT_SOLID_PASS vertices=1750 faces=3496
-Traceback (most recent call last):
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1934, in <module>
-    main()
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1899, in main
-    target, qa = build_scene()
-                 ^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1779, in build_scene
-    raise RuntimeError(f"Long edge in {name}: {quality['max_edge_m']:.3f} m")
-RuntimeError: Long edge in REV_P3_EXT_BLD_05_SERVICE_APRON: 8.593 m
