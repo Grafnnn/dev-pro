@@ -49,6 +49,7 @@ jobs:
           sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp3_resolution.py
           python tools/patch_revp5_road_finalize.py
           python tools/patch_revp3_boolean_slivers.py
           python tools/patch_revp3_post_apron_sliver.py
@@ -58,7 +59,6 @@ jobs:
           python tools/patch_revp3_triangle_solids.py
           python tools/patch_revp3_conforming_refinement.py
           python tools/patch_revp3_degenerate_cleanup.py
-          python tools/patch_revp3_resolution.py
           python tools/patch_revp3_final_extrusion.py
           python tools/patch_revp3_qa_hardening.py
       - name: Build accepted RoadQA geometry
@@ -94,6 +94,7 @@ jobs:
           mkdir -p audit/revp5_integrated_numeric
           if [ -d revp5_output ]; then cp -a revp5_output/. audit/revp5_integrated_numeric/; fi
           if [ -f revp3_output/20_Road_QA_Report_RevP3.json ]; then cp revp3_output/20_Road_QA_Report_RevP3.json audit/revp5_integrated_numeric/; fi
+          git restore tools/build_revp3_roadqa.py tools/patch_revp3_interface_completion.py || true
           git add audit/revp5_integrated_numeric/
           git diff --cached --quiet || git commit -m "Store Rev.P5 integrated numerical candidate [skip ci]"
           git pull --rebase origin tmp-a1-revp5-integrated-bim
