@@ -48,7 +48,8 @@ jobs:
           python tools/patch_revp3_prebuild.py
           python tools/patch_revp3_alignment_v2.py
           sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
-          sed -i 's/580\.5, 163\.0/570.0, 162.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_qa_hardening.py
       - name: Print exact horizontal-radius diagnostics
