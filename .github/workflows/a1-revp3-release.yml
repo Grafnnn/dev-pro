@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: tmp-a1-revp3-road-qa
-          fetch-depth: 1
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -121,6 +121,8 @@ jobs:
           cp tools/build_revp3_roadqa.py tools/patch_revp3_*.py tools/render_revp3_qa.py tools/package_revp3.py revp3_release/reproducible_scripts/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin tmp-a1-revp3-road-qa
+          git rebase origin/tmp-a1-revp3-road-qa
           git add revp3_release/
           git commit -m "Publish immutable A.1 Rev.P3 RoadQA release [skip ci]"
           git push origin HEAD:tmp-a1-revp3-road-qa
