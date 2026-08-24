@@ -1,15 +1,15 @@
 Traceback (most recent call last):
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1694, in <module>
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1761, in <module>
     main()
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1659, in main
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1726, in main
     target, qa = build_scene()
                  ^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1337, in build_scene
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1400, in build_scene
     mesh = solid_from_polygon(
            ^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 675, in solid_from_polygon
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 738, in solid_from_polygon
     mesh = _conforming_watertight_solid(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 619, in _conforming_watertight_solid
-    raise RuntimeError("Refined top triangulation contains zero-area faces")
-RuntimeError: Refined top triangulation contains zero-area faces
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 714, in _conforming_watertight_solid
+    raise RuntimeError(
+RuntimeError: Conforming refined road solid is not watertight: open/non-manifold edges=1
