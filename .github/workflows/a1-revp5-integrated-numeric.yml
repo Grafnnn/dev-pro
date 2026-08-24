@@ -1,0 +1,101 @@
+name: A1 RevP5 Integrated Numeric QA
+
+on:
+  push:
+    branches: [tmp-a1-revp5-integrated-bim]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_*.py
+      - tools/patch_revp5_road_finalize.py
+      - tools/integrate_revp5_masterplan.py
+      - .github/workflows/a1-revp5-integrated-numeric.yml
+  workflow_dispatch:
+
+concurrency:
+  group: a1-revp5-integrated-numeric-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp5-integrated-bim
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
+      - name: Apply accepted road correction chain
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
+          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp5_road_finalize.py
+          python tools/patch_revp3_boolean_slivers.py
+          python tools/patch_revp3_post_apron_sliver.py
+          python tools/patch_revp3_mesh_cleanup.py
+          python tools/patch_revp3_watertight_solids.py
+          python tools/patch_revp3_preserve_topology_indices.py
+          python tools/patch_revp3_triangle_solids.py
+          python tools/patch_revp3_conforming_refinement.py
+          python tools/patch_revp3_degenerate_cleanup.py
+          python tools/patch_revp3_resolution.py
+          python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp3_qa_hardening.py
+      - name: Build accepted RoadQA geometry
+        run: python tools/build_revp3_roadqa.py
+      - name: Build integrated Rev.P5 masterplan geometry
+        run: python tools/integrate_revp5_masterplan.py
+      - name: Enforce integrated acceptance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('revp5_output/26_Integrated_QA_Report_RevP5.json').read_text(encoding='utf-8'))
+          a=q['acceptance']
+          assert a['road_building_clashes']==[], a
+          assert a['open_external_critical_clashes']==0, a
+          assert a['terrain_above_road_points']==0, a
+          assert a['non_adjacent_road_triangle_self_intersections']==0, a
+          assert a['duplicated_top_faces']==0, a
+          assert a['non_manifold_edges']==0, a
+          assert a['required_masterplan_features_present'] is True, a
+          assert a['new_physical_feature_building_overlap_m2'] <= 1e-6, a
+          assert a['new_physical_feature_unintended_road_overlap_m2'] <= 1e-6, a
+          assert a['bld05_ramp_grade_pct'] <= 6.0, a
+          assert a['masterplan_status']=='PASS_CONTROLLED_PRE_FEED', a
+          print(json.dumps(a,ensure_ascii=False,indent=2))
+          PY
+      - name: Persist build state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf audit/revp5_integrated_numeric
+          mkdir -p audit/revp5_integrated_numeric
+          if [ -d revp5_output ]; then cp -a revp5_output/. audit/revp5_integrated_numeric/; fi
+          if [ -f revp3_output/20_Road_QA_Report_RevP3.json ]; then cp revp3_output/20_Road_QA_Report_RevP3.json audit/revp5_integrated_numeric/; fi
+          git add audit/revp5_integrated_numeric/
+          git diff --cached --quiet || git commit -m "Store Rev.P5 integrated numerical candidate [skip ci]"
+          git pull --rebase origin tmp-a1-revp5-integrated-bim
+          git push origin HEAD:tmp-a1-revp5-integrated-bim
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a1-revp5-integrated-numeric
+          path: |
+            revp5_output/
+            revp3_output/20_Road_QA_Report_RevP3.json
+          retention-days: 3
+          compression-level: 3
