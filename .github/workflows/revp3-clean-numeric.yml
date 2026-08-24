@@ -8,6 +8,7 @@ on:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_connector_overlap.py
       - tools/patch_revp3_junction_trim.py
       - tools/patch_revp3_apron_blend.py
       - tools/patch_revp3_solid_mesh.py
@@ -23,6 +24,7 @@ on:
       - tools/build_revp3_roadqa.py
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_connector_overlap.py
       - tools/patch_revp3_junction_trim.py
       - tools/patch_revp3_apron_blend.py
       - tools/patch_revp3_solid_mesh.py
@@ -55,6 +57,7 @@ jobs:
         run: |
           python tools/patch_revp3_prebuild.py
           python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp3_connector_overlap.py
           python tools/patch_revp3_junction_trim.py
           python tools/patch_revp3_apron_blend.py
           python tools/patch_revp3_solid_mesh.py
