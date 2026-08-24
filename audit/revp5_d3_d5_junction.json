@@ -4044,173 +4044,11 @@
   },
   "nearest_d3_samples_to_d5": [
     {
-      "d3_index": 792,
-      "point": [
-        573.3333333333334,
-        189.0,
-        110.82556476818817
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 791,
-      "point": [
-        572.5,
-        189.0,
-        110.83843515692746
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 804,
-      "point": [
-        583.3333333333334,
-        189.0,
-        110.72009036291011
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 803,
-      "point": [
-        582.5,
-        189.0,
-        110.7254268655581
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
       "d3_index": 802,
       "point": [
         581.6666666666666,
         189.0,
         110.73139119204704
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 801,
-      "point": [
-        580.8333333333334,
-        189.0,
-        110.73798334237692
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 800,
-      "point": [
-        580.0,
-        189.0,
-        110.74520331654774
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 799,
-      "point": [
-        579.1666666666666,
-        189.0,
-        110.7530511145595
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 805,
-      "point": [
-        584.1666666666666,
-        189.0,
-        110.71538168410305
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 806,
-      "point": [
-        585.0,
-        189.0,
-        110.71130082913695
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 808,
-      "point": [
-        586.6666666666666,
-        189.0,
-        110.70502259072752
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 807,
-      "point": [
-        585.8333333333334,
-        189.0,
-        110.70784779801176
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 810,
-      "point": [
-        588.3333333333334,
-        189.0,
-        110.70125564768188
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 811,
-      "point": [
-        589.1666666666666,
-        189.0,
-        110.70031391192047
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 812,
-      "point": [
-        590.0,
-        189.0,
-        110.7
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 809,
-      "point": [
-        587.5,
-        189.0,
-        110.70282520728423
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 794,
-      "point": [
-        575.0,
-        189.0,
-        110.80170746223243
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 790,
-      "point": [
-        571.6666666666666,
-        189.0,
-        110.85193336950769
-      ],
-      "distance_to_d5_centerline_m": 0.0
-    },
-    {
-      "d3_index": 798,
-      "point": [
-        578.3333333333334,
-        189.0,
-        110.76152673641221
       ],
       "distance_to_d5_centerline_m": 0.0
     },
@@ -4242,11 +4080,173 @@
       "distance_to_d5_centerline_m": 0.0
     },
     {
+      "d3_index": 794,
+      "point": [
+        575.0,
+        189.0,
+        110.80170746223243
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
       "d3_index": 793,
       "point": [
         574.1666666666666,
         189.0,
         110.81332220328983
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 792,
+      "point": [
+        573.3333333333334,
+        189.0,
+        110.82556476818817
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 791,
+      "point": [
+        572.5,
+        189.0,
+        110.83843515692746
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 790,
+      "point": [
+        571.6666666666666,
+        189.0,
+        110.85193336950769
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 800,
+      "point": [
+        580.0,
+        189.0,
+        110.74520331654774
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 801,
+      "point": [
+        580.8333333333334,
+        189.0,
+        110.73798334237692
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 798,
+      "point": [
+        578.3333333333334,
+        189.0,
+        110.76152673641221
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 803,
+      "point": [
+        582.5,
+        189.0,
+        110.7254268655581
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 799,
+      "point": [
+        579.1666666666666,
+        189.0,
+        110.7530511145595
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 805,
+      "point": [
+        584.1666666666666,
+        189.0,
+        110.71538168410305
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 812,
+      "point": [
+        590.0,
+        189.0,
+        110.7
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 811,
+      "point": [
+        589.1666666666666,
+        189.0,
+        110.70031391192047
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 804,
+      "point": [
+        583.3333333333334,
+        189.0,
+        110.72009036291011
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 809,
+      "point": [
+        587.5,
+        189.0,
+        110.70282520728423
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 810,
+      "point": [
+        588.3333333333334,
+        189.0,
+        110.70125564768188
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 808,
+      "point": [
+        586.6666666666666,
+        189.0,
+        110.70502259072752
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 807,
+      "point": [
+        585.8333333333334,
+        189.0,
+        110.70784779801176
+      ],
+      "distance_to_d5_centerline_m": 0.0
+    },
+    {
+      "d3_index": 806,
+      "point": [
+        585.0,
+        189.0,
+        110.71130082913695
       ],
       "distance_to_d5_centerline_m": 0.0
     },
