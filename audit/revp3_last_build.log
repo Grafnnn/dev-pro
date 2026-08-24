@@ -8,19 +8,208 @@ CDT_SOLID_START area=723.449289 bounds=(163.0014, 301.0014, 249.0, 321.7927) hol
 CDT_PLAN_DONE vertices=2205 faces=4147
 CDT_SOLID_PASS vertices=4410 faces=8816
 CDT_SOLID_START area=4579.614425 bounds=(247.2697, 303.0, 444.0, 387.0) holes=2 thickness=0.550
-CDT_PLAN_DONE vertices=5727 faces=10836
+CDT_VERTEX_FANS_SPLIT [{"source_vertex": 47, "xy": [296.8999938964844, 314.8999938964844], "fan_count": 2, "created_vertices": [619]}]
+CDT_PLAN_DONE vertices=5728 faces=10836
+CDT_SOLID_PASS vertices=11456 faces=22912
+CDT_SOLID_START area=3920.449255 bounds=(247.0985, 303.75, 443.25, 386.25) holes=1 thickness=0.300
+CDT_PLAN_DONE vertices=5614 faces=10612
+CDT_SOLID_PASS vertices=11228 faces=22456
+CDT_SOLID_START area=3248.863411 bounds=(246.9272, 304.5, 442.5, 385.5) holes=1 thickness=0.280
+CDT_PLAN_DONE vertices=3612 faces=6609
+CDT_SOLID_PASS vertices=7224 faces=14448
+CDT_SOLID_START area=7848.119076 bounds=(444.0, 79.5, 607.9955, 349.5) holes=0 thickness=0.550
+CDT_PLAN_DONE vertices=20193 faces=38343
+CDT_SOLID_PASS vertices=40386 faces=80768
+CDT_SOLID_START area=6541.347885 bounds=(443.25, 80.25, 607.2455, 348.75) holes=0 thickness=0.300
+CDT_PLAN_DONE vertices=12724 faces=23405
+CDT_SOLID_PASS vertices=25448 faces=50892
+CDT_SOLID_START area=5234.077233 bounds=(442.5, 81.0, 606.4955, 348.0) holes=0 thickness=0.280
+CDT_PLAN_DONE vertices=12124 faces=22204
+CDT_SOLID_PASS vertices=24248 faces=48492
+CDT_SOLID_START area=2036.872373 bounds=(171.5, 95.0, 343.5, 133.5) holes=0 thickness=0.550
+CDT_PLAN_DONE vertices=5132 faces=9910
+CDT_SOLID_PASS vertices=10264 faces=20524
+CDT_SOLID_START area=1747.961838 bounds=(172.25, 95.75, 342.75, 132.75) holes=0 thickness=0.300
+CDT_PLAN_DONE vertices=3135 faces=5916
+CDT_SOLID_PASS vertices=6270 faces=12536
+CDT_SOLID_START area=1462.574002 bounds=(173.0, 96.5, 342.0, 132.0) holes=0 thickness=0.280
+CDT_PLAN_DONE vertices=3114 faces=5874
+CDT_SOLID_PASS vertices=6228 faces=12452
+CDT_SOLID_START area=4814.842004 bounds=(339.7575, 123.2019, 572.1555, 204.0) holes=2 thickness=0.550
+CDT_VERTEX_FANS_SPLIT [{"source_vertex": 132, "xy": [357.3999938964844, 162.39999389648438], "fan_count": 2, "created_vertices": [674]}]
+CDT_PLAN_DONE vertices=5049 faces=9423
+CDT_SOLID_PASS vertices=10098 faces=20196
+CDT_SOLID_START area=4218.483431 bounds=(339.7149, 123.9262, 571.9843, 203.25) holes=1 thickness=0.300
+CDT_PLAN_DONE vertices=4979 faces=9288
+CDT_SOLID_PASS vertices=9958 faces=19916
+CDT_SOLID_START area=3580.257704 bounds=(339.6325, 124.6474, 571.7965, 202.5) holes=1 thickness=0.280
+CDT_PLAN_DONE vertices=3429 faces=6200
+CDT_SOLID_PASS vertices=6858 faces=13716
+CDT_SOLID_START area=2076.521031 bounds=(345.1901, 123.0, 554.7388, 147.0) holes=0 thickness=0.550
+CDT_PLAN_DONE vertices=2348 faces=4411
+CDT_SOLID_PASS vertices=4696 faces=9388
+CDT_SOLID_START area=1778.315601 bounds=(340.0985, 123.75, 554.25, 146.25) holes=0 thickness=0.300
+CDT_PLAN_DONE vertices=2340 faces=4388
+CDT_SOLID_PASS vertices=4680 faces=9356
+CDT_SOLID_START area=1470.973693 bounds=(339.9272, 124.5, 553.5, 145.5) holes=0 thickness=0.280
+CDT_PLAN_DONE vertices=1426 faces=2565
+CDT_SOLID_PASS vertices=2852 faces=5700
+CDT_SOLID_START area=545.493654 bounds=(349.9, 312.9, 430.1, 373.1) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=175 faces=175
+CDT_SOLID_PASS vertices=350 faces=700
+CDT_SOLID_START area=265.600098 bounds=(296.9, 314.9, 337.1, 345.1) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=88 faces=88
+CDT_SOLID_PASS vertices=176 faces=352
+CDT_SOLID_START area=6.320948 bounds=(294.2349, 312.5448, 298.861, 316.4506) holes=0 thickness=0.180
+CDT_PLAN_DONE vertices=13 faces=11
+CDT_SOLID_PASS vertices=26 faces=48
+CDT_SOLID_START area=427.600067 bounds=(354.9, 259.9, 422.6, 304.5) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=141 faces=144
+CDT_SOLID_PASS vertices=282 faces=564
+CDT_SOLID_START area=152.460543 bounds=(428.8188, 276.677, 444.7234, 306.8608) holes=0 thickness=0.180
+CDT_PLAN_DONE vertices=62 faces=97
+CDT_SOLID_PASS vertices=124 faces=244
+CDT_SOLID_START area=225.600098 bounds=(442.4, 252.4, 477.6, 277.6) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=74 faces=74
+CDT_SOLID_PASS vertices=148 faces=296
+CDT_SOLID_START area=419.627431 bounds=(347.4, 202.4, 422.6, 237.6) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=141 faces=141
+CDT_SOLID_PASS vertices=282 faces=564
+CDT_SOLID_START area=312.600067 bounds=(412.4, 158.5, 465.1, 190.1) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=104 faces=104
+CDT_SOLID_PASS vertices=208 faces=416
+CDT_SOLID_START area=344.454489 bounds=(489.9, 164.9, 550.1, 195.1) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=117 faces=117
+CDT_SOLID_PASS vertices=234 faces=468
+CDT_SOLID_START area=225.600098 bounds=(357.4, 162.4, 392.6, 187.6) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=74 faces=74
+CDT_SOLID_PASS vertices=148 faces=296
+CDT_SOLID_START area=3.639036 bounds=(355.4028, 160.1639, 359.043, 164.2843) holes=0 thickness=0.180
+CDT_PLAN_DONE vertices=13 faces=11
+CDT_SOLID_PASS vertices=26 faces=48
+CDT_SOLID_START area=328.100044 bounds=(344.9, 86.4, 392.6, 124.5) holes=1 thickness=0.180
+CDT_PLAN_DONE vertices=111 faces=122
+CDT_SOLID_PASS vertices=222 faces=444
+CDT_SOLID_START area=30.143334 bounds=(162.8216, 300.8215, 238.2911, 321.9727) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=623 faces=621
+CDT_SOLID_PASS vertices=1246 faces=2488
+CDT_SOLID_START area=70.923935 bounds=(162.3819, 300.3816, 238.572, 322.4127) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=775 faces=773
+CDT_SOLID_PASS vertices=1550 faces=3096
+CDT_SOLID_START area=49.660110 bounds=(252.0985, 313.5, 442.68, 385.68) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=600 faces=598
+CDT_SOLID_PASS vertices=1200 faces=2396
+CDT_SOLID_START area=6.327701 bounds=(431.4839, 306.0843, 442.68, 337.9015) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=132 faces=130
+CDT_SOLID_PASS vertices=264 faces=524
+CDT_SOLID_START area=19.293071 bounds=(252.0985, 304.32, 354.89, 312.5324) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=282 faces=280
+CDT_SOLID_PASS vertices=564 faces=1124
+CDT_SOLID_START area=12.481238 bounds=(359.91, 304.32, 430.1646, 305.5602) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=117 faces=115
+CDT_SOLID_PASS vertices=234 faces=464
+CDT_SOLID_START area=23.641720 bounds=(298.2342, 311.5, 429.4674, 312.89) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=158 faces=156
+CDT_SOLID_PASS vertices=316 faces=628
+CDT_SOLID_START area=40.265067 bounds=(291.5, 315.5678, 435.5, 378.5) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=318 faces=316
+CDT_SOLID_PASS vertices=636 faces=1268
+CDT_SOLID_START area=4.738944 bounds=(430.11, 313.2645, 435.5, 337.9015) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=54 faces=52
+CDT_SOLID_PASS vertices=108 faces=212
+CDT_SOLID_START area=116.227116 bounds=(251.8463, 313.7, 443.12, 386.12) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=714 faces=712
+CDT_SOLID_PASS vertices=1428 faces=2852
+CDT_SOLID_START area=14.582274 bounds=(433.451, 306.4819, 443.12, 338.1537) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=182 faces=180
+CDT_SOLID_PASS vertices=364 faces=724
+CDT_SOLID_START area=44.987055 bounds=(251.8463, 303.88, 354.89, 312.2061) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=347 faces=345
+CDT_SOLID_PASS vertices=694 faces=1384
+CDT_SOLID_START area=29.006339 bounds=(359.91, 303.88, 428.9927, 304.9429) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=108 faces=106
+CDT_SOLID_PASS vertices=216 faces=428
+CDT_SOLID_START area=54.733124 bounds=(298.3617, 311.7, 429.0421, 313.0403) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=155 faces=153
+CDT_SOLID_PASS vertices=310 faces=616
+CDT_SOLID_START area=93.479117 bounds=(291.7, 315.7271, 435.3, 378.3) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=318 faces=316
+CDT_SOLID_PASS vertices=636 faces=1268
+CDT_SOLID_START area=10.908292 bounds=(430.11, 313.4995, 435.3, 338.1537) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=54 faces=52
+CDT_SOLID_PASS vertices=108 faces=212
+CDT_SOLID_START area=115.573378 bounds=(446.335, 194.1173, 606.1754, 348.18) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=1811 faces=1809
+CDT_SOLID_PASS vertices=3622 faces=7240
+CDT_SOLID_START area=77.387348 bounds=(553.8246, 80.8204, 606.6755, 192.18) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=1913 faces=1911
+CDT_SOLID_PASS vertices=3826 faces=7648
+CDT_SOLID_START area=115.260338 bounds=(446.335, 187.8923, 599.9954, 342.0) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=1777 faces=1775
+CDT_SOLID_PASS vertices=3554 faces=7104
+CDT_SOLID_START area=269.832827 bounds=(446.1269, 194.2659, 606.6154, 348.62) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2170 faces=2168
+CDT_SOLID_PASS vertices=4340 faces=8676
+CDT_SOLID_START area=181.117163 bounds=(553.3846, 80.3813, 607.1155, 192.62) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2364 faces=2362
+CDT_SOLID_PASS vertices=4728 faces=9452
+CDT_SOLID_START area=269.038751 bounds=(446.1269, 187.338, 599.7954, 341.8) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=2117 faces=2115
+CDT_SOLID_PASS vertices=4234 faces=8464
+CDT_SOLID_START area=62.592210 bounds=(172.8204, 96.32, 329.1029, 131.9287) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=888 faces=886
+CDT_SOLID_PASS vertices=1776 faces=3548
+CDT_SOLID_START area=146.602084 bounds=(172.3813, 95.88, 329.3216, 132.4069) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=1065 faces=1063
+CDT_SOLID_PASS vertices=2130 faces=4256
+CDT_SOLID_START area=13.521517 bounds=(345.1307, 134.8708, 362.1581, 202.39) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=204 faces=202
+CDT_SOLID_PASS vertices=408 faces=812
+CDT_SOLID_START area=47.596208 bounds=(347.9823, 127.6407, 562.9015, 185.5) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=530 faces=528
+CDT_SOLID_PASS vertices=1060 faces=2116
+CDT_SOLID_START area=26.389536 bounds=(422.61, 188.1165, 562.0533, 202.68) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=258 faces=256
+CDT_SOLID_PASS vertices=516 faces=1028
+CDT_SOLID_START area=30.552446 bounds=(417.41, 158.5, 554.5, 194.0005) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=224 faces=222
+CDT_SOLID_PASS vertices=448 faces=892
+CDT_SOLID_START area=9.719890 bounds=(358.6482, 158.5, 412.39, 160.281) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=70 faces=68
+CDT_SOLID_PASS vertices=140 faces=276
+CDT_SOLID_START area=39.637469 bounds=(354.5, 163.9848, 547.6751, 195.5) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=271 faces=269
+CDT_SOLID_PASS vertices=542 faces=1080
+CDT_SOLID_START area=30.968104 bounds=(344.8102, 135.0202, 360.8175, 202.39) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=237 faces=235
+CDT_SOLID_PASS vertices=474 faces=944
+CDT_SOLID_START area=110.887760 bounds=(347.9545, 127.0734, 563.1537, 185.3) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=629 faces=627
+CDT_SOLID_PASS vertices=1258 faces=2512
+CDT_SOLID_START area=61.557597 bounds=(422.61, 188.3576, 562.0316, 203.12) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=281 faces=279
+CDT_SOLID_PASS vertices=562 faces=1120
+CDT_SOLID_START area=70.856547 bounds=(417.41, 158.7, 554.3, 193.7613) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=224 faces=222
+CDT_SOLID_PASS vertices=448 faces=892
+CDT_SOLID_START area=22.582613 bounds=(358.8034, 158.7, 412.39, 160.8057) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=88 faces=86
+CDT_SOLID_PASS vertices=176 faces=348
+CDT_SOLID_START area=78.792144 bounds=(354.7, 163.8314, 546.8532, 195.3) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=300 faces=298
+CDT_SOLID_PASS vertices=600 faces=1196
+CDT_SOLID_START area=76.435844 bounds=(347.9939, 124.32, 553.6796, 145.68) holes=0 thickness=0.240
+CDT_PLAN_DONE vertices=766 faces=764
+CDT_SOLID_PASS vertices=1532 faces=3060
+CDT_SOLID_START area=178.764355 bounds=(347.9686, 123.88, 554.1187, 146.12) holes=0 thickness=0.120
+CDT_PLAN_DONE vertices=875 faces=873
+CDT_SOLID_PASS vertices=1750 faces=3496
 Traceback (most recent call last):
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1827, in <module>
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1934, in <module>
     main()
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1792, in main
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1899, in main
     target, qa = build_scene()
                  ^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1466, in build_scene
-    mesh = solid_from_polygon(
-           ^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 804, in solid_from_polygon
-    mesh = _conforming_watertight_solid(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 774, in _conforming_watertight_solid
-    raise RuntimeError(
-RuntimeError: Shapely-CDT road solid is not watertight: open/non-manifold edges=1; area=4579.614425; bounds=(247.2697, 303.0, 444.0, 387.0); holes=2
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1779, in build_scene
+    raise RuntimeError(f"Long edge in {name}: {quality['max_edge_m']:.3f} m")
+RuntimeError: Long edge in REV_P3_EXT_BLD_05_SERVICE_APRON: 8.593 m
