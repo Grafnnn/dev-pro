@@ -9,6 +9,7 @@ on:
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
       - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp3_boolean_slivers.py
       - tools/patch_revp3_qa_hardening.py
       - tools/diagnose_revp3_paths.py
       - .github/workflows/a1-revp3-numeric.yml
@@ -20,6 +21,7 @@ on:
       - tools/patch_revp3_prebuild.py
       - tools/patch_revp3_alignment_v2.py
       - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp3_boolean_slivers.py
       - tools/patch_revp3_qa_hardening.py
       - tools/diagnose_revp3_paths.py
       - .github/workflows/a1-revp3-numeric.yml
@@ -51,6 +53,7 @@ jobs:
           sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
           sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_boolean_slivers.py
           python tools/patch_revp3_qa_hardening.py
       - name: Print exact horizontal-radius diagnostics
         run: python tools/diagnose_revp3_paths.py
