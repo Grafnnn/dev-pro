@@ -6,6 +6,11 @@ on:
       - tmp-a1-revp2-exterior-qa
     paths:
       - .github/workflows/publish-existing-revp2-files.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish-existing-revp2-files.yml
   workflow_dispatch:
 
 permissions:
