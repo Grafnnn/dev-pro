@@ -11,6 +11,7 @@ on:
       - tools/patch_revp3_boolean_slivers.py
       - tools/diagnose_revp3_paths.py
       - tools/diagnose_revp3_polygons.py
+      - tools/diagnose_revp3_post_apron.py
       - .github/workflows/a1-revp3-pathdiag.yml
   pull_request:
     branches:
@@ -22,6 +23,7 @@ on:
       - tools/patch_revp3_boolean_slivers.py
       - tools/diagnose_revp3_paths.py
       - tools/diagnose_revp3_polygons.py
+      - tools/diagnose_revp3_post_apron.py
       - .github/workflows/a1-revp3-pathdiag.yml
   workflow_dispatch:
 
@@ -31,7 +33,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,11 +55,14 @@ jobs:
         run: python tools/diagnose_revp3_paths.py
       - name: Print asphalt component diagnostics
         run: python tools/diagnose_revp3_polygons.py
+      - name: Print post-apron component diagnostics
+        run: python tools/diagnose_revp3_post_apron.py
       - uses: actions/upload-artifact@v4
         with:
           name: a1-revp3-path-diagnostics
           path: |
             revp3_path_diagnostics.json
             revp3_polygon_diagnostics.json
+            revp3_post_apron_diagnostics.json
           retention-days: 1
           compression-level: 0
