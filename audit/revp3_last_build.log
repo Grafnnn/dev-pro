@@ -1,0 +1,13 @@
+TRI_SOLID_START area=1020.577666 bounds=(161.502, 299.502, 250.5, 323.2927) holes=0 thickness=0.550
+TRI_PLAN_DONE vertices=627 faces=984
+TRI_EXTRUDE_DONE vertices=1254 faces=2504
+TRI_SOLID_PASS vertices=1254 faces=2504
+TRI_SOLID_START area=870.252008 bounds=(162.2517, 300.2517, 249.75, 322.5427) holes=0 thickness=0.300
+TRI_PLAN_DONE vertices=737 faces=1203
+TRI_EXTRUDE_DONE vertices=1474 faces=2944
+TRI_SOLID_PASS vertices=1474 faces=2944
+TRI_SOLID_START area=723.449289 bounds=(163.0014, 301.0014, 249.0, 321.7927) holes=0 thickness=0.280
+TRI_PLAN_DONE vertices=720 faces=1163
+TRI_EXTRUDE_DONE vertices=1440 faces=2876
+TRI_SOLID_PASS vertices=1440 faces=2876
+TRI_SOLID_START area=4579.614425 bounds=(247.2697, 303.0, 444.0, 387.0) holes=2 thickness=0.550
