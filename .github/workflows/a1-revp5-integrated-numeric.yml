@@ -50,6 +50,7 @@ jobs:
           sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
           sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp5_d5_through_route.py
           python tools/patch_revp3_apron_grading.py
           python tools/patch_revp3_resolution.py
           sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
