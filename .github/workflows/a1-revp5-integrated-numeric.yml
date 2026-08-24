@@ -56,7 +56,6 @@ jobs:
           sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
           python tools/patch_revp5_road_finalize.py
           python tools/patch_revp3_boolean_slivers.py
-          python tools/patch_revp5_partition_order.py
           python tools/patch_revp3_post_apron_sliver.py
           python tools/patch_revp3_mesh_cleanup.py
           python tools/patch_revp3_watertight_solids.py
