@@ -1,0 +1,132 @@
+name: A1 RevP3 Complete Release
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp3-road-qa
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp3_apron_grading.py
+      - tools/patch_revp3_boolean_slivers.py
+      - tools/patch_revp3_post_apron_sliver.py
+      - tools/patch_revp3_mesh_cleanup.py
+      - tools/patch_revp3_watertight_solids.py
+      - tools/patch_revp3_preserve_topology_indices.py
+      - tools/patch_revp3_triangle_solids.py
+      - tools/patch_revp3_conforming_refinement.py
+      - tools/patch_revp3_degenerate_cleanup.py
+      - tools/patch_revp3_resolution.py
+      - tools/patch_revp3_final_extrusion.py
+      - tools/patch_revp3_qa_hardening.py
+      - tools/render_revp3_qa.py
+      - tools/package_revp3.py
+      - .github/workflows/a1-revp3-release.yml
+  workflow_dispatch:
+
+concurrency:
+  group: a1-revp3-complete-release-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OUT_ROOT: revp3_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp3-road-qa
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry and publication dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
+      - name: Apply controlled Rev.P3 corrections
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
+          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp3_boolean_slivers.py
+          python tools/patch_revp3_post_apron_sliver.py
+          python tools/patch_revp3_mesh_cleanup.py
+          python tools/patch_revp3_watertight_solids.py
+          python tools/patch_revp3_preserve_topology_indices.py
+          python tools/patch_revp3_triangle_solids.py
+          python tools/patch_revp3_conforming_refinement.py
+          python tools/patch_revp3_degenerate_cleanup.py
+          python tools/patch_revp3_resolution.py
+          python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp3_qa_hardening.py
+      - name: Build model and numerical QA
+        run: python tools/build_revp3_roadqa.py
+      - name: Enforce user acceptance fields
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('revp3_output/20_Road_QA_Report_RevP3.json')
+          q=json.loads(p.read_text(encoding='utf-8'))
+          a=q['acceptance']
+          assert q['road_building_clashes'] == [], q['road_building_clashes']
+          assert a['open_external_critical_clashes'] == 0, a
+          assert a['terrain_above_road_points'] == 0, a
+          assert a['non_adjacent_road_triangle_self_intersections'] == 0, a
+          assert a['duplicated_top_faces'] == 0, a
+          assert a['zero_area_faces'] == 0, a
+          assert a['non_manifold_edges'] == 0, a
+          assert a['inconsistent_normals'] == 0, a
+          assert a['maximum_longitudinal_grade_pct'] <= 6.000001, a
+          assert a['minimum_horizontal_radius_m'] >= 11.999999, a
+          assert a['status'] == 'PASS', a
+          print(json.dumps(a, ensure_ascii=False, indent=2))
+          PY
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+      - name: Render mandatory identical-camera before/after QA views
+        run: |
+          blender -b --python tools/render_revp3_qa.py
+          test "$(find revp3_output/qa_png -maxdepth 1 -name '*_BEFORE_RevP2.png' | wc -l)" -eq 10
+          test "$(find revp3_output/qa_png -maxdepth 1 -name '*_AFTER_RevP3.png' | wc -l)" -eq 10
+      - name: Build full ZIP, version manifest and SHA-256 manifests
+        run: python tools/package_revp3.py
+      - name: Verify required deliverables
+        run: |
+          test -s revp3_output/20_Модель_A1_RevP3_RoadQA.glb
+          test -s revp3_output/20_Модель_A1_RevP3_RoadQA.obj
+          test -s revp3_output/20_Комплект_A1_RevP3_RoadQA.zip
+          test -s revp3_output/20_Road_QA_Report_RevP3.json
+          test -s revp3_output/20_RevP3_Version_Manifest.json
+          test -s revp3_output/20_SHA256SUMS_RevP3.txt
+          test -s revp3_output/20_Release_SHA256_RevP3.txt
+      - name: Publish immutable release files to branch
+        run: |
+          rm -rf revp3_release
+          mkdir -p revp3_release
+          cp -a revp3_output/. revp3_release/
+          mkdir -p revp3_release/reproducible_scripts
+          cp tools/build_revp3_roadqa.py tools/patch_revp3_*.py tools/render_revp3_qa.py tools/package_revp3.py revp3_release/reproducible_scripts/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add revp3_release/
+          git commit -m "Publish immutable A.1 Rev.P3 RoadQA release [skip ci]"
+          git push origin HEAD:tmp-a1-revp3-road-qa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp3-complete-release
+          path: revp3_output/
+          retention-days: 7
+          compression-level: 3
