@@ -1,0 +1,2651 @@
+{
+  "revision": "A.1/Rev.P5 Integrated pre-FEED Masterplan",
+  "status": "PASS_CONTROLLED_PRE_FEED",
+  "not_for_construction": true,
+  "source_road_qa": {
+    "revision": "A.1/Rev.P3 Road & Apron Coordination",
+    "source": {
+      "file": "20_Модель_A1_RevP2_ExteriorQA.glb",
+      "immutable_commit": "2af60d5b22917bf28f24685e42d9d83f519524f9",
+      "expected_sha256": "cb26e1ac38f7919c522d4d289d952ed3a5e543e5cec3759ed4a3ea96e8f278fd",
+      "actual_sha256": "cb26e1ac38f7919c522d4d289d952ed3a5e543e5cec3759ed4a3ea96e8f278fd",
+      "source_qa_revision": "A.1/Rev.P2 Exterior Coordination & Visual QA",
+      "source_open_external_critical_clashes": 6
+    },
+    "fixed_elements": [
+      "buildings",
+      "process equipment",
+      "tanks",
+      "process networks"
+    ],
+    "changed_elements": [
+      "D1-D6 road corridors",
+      "road layers",
+      "service aprons except BLD_05",
+      "local retaining-wall/rail openings"
+    ],
+    "controlled_interfaces_for_integrated_model": [
+      {
+        "id": "IFC-R05",
+        "object": "BLD_05",
+        "requirement": "Dedicated long service ramp from upper pyrolysis terrace to D3; no short connection to lower D5",
+        "status": "TRANSFERRED_TO_REV_P5_INTEGRATION"
+      }
+    ],
+    "road_mesh_resolution": {
+      "maximum_target_edge_m": 8.0,
+      "basis": "controlled conforming triangulation; user acceptance specifies removal of erroneous long spikes, not a 3 m tessellation limit"
+    },
+    "road_building_clashes": [],
+    "road_layer_building_clashes": [],
+    "boolean_micro_slivers_removed": [
+      {
+        "road": "D5",
+        "layer": "ROAD",
+        "discarded_component_count": 1,
+        "discarded_area_m2": 1.0358950487686758,
+        "largest_discarded_component_m2": 1.0358950487686758,
+        "retained_primary_area_m2": 1560.113246809338,
+        "discarded_area_fraction": 0.0006635464998147042,
+        "reason": "boolean micro-sliver at an intentional road junction"
+      },
+      {
+        "road": "D5",
+        "layer": "SHOULDER",
+        "discarded_component_count": 1,
+        "discarded_area_m2": 1.097478181126032,
+        "largest_discarded_component_m2": 1.097478181126032,
+        "retained_primary_area_m2": 1883.4128780121616,
+        "discarded_area_fraction": 0.0005823678164034815,
+        "reason": "boolean micro-sliver at an intentional road junction"
+      },
+      {
+        "road": "D5",
+        "layer": "SUBBASE",
+        "discarded_component_count": 1,
+        "discarded_area_m2": 1.1401291606963575,
+        "largest_discarded_component_m2": 1.1401291606963575,
+        "retained_primary_area_m2": 2202.911462100518,
+        "discarded_area_fraction": 0.0005172878734857322,
+        "reason": "boolean micro-sliver at an intentional road junction"
+      },
+      {
+        "road": "D6",
+        "layer": "SUBBASE",
+        "discarded_component_count": 1,
+        "discarded_area_m2": 2.6799653165614763,
+        "largest_discarded_component_m2": 2.6799653165614763,
+        "retained_primary_area_m2": 1743.6259362299436,
+        "discarded_area_fraction": 0.0015346482619042487,
+        "reason": "boolean micro-sliver at an intentional road junction"
+      }
+    ],
+    "closed_revp2_clashes": [
+      {
+        "road": "D2",
+        "building": "BLD_02_FOUNDATION_DECK",
+        "revp2_intersection_m2": 350.52923929544073,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      },
+      {
+        "road": "D2",
+        "building": "BLD_02A_FOUNDATION_DECK",
+        "revp2_intersection_m2": 96.53295976874412,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      },
+      {
+        "road": "D5",
+        "building": "BLD_07_FOUNDATION_DECK",
+        "revp2_intersection_m2": 4.031759345366648,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      },
+      {
+        "road": "D5",
+        "building": "BLD_08_FOUNDATION_DECK",
+        "revp2_intersection_m2": 359.78273418137206,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      },
+      {
+        "road": "D5",
+        "building": "BLD_09_FOUNDATION_DECK",
+        "revp2_intersection_m2": 227.96629066820705,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      },
+      {
+        "road": "D6",
+        "building": "BLD_12_FOUNDATION_DECK",
+        "revp2_intersection_m2": 247.2000732421875,
+        "revp3_intersection_m2": 0.0,
+        "status": "CLOSED"
+      }
+    ],
+    "roads": {
+      "D1": {
+        "width_m": 8.0,
+        "centerline_length_m": 84.16815667920798,
+        "max_longitudinal_grade_pct": 2.2951888909527223,
+        "minimum_horizontal_radius_m": 14.889263126761248,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      },
+      "D2": {
+        "width_m": 7.0,
+        "centerline_length_m": 482.652508407822,
+        "max_longitudinal_grade_pct": 1.1269419580303344,
+        "minimum_horizontal_radius_m": 12.798802994687346,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      },
+      "D3": {
+        "width_m": 6.0,
+        "centerline_length_m": 873.5121550052012,
+        "max_longitudinal_grade_pct": 5.98744227864203,
+        "minimum_horizontal_radius_m": 12.768487712126479,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      },
+      "D4": {
+        "width_m": 8.0,
+        "centerline_length_m": 176.55917546529406,
+        "max_longitudinal_grade_pct": 0.6436163022236598,
+        "minimum_horizontal_radius_m": 14.890984310127582,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      },
+      "D5": {
+        "width_m": 7.0,
+        "centerline_length_m": 229.1481917801619,
+        "max_longitudinal_grade_pct": 0.14877232426088327,
+        "minimum_horizontal_radius_m": 14.764297447464447,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      },
+      "D6": {
+        "width_m": 7.0,
+        "centerline_length_m": 216.86709839280297,
+        "max_longitudinal_grade_pct": 1.5719723897071214,
+        "minimum_horizontal_radius_m": 14.881643738905822,
+        "asphalt_connected_components": 1,
+        "internal_segment_gap_m": 0.0,
+        "internal_vertical_step_m": 0.0,
+        "intentional_internal_gaps": []
+      }
+    },
+    "swept_path": {
+      "assumption": "No certified project vehicle supplied; conservative screening envelopes used and no centreline radius below 12 m accepted.",
+      "vehicles": {
+        "fire_vehicle_10m": {
+          "half_envelope_m": 3.0,
+          "vehicle_length_m": 10.0,
+          "vehicle_width_m": 2.55
+        },
+        "articulated_truck_16_5m": {
+          "half_envelope_m": 4.5,
+          "vehicle_length_m": 16.5,
+          "vehicle_width_m": 2.55
+        }
+      },
+      "results": {
+        "D1": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 51.33986994894105,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 49.8398810256905,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        },
+        "D2": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 2.9181531976550428,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 1.4181531976550492,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        },
+        "D3": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 7.641918976391305,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 6.141918976391267,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        },
+        "D4": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 2.696395258115192,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 1.1963952581151795,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        },
+        "D5": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 8.899993896484375,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 7.399993896484374,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        },
+        "D6": {
+          "fire_vehicle_10m": {
+            "half_envelope_m": 3.0,
+            "vehicle_length_m": 10.0,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 13.400001525878906,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          },
+          "articulated_truck_16_5m": {
+            "half_envelope_m": 4.5,
+            "vehicle_length_m": 16.5,
+            "vehicle_width_m": 2.55,
+            "building_overlap_m2": 0.0,
+            "minimum_clearance_m": 11.900001525878906,
+            "status": "PASS",
+            "method": "conservative 2D swept-envelope screening; certified AutoTURN/vehicle template pending"
+          }
+        }
+      }
+    },
+    "junctions": [
+      {
+        "junction": "D1-D2",
+        "roads": [
+          "D1",
+          "D2"
+        ],
+        "gap_m": 0.0,
+        "vertical_step_m": 0.0,
+        "status": "PASS"
+      },
+      {
+        "junction": "D2-D3",
+        "roads": [
+          "D2",
+          "D3"
+        ],
+        "gap_m": 0.0,
+        "vertical_step_m": 0.0,
+        "status": "PASS"
+      },
+      {
+        "junction": "D3-D5",
+        "roads": [
+          "D3",
+          "D5"
+        ],
+        "gap_m": 0.0,
+        "vertical_step_m": 0.0003610077978919435,
+        "status": "PASS"
+      },
+      {
+        "junction": "D4-D5",
+        "roads": [
+          "D4",
+          "D5"
+        ],
+        "gap_m": 0.0,
+        "vertical_step_m": 0.0,
+        "status": "PASS"
+      },
+      {
+        "junction": "D4-D6",
+        "roads": [
+          "D4",
+          "D6"
+        ],
+        "gap_m": 0.0,
+        "vertical_step_m": 0.0,
+        "status": "PASS"
+      }
+    ],
+    "service_aprons": {
+      "BLD_02": {
+        "foundation_deck": "BLD_02_FOUNDATION_DECK",
+        "area_m2": 545.4936543957401,
+        "road_distance_before_connector_m": 0.0,
+        "shared_seam_length_m": 0.29919235986424514,
+        "deck_top_z_m": 135.26,
+        "road_seam_z_m": 133.67499999999998,
+        "connector_length_m": 1e-06,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_02A": {
+        "foundation_deck": "BLD_02A_FOUNDATION_DECK",
+        "area_m2": 280.7817865887922,
+        "road_distance_before_connector_m": 3.126127588326815,
+        "shared_seam_length_m": 2.675449458496885,
+        "deck_top_z_m": 135.76,
+        "road_seam_z_m": 133.67499999999998,
+        "connector_length_m": 3.126127588326799,
+        "asphalt_overlap_m2": 7.084875996112859e-15,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_03": {
+        "foundation_deck": "BLD_03_FOUNDATION_DECK",
+        "area_m2": 427.6000671386719,
+        "road_distance_before_connector_m": 4.399993896484375,
+        "shared_seam_length_m": 5.0,
+        "deck_top_z_m": 127.76,
+        "road_seam_z_m": 133.67499999999998,
+        "connector_length_m": 4.399993896484375,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_04": {
+        "foundation_deck": "BLD_04_FOUNDATION_DECK",
+        "area_m2": 378.06064032362707,
+        "road_distance_before_connector_m": 30.4921085334755,
+        "shared_seam_length_m": 0.8725415622933246,
+        "deck_top_z_m": 123.26,
+        "road_seam_z_m": 133.67499999999998,
+        "connector_length_m": 30.492108533475538,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_07": {
+        "foundation_deck": "BLD_07_FOUNDATION_DECK",
+        "area_m2": 337.6000671386719,
+        "road_distance_before_connector_m": 6.399993896484375,
+        "shared_seam_length_m": 5.0,
+        "deck_top_z_m": 110.76,
+        "road_seam_z_m": 108.78399035774359,
+        "connector_length_m": 6.399993896484375,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_08": {
+        "foundation_deck": "BLD_08_FOUNDATION_DECK",
+        "area_m2": 370.92382577867653,
+        "road_distance_before_connector_m": 5.06477003854774,
+        "shared_seam_length_m": 0.6921335573821532,
+        "deck_top_z_m": 110.76,
+        "road_seam_z_m": 112.34867129007517,
+        "connector_length_m": 5.064770038547781,
+        "asphalt_overlap_m2": 1.2924697071141057e-25,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_09": {
+        "foundation_deck": "BLD_09_FOUNDATION_DECK",
+        "area_m2": 270.1000671386719,
+        "road_distance_before_connector_m": 8.899993896484375,
+        "shared_seam_length_m": 5.0,
+        "deck_top_z_m": 112.76,
+        "road_seam_z_m": 108.7508141475945,
+        "connector_length_m": 8.899993896484375,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      },
+      "BLD_12": {
+        "foundation_deck": "BLD_12_FOUNDATION_DECK",
+        "area_m2": 328.1000442504883,
+        "road_distance_before_connector_m": 10.900001525878906,
+        "shared_seam_length_m": 5.0,
+        "deck_top_z_m": 105.76,
+        "road_seam_z_m": 108.64827703973,
+        "connector_length_m": 10.900001525878906,
+        "asphalt_overlap_m2": 0.0,
+        "boundary_gap_m": 0.0,
+        "max_vertical_step_m": 0.0
+      }
+    },
+    "terrain_interface": {
+      "per_road_pre_cut_reference": {
+        "D1": {
+          "minimum_road_top_minus_finished_surface_m": 0.7449999999999761,
+          "maximum_road_top_minus_finished_surface_m": 2.4420924040362024
+        },
+        "D2": {
+          "minimum_road_top_minus_finished_surface_m": -7.227239652125974,
+          "maximum_road_top_minus_finished_surface_m": 1.1756073555521027
+        },
+        "D3": {
+          "minimum_road_top_minus_finished_surface_m": -2.116888694574399,
+          "maximum_road_top_minus_finished_surface_m": 7.2875532253814725
+        },
+        "D4": {
+          "minimum_road_top_minus_finished_surface_m": -0.22082503957989275,
+          "maximum_road_top_minus_finished_surface_m": 2.1798228180796
+        },
+        "D5": {
+          "minimum_road_top_minus_finished_surface_m": 0.24179565429687955,
+          "maximum_road_top_minus_finished_surface_m": 2.75924934550315
+        },
+        "D6": {
+          "minimum_road_top_minus_finished_surface_m": -1.4014802470226613,
+          "maximum_road_top_minus_finished_surface_m": 3.307654772633768
+        }
+      },
+      "geometric_cut": {
+        "source_faces": 33440,
+        "removed_faces": 3361,
+        "remaining_faces": 30079,
+        "cut_corridor_area_m2": 20798.02644637054
+      },
+      "post_cut_qa": {
+        "sample_points_inside_road_and_shoulders": 0,
+        "terrain_above_road_points": 0,
+        "maximum_terrain_above_road_m": 0.0
+      }
+    },
+    "triangle_self_intersections": {
+      "per_road_surface": {
+        "REV_P3_EXT_D1_ROAD": 0,
+        "REV_P3_EXT_D2_ROAD": 0,
+        "REV_P3_EXT_D3_ROAD": 0,
+        "REV_P3_EXT_D4_ROAD": 0,
+        "REV_P3_EXT_D5_ROAD": 0,
+        "REV_P3_EXT_D6_ROAD": 0
+      },
+      "non_adjacent_road_triangle_self_intersections": 0
+    },
+    "duplicated_top_faces": 0,
+    "wall_and_railing_adjustments": [
+      {
+        "source": "EXT_PAD_R1_RETAINING_WALLS",
+        "total_components": 74,
+        "removed_at_road_openings": 8,
+        "result": "REV_P3_EXT_PAD_R1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_R1_SAFETY_RAILS",
+        "total_components": 3,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_R1_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_R2_RETAINING_WALLS",
+        "total_components": 40,
+        "removed_at_road_openings": 20,
+        "result": "REV_P3_EXT_PAD_R2_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_R2_SAFETY_RAILS",
+        "total_components": 42,
+        "removed_at_road_openings": 14,
+        "result": "REV_P3_EXT_PAD_R2_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_R3_RETAINING_WALLS",
+        "total_components": 52,
+        "removed_at_road_openings": 19,
+        "result": "REV_P3_EXT_PAD_R3_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_M1_RETAINING_WALLS",
+        "total_components": 64,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_M1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_M1_SAFETY_RAILS",
+        "total_components": 30,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_M1_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_M2_RETAINING_WALLS",
+        "total_components": 32,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_M2_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_M2_SAFETY_RAILS",
+        "total_components": 27,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_M2_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_P1_RETAINING_WALLS",
+        "total_components": 72,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_P1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_P1_SAFETY_RAILS",
+        "total_components": 102,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_P1_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_P2_RETAINING_WALLS",
+        "total_components": 50,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_P2_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_P2_SAFETY_RAILS",
+        "total_components": 48,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_P2_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_C1_RETAINING_WALLS",
+        "total_components": 45,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_C1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_C1_SAFETY_RAILS",
+        "total_components": 27,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_C1_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_C2_RETAINING_WALLS",
+        "total_components": 87,
+        "removed_at_road_openings": 43,
+        "result": "REV_P3_EXT_PAD_C2_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_C2_SAFETY_RAILS",
+        "total_components": 105,
+        "removed_at_road_openings": 34,
+        "result": "REV_P3_EXT_PAD_C2_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_U1_RETAINING_WALLS",
+        "total_components": 44,
+        "removed_at_road_openings": 19,
+        "result": "REV_P3_EXT_PAD_U1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_U2_RETAINING_WALLS",
+        "total_components": 27,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U2_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_U2_SAFETY_RAILS",
+        "total_components": 48,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U2_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_U3_RETAINING_WALLS",
+        "total_components": 44,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U3_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_U3_SAFETY_RAILS",
+        "total_components": 3,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U3_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_U4_RETAINING_WALLS",
+        "total_components": 44,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U4_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_U4_SAFETY_RAILS",
+        "total_components": 51,
+        "removed_at_road_openings": 0,
+        "result": "REV_P3_EXT_PAD_U4_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_A1_RETAINING_WALLS",
+        "total_components": 38,
+        "removed_at_road_openings": 20,
+        "result": "REV_P3_EXT_PAD_A1_RETAINING_WALLS"
+      },
+      {
+        "source": "EXT_PAD_A1_SAFETY_RAILS",
+        "total_components": 42,
+        "removed_at_road_openings": 14,
+        "result": "REV_P3_EXT_PAD_A1_SAFETY_RAILS"
+      },
+      {
+        "source": "EXT_PAD_A2_RETAINING_WALLS",
+        "total_components": 44,
+        "removed_at_road_openings": 5,
+        "result": "REV_P3_EXT_PAD_A2_RETAINING_WALLS"
+      }
+    ],
+    "plan_topology": {
+      "ROAD": {
+        "D1": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D4": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D2": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D3": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D5": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D6": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        }
+      },
+      "SHOULDER": {
+        "D1": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D4": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D2": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D3": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D5": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D6": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        }
+      },
+      "SUBBASE": {
+        "D1": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D4": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D2": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D3": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D5": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        },
+        "D6": {
+          "valid": true,
+          "simple_boundary": true,
+          "connected_components": 1,
+          "self_intersections": 0
+        }
+      }
+    },
+    "mesh_quality": {
+      "REV_P3_EXT_D1_SUBBASE": {
+        "vertices": 1258,
+        "faces": 2512,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.984360972047058,
+        "max_aspect_ratio": 21138259.981264383,
+        "finite_coordinates": true,
+        "volume_m3": 561.3177162655862,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_SHOULDER": {
+        "vertices": 1286,
+        "faces": 2568,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.964365207812166,
+        "max_aspect_ratio": 162746294.36052507,
+        "finite_coordinates": true,
+        "volume_m3": 261.0756024257643,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_ROAD": {
+        "vertices": 1316,
+        "faces": 2628,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.947447486097095,
+        "max_aspect_ratio": 21610.882942471297,
+        "finite_coordinates": true,
+        "volume_m3": 202.56580097547067,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_SUBBASE": {
+        "vertices": 5340,
+        "faces": 10680,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.990103854548668,
+        "max_aspect_ratio": 59221.806796248915,
+        "finite_coordinates": true,
+        "volume_m3": 2559.435361180584,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_SHOULDER": {
+        "vertices": 4927,
+        "faces": 9854,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.990103854548668,
+        "max_aspect_ratio": 416970.9935770162,
+        "finite_coordinates": true,
+        "volume_m3": 1196.1438575781428,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_ROAD": {
+        "vertices": 3930,
+        "faces": 7860,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.9939526457466314,
+        "max_aspect_ratio": 84540.17877482624,
+        "finite_coordinates": true,
+        "volume_m3": 925.9411762019771,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_SUBBASE": {
+        "vertices": 9671,
+        "faces": 19338,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 8.022361775310818,
+        "max_aspect_ratio": 1120795.9271516409,
+        "finite_coordinates": true,
+        "volume_m3": 4312.507456869909,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_SHOULDER": {
+        "vertices": 8852,
+        "faces": 17700,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.98956192398209,
+        "max_aspect_ratio": 45282.30817399527,
+        "finite_coordinates": true,
+        "volume_m3": 1961.3746276803074,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_ROAD": {
+        "vertices": 8560,
+        "faces": 17116,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 8.003217727385751,
+        "max_aspect_ratio": 138786.51916724007,
+        "finite_coordinates": true,
+        "volume_m3": 1465.5416248129561,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_SUBBASE": {
+        "vertices": 2880,
+        "faces": 5756,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.994625149984161,
+        "max_aspect_ratio": 44578.509829167626,
+        "finite_coordinates": true,
+        "volume_m3": 1120.2798050421195,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_SHOULDER": {
+        "vertices": 2800,
+        "faces": 5596,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.8835043037864825,
+        "max_aspect_ratio": 51592.850316947566,
+        "finite_coordinates": true,
+        "volume_m3": 524.388551679759,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_ROAD": {
+        "vertices": 2838,
+        "faces": 5672,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.9267037799081415,
+        "max_aspect_ratio": 61237.32641733698,
+        "finite_coordinates": true,
+        "volume_m3": 409.5207203173375,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_SUBBASE": {
+        "vertices": 7614,
+        "faces": 15224,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.913960657855985,
+        "max_aspect_ratio": 1860243.335320708,
+        "finite_coordinates": true,
+        "volume_m3": 1203.2989331799065,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_SHOULDER": {
+        "vertices": 7592,
+        "faces": 15180,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.322603987362395,
+        "max_aspect_ratio": 401858.45377491013,
+        "finite_coordinates": true,
+        "volume_m3": 562.7738633122095,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_ROAD": {
+        "vertices": 5438,
+        "faces": 10872,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.774392662081695,
+        "max_aspect_ratio": 1695.9952214205364,
+        "finite_coordinates": true,
+        "volume_m3": 436.8317091092986,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_SUBBASE": {
+        "vertices": 5312,
+        "faces": 10620,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.987822088066675,
+        "max_aspect_ratio": 1784494.7317551917,
+        "finite_coordinates": true,
+        "volume_m3": 958.994264860566,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_SHOULDER": {
+        "vertices": 4160,
+        "faces": 8316,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.99797684582729,
+        "max_aspect_ratio": 59424.5360451148,
+        "finite_coordinates": true,
+        "volume_m3": 507.9003395861014,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_ROAD": {
+        "vertices": 4030,
+        "faces": 8056,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.997488061335226,
+        "max_aspect_ratio": 58316.39979873077,
+        "finite_coordinates": true,
+        "volume_m3": 410.62717408668533,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_02_SERVICE_APRON": {
+        "vertices": 970,
+        "faces": 1940,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 8.01415236842535,
+        "max_aspect_ratio": 482.1542945422957,
+        "finite_coordinates": true,
+        "volume_m3": 98.18885778045929,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_02A_SERVICE_APRON": {
+        "vertices": 308,
+        "faces": 612,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.708371350382672,
+        "max_aspect_ratio": 224.40798546085898,
+        "finite_coordinates": true,
+        "volume_m3": 50.54072159400198,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_03_SERVICE_APRON": {
+        "vertices": 524,
+        "faces": 1048,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 8.073764139235687,
+        "max_aspect_ratio": 795.4247295512492,
+        "finite_coordinates": true,
+        "volume_m3": 76.968012078004,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_04_SERVICE_APRON": {
+        "vertices": 266,
+        "faces": 528,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 8.40674298670046,
+        "max_aspect_ratio": 2236.576563805401,
+        "finite_coordinates": true,
+        "volume_m3": 68.05091517702506,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_07_SERVICE_APRON": {
+        "vertices": 324,
+        "faces": 648,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.566263890893117,
+        "max_aspect_ratio": 465.34069061004334,
+        "finite_coordinates": true,
+        "volume_m3": 60.768012078001696,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_08_SERVICE_APRON": {
+        "vertices": 302,
+        "faces": 600,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.563416108485266,
+        "max_aspect_ratio": 457.22540699811617,
+        "finite_coordinates": true,
+        "volume_m3": 66.76628858797055,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_09_SERVICE_APRON": {
+        "vertices": 228,
+        "faces": 456,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 7.992481734297006,
+        "max_aspect_ratio": 195.59100653394097,
+        "finite_coordinates": true,
+        "volume_m3": 48.61801207800173,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_BLD_12_SERVICE_APRON": {
+        "vertices": 332,
+        "faces": 664,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.80517158597562,
+        "max_aspect_ratio": 374.04526239002035,
+        "finite_coordinates": true,
+        "volume_m3": 59.05800797400195,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_CURBS": {
+        "vertices": 2326,
+        "faces": 4648,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.44813885091939,
+        "max_aspect_ratio": 54689000.65806942,
+        "finite_coordinates": true,
+        "volume_m3": 7.234400149520968,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_GUTTER": {
+        "vertices": 3130,
+        "faces": 6256,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.481139342147632,
+        "max_aspect_ratio": 36705183.612482496,
+        "finite_coordinates": true,
+        "volume_m3": 8.510872122407081,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_MARKINGS": {
+        "vertices": 72,
+        "faces": 108,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.199749454450854,
+        "max_aspect_ratio": 127.89212084857957,
+        "finite_coordinates": true,
+        "volume_m3": 0.08419743771027277,
+        "component_count": 9,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_DRAINS": {
+        "vertices": 16,
+        "faces": 24,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324469922,
+        "max_aspect_ratio": 7.33888888888755,
+        "finite_coordinates": true,
+        "volume_m3": 0.07488000000001686,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D1_LIGHTING": {
+        "vertices": 84,
+        "faces": 144,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574115,
+        "max_aspect_ratio": 136.3733322118453,
+        "finite_coordinates": true,
+        "volume_m3": 0.29673999999998785,
+        "component_count": 6,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_CURBS": {
+        "vertices": 23170,
+        "faces": 46312,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.4858895572925306,
+        "max_aspect_ratio": 6577906.525415232,
+        "finite_coordinates": true,
+        "volume_m3": 38.03981284385574,
+        "component_count": 7,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_GUTTER": {
+        "vertices": 25786,
+        "faces": 51544,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.490312589212301,
+        "max_aspect_ratio": 1905381.6586373015,
+        "finite_coordinates": true,
+        "volume_m3": 44.250469588953884,
+        "component_count": 7,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_MARKINGS": {
+        "vertices": 456,
+        "faces": 684,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.599470635619232,
+        "max_aspect_ratio": 143.89184208646557,
+        "finite_coordinates": true,
+        "volume_m3": 0.5535693910667835,
+        "component_count": 57,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_DRAINS": {
+        "vertices": 96,
+        "faces": 144,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324469922,
+        "max_aspect_ratio": 7.33888888888755,
+        "finite_coordinates": true,
+        "volume_m3": 0.44928000000010115,
+        "component_count": 12,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D2_LIGHTING": {
+        "vertices": 546,
+        "faces": 936,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574115,
+        "max_aspect_ratio": 136.3733322119076,
+        "finite_coordinates": true,
+        "volume_m3": 1.928809999999885,
+        "component_count": 39,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_CURBS": {
+        "vertices": 33906,
+        "faces": 67796,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.513215490065754,
+        "max_aspect_ratio": 3772400.958074688,
+        "finite_coordinates": true,
+        "volume_m3": 73.81995380054853,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_GUTTER": {
+        "vertices": 40256,
+        "faces": 80496,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.5047442497722394,
+        "max_aspect_ratio": 63069499.978832595,
+        "finite_coordinates": true,
+        "volume_m3": 86.14109992973626,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_MARKINGS": {
+        "vertices": 848,
+        "faces": 1272,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.599714183057645,
+        "max_aspect_ratio": 143.90158987251772,
+        "finite_coordinates": true,
+        "volume_m3": 1.0430330912458317,
+        "component_count": 106,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_DRAINS": {
+        "vertices": 176,
+        "faces": 264,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324470088,
+        "max_aspect_ratio": 7.338888888889558,
+        "finite_coordinates": true,
+        "volume_m3": 0.8236799999999818,
+        "component_count": 22,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_LIGHTING": {
+        "vertices": 1050,
+        "faces": 1800,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574129,
+        "max_aspect_ratio": 136.3733322119079,
+        "finite_coordinates": true,
+        "volume_m3": 3.709249999999656,
+        "component_count": 75,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D3_GUARDRAIL": {
+        "vertices": 43812,
+        "faces": 68784,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 1.2414641449754578,
+        "max_aspect_ratio": 32.39158147446374,
+        "finite_coordinates": true,
+        "volume_m3": 45.22870533071074,
+        "component_count": 4710,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_CURBS": {
+        "vertices": 11688,
+        "faces": 23372,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.490660567805197,
+        "max_aspect_ratio": 5420493.717077957,
+        "finite_coordinates": true,
+        "volume_m3": 15.022130534107411,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_GUTTER": {
+        "vertices": 13362,
+        "faces": 26720,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.495072613779475,
+        "max_aspect_ratio": 1575823.3197606849,
+        "finite_coordinates": true,
+        "volume_m3": 17.592250071294853,
+        "component_count": 1,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_MARKINGS": {
+        "vertices": 168,
+        "faces": 252,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.96527201854133,
+        "max_aspect_ratio": 158.53192589967236,
+        "finite_coordinates": true,
+        "volume_m3": 0.2068556485220768,
+        "component_count": 21,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_DRAINS": {
+        "vertices": 32,
+        "faces": 48,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324470088,
+        "max_aspect_ratio": 7.338888888889558,
+        "finite_coordinates": true,
+        "volume_m3": 0.14976000000000056,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D4_LIGHTING": {
+        "vertices": 210,
+        "faces": 360,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574115,
+        "max_aspect_ratio": 136.3733322118453,
+        "finite_coordinates": true,
+        "volume_m3": 0.7418500000000373,
+        "component_count": 15,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_CURBS": {
+        "vertices": 15110,
+        "faces": 30204,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.485309369265853,
+        "max_aspect_ratio": 1915364.7361356374,
+        "finite_coordinates": true,
+        "volume_m3": 17.93399203922332,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_GUTTER": {
+        "vertices": 16668,
+        "faces": 33320,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.4924188487390575,
+        "max_aspect_ratio": 15164775.683447924,
+        "finite_coordinates": true,
+        "volume_m3": 20.954988082971955,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_MARKINGS": {
+        "vertices": 208,
+        "faces": 312,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.479057282605072,
+        "max_aspect_ratio": 139.07229548955067,
+        "finite_coordinates": true,
+        "volume_m3": 0.2525176078211899,
+        "component_count": 26,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_DRAINS": {
+        "vertices": 32,
+        "faces": 48,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324469922,
+        "max_aspect_ratio": 7.338888888889558,
+        "finite_coordinates": true,
+        "volume_m3": 0.14975999999998635,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D5_LIGHTING": {
+        "vertices": 252,
+        "faces": 432,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574115,
+        "max_aspect_ratio": 136.3733322118453,
+        "finite_coordinates": true,
+        "volume_m3": 0.8902199999999425,
+        "component_count": 18,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_CURBS": {
+        "vertices": 11686,
+        "faces": 23364,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.4449510615768717,
+        "max_aspect_ratio": 1271422.2675401163,
+        "finite_coordinates": true,
+        "volume_m3": 18.157198649023766,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_GUTTER": {
+        "vertices": 13970,
+        "faces": 27932,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.499952919907009,
+        "max_aspect_ratio": 7882481.443600944,
+        "finite_coordinates": true,
+        "volume_m3": 21.187450117068384,
+        "component_count": 2,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_MARKINGS": {
+        "vertices": 208,
+        "faces": 312,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 3.598673229569431,
+        "max_aspect_ratio": 143.85992655872906,
+        "finite_coordinates": true,
+        "volume_m3": 0.2530477149468666,
+        "component_count": 26,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_DRAINS": {
+        "vertices": 40,
+        "faces": 60,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 0.8881441324469922,
+        "max_aspect_ratio": 7.338888888889558,
+        "finite_coordinates": true,
+        "volume_m3": 0.18719999999997583,
+        "component_count": 5,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_EXT_D6_LIGHTING": {
+        "vertices": 252,
+        "faces": 432,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 6.000161325574115,
+        "max_aspect_ratio": 136.3733322118453,
+        "finite_coordinates": true,
+        "volume_m3": 0.8902199999999993,
+        "component_count": 18,
+        "inverted_normal_components": 0
+      },
+      "REV_P3_ENTRY_GATES": {
+        "vertices": 32,
+        "faces": 48,
+        "watertight": true,
+        "winding_consistent": true,
+        "non_manifold_edges": 0,
+        "zero_area_faces": 0,
+        "duplicate_faces": 0,
+        "max_edge_m": 2.5597851472340434,
+        "max_aspect_ratio": 4.765454545454903,
+        "finite_coordinates": true,
+        "volume_m3": 3.025000000000091,
+        "component_count": 4,
+        "inverted_normal_components": 0
+      }
+    },
+    "removed_revp2_geometry": [
+      "EXT_BLD_02A_SERVICE_APRON",
+      "EXT_BLD_02_SERVICE_APRON",
+      "EXT_BLD_03_SERVICE_APRON",
+      "EXT_BLD_04_SERVICE_APRON",
+      "EXT_BLD_05_SERVICE_APRON",
+      "EXT_BLD_07_SERVICE_APRON",
+      "EXT_BLD_08_SERVICE_APRON",
+      "EXT_BLD_09_SERVICE_APRON",
+      "EXT_BLD_12_SERVICE_APRON",
+      "EXT_D1_CURBS",
+      "EXT_D1_DRAINS",
+      "EXT_D1_ENTRY_GATE",
+      "EXT_D1_GUTTER",
+      "EXT_D1_LIGHTING",
+      "EXT_D1_MARKINGS",
+      "EXT_D1_ROAD",
+      "EXT_D1_SHOULDER",
+      "EXT_D1_SUBBASE",
+      "EXT_D2_CURBS",
+      "EXT_D2_DRAINS",
+      "EXT_D2_GUTTER",
+      "EXT_D2_LIGHTING",
+      "EXT_D2_MARKINGS",
+      "EXT_D2_ROAD",
+      "EXT_D2_SHOULDER",
+      "EXT_D2_SUBBASE",
+      "EXT_D3_CURBS",
+      "EXT_D3_DRAINS",
+      "EXT_D3_GUARDRAIL",
+      "EXT_D3_GUTTER",
+      "EXT_D3_LIGHTING",
+      "EXT_D3_MARKINGS",
+      "EXT_D3_ROAD",
+      "EXT_D3_SHOULDER",
+      "EXT_D3_SUBBASE",
+      "EXT_D4_CURBS",
+      "EXT_D4_DRAINS",
+      "EXT_D4_ENTRY_GATE",
+      "EXT_D4_GUTTER",
+      "EXT_D4_LIGHTING",
+      "EXT_D4_MARKINGS",
+      "EXT_D4_ROAD",
+      "EXT_D4_SHOULDER",
+      "EXT_D4_SUBBASE",
+      "EXT_D5_CURBS",
+      "EXT_D5_DRAINS",
+      "EXT_D5_GUTTER",
+      "EXT_D5_LIGHTING",
+      "EXT_D5_MARKINGS",
+      "EXT_D5_ROAD",
+      "EXT_D5_SHOULDER",
+      "EXT_D5_SUBBASE",
+      "EXT_D6_CURBS",
+      "EXT_D6_DRAINS",
+      "EXT_D6_GUTTER",
+      "EXT_D6_LIGHTING",
+      "EXT_D6_MARKINGS",
+      "EXT_D6_ROAD",
+      "EXT_D6_SHOULDER",
+      "EXT_D6_SUBBASE",
+      "EXT_PAD_A1_RETAINING_WALLS",
+      "EXT_PAD_A1_SAFETY_RAILS",
+      "EXT_PAD_A2_RETAINING_WALLS",
+      "EXT_PAD_C1_RETAINING_WALLS",
+      "EXT_PAD_C1_SAFETY_RAILS",
+      "EXT_PAD_C2_RETAINING_WALLS",
+      "EXT_PAD_C2_SAFETY_RAILS",
+      "EXT_PAD_M1_RETAINING_WALLS",
+      "EXT_PAD_M1_SAFETY_RAILS",
+      "EXT_PAD_M2_RETAINING_WALLS",
+      "EXT_PAD_M2_SAFETY_RAILS",
+      "EXT_PAD_P1_RETAINING_WALLS",
+      "EXT_PAD_P1_SAFETY_RAILS",
+      "EXT_PAD_P2_RETAINING_WALLS",
+      "EXT_PAD_P2_SAFETY_RAILS",
+      "EXT_PAD_R1_RETAINING_WALLS",
+      "EXT_PAD_R1_SAFETY_RAILS",
+      "EXT_PAD_R2_RETAINING_WALLS",
+      "EXT_PAD_R2_SAFETY_RAILS",
+      "EXT_PAD_R3_RETAINING_WALLS",
+      "EXT_PAD_U1_RETAINING_WALLS",
+      "EXT_PAD_U2_RETAINING_WALLS",
+      "EXT_PAD_U2_SAFETY_RAILS",
+      "EXT_PAD_U3_RETAINING_WALLS",
+      "EXT_PAD_U3_SAFETY_RAILS",
+      "EXT_PAD_U4_RETAINING_WALLS",
+      "EXT_PAD_U4_SAFETY_RAILS",
+      "EXT_PERSONNEL_CROSSWALK",
+      "finished_design_surface"
+    ],
+    "acceptance": {
+      "open_external_critical_clashes": 0,
+      "open_external_high_clashes": 0,
+      "boolean_micro_sliver_count": 4,
+      "boolean_micro_sliver_area_m2": 5.953467707152542,
+      "maximum_layer_building_intersection_m2": 0.0,
+      "maximum_road_apron_overlap_m2": 7.084875996112859e-15,
+      "maximum_internal_road_gap_m": 0.0,
+      "maximum_junction_gap_m": 0.0,
+      "maximum_internal_vertical_step_m": 0.0,
+      "maximum_junction_vertical_step_m": 0.0003610077978919435,
+      "maximum_road_apron_vertical_step_m": 0.0,
+      "maximum_longitudinal_grade_pct": 5.98744227864203,
+      "minimum_horizontal_radius_m": 12.768487712126479,
+      "terrain_above_road_points": 0,
+      "non_adjacent_road_triangle_self_intersections": 0,
+      "duplicated_top_faces": 0,
+      "all_primary_road_contours_connected": true,
+      "plan_self_intersections": 0,
+      "non_manifold_edges": 0,
+      "zero_area_faces": 0,
+      "duplicate_faces": 0,
+      "inverted_normal_components": 0,
+      "inconsistent_normals": 0,
+      "status": "PASS"
+    },
+    "limitations": [
+      "Model remains in local project coordinates; survey binding is pending.",
+      "Swept-path check is a conservative screening envelope, not a certified AutoTURN report.",
+      "Finished design surface remains the Rev.P2 interpolated site surface.",
+      "Road construction design, pavement calculation and drainage hydraulics remain project-stage tasks."
+    ],
+    "exports": {
+      "20_Модель_A1_RevP3_RoadQA.glb": {
+        "size_bytes": 16864408,
+        "sha256": "bdc1833616049cb05f6c266536437ac62e5ecb051544a67f68683fd50d76fd6e",
+        "geometry_count": 1757,
+        "bounds": [
+          [
+            0.0,
+            0.0,
+            89.45000457763672
+          ],
+          [
+            608.0,
+            440.05999755859375,
+            155.89810180664062
+          ]
+        ],
+        "finite_coordinates": true
+      },
+      "20_Модель_A1_RevP3_RoadQA.obj": {
+        "size_bytes": 50970397,
+        "sha256": "3cd219ade4c9568fcaf157b9b481054c909ee8927184c4f763ee5c39c345a677",
+        "geometry_count": 1,
+        "bounds": [
+          [
+            0.0,
+            0.0,
+            89.45000458
+          ],
+          [
+            608.0,
+            440.05999756,
+            155.89810181
+          ]
+        ],
+        "finite_coordinates": true
+      }
+    }
+  },
+  "road_acceptance_reused": {
+    "open_external_critical_clashes": 0,
+    "open_external_high_clashes": 0,
+    "boolean_micro_sliver_count": 4,
+    "boolean_micro_sliver_area_m2": 5.953467707152542,
+    "maximum_layer_building_intersection_m2": 0.0,
+    "maximum_road_apron_overlap_m2": 7.084875996112859e-15,
+    "maximum_internal_road_gap_m": 0.0,
+    "maximum_junction_gap_m": 0.0,
+    "maximum_internal_vertical_step_m": 0.0,
+    "maximum_junction_vertical_step_m": 0.0003610077978919435,
+    "maximum_road_apron_vertical_step_m": 0.0,
+    "maximum_longitudinal_grade_pct": 5.98744227864203,
+    "minimum_horizontal_radius_m": 12.768487712126479,
+    "terrain_above_road_points": 0,
+    "non_adjacent_road_triangle_self_intersections": 0,
+    "duplicated_top_faces": 0,
+    "all_primary_road_contours_connected": true,
+    "plan_self_intersections": 0,
+    "non_manifold_edges": 0,
+    "zero_area_faces": 0,
+    "duplicate_faces": 0,
+    "inverted_normal_components": 0,
+    "inconsistent_normals": 0,
+    "status": "PASS"
+  },
+  "masterplan_changes": [
+    {
+      "Object_Name": "REV_P5_MP_ASSEMBLY_PAD_60x40",
+      "Category": "Construction logistics",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 2400.0,
+      "Bounds_XY": [
+        70.0,
+        190.0,
+        130.0,
+        230.0
+      ],
+      "Description": "Montage and pre-assembly platform in the west logistics reserve; 60 x 40 m."
+    },
+    {
+      "Object_Name": "REV_P5_MP_HEAVY_HAUL_ROUTE",
+      "Category": "Construction logistics",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": null,
+      "Bounds_XY": null,
+      "Description": "Heavy-haul route annotation for a 16.5 m articulated vehicle; final certified swept path remains HP-07."
+    },
+    {
+      "Object_Name": "REV_P5_MP_CRANE_PAD_01",
+      "Category": "Construction logistics",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 252.0,
+      "Bounds_XY": [
+        326.0,
+        207.0,
+        344.0,
+        221.0
+      ],
+      "Description": "Temporary crane outrigger platform adjacent to the pyrolysis terrace."
+    },
+    {
+      "Object_Name": "REV_P5_MP_CRANE_PAD_02",
+      "Category": "Construction logistics",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 252.0,
+      "Bounds_XY": [
+        429.0,
+        227.0,
+        447.0,
+        241.0
+      ],
+      "Description": "Temporary crane outrigger platform adjacent to the pyrolysis terrace."
+    },
+    {
+      "Object_Name": "REV_P5_MP_D3_EMERGENCY_BAY",
+      "Category": "Road safety",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 112.0,
+      "Bounds_XY": [
+        550.5,
+        235.0,
+        566.5,
+        248.0
+      ],
+      "Description": "Emergency lay-by on the eastern service serpentine, with a common non-overlapping seam to D3."
+    },
+    {
+      "Object_Name": "REV_P5_MP_TIRE_QUARANTINE",
+      "Category": "Raw material logistics",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 2100.0,
+      "Bounds_XY": [
+        178.0,
+        350.0,
+        238.0,
+        385.0
+      ],
+      "Description": "Fenced quarantine area for nonconforming tyre batches with segregated dirty drainage requirement."
+    },
+    {
+      "Object_Name": "REV_P5_MP_PROTECTED_PEDESTRIAN_ROUTE",
+      "Category": "Personnel safety",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": null,
+      "Bounds_XY": null,
+      "Description": "Protected pedestrian corridor from lower checkpoint/ABK toward production buildings; crossings are explicit elevated marking zones."
+    },
+    {
+      "Object_Name": "REV_P5_MP_DRY_HYBRID_COOLER_RESERVE_40x25",
+      "Category": "Utilities",
+      "Data_Status": "OPEN_RFI",
+      "Area_m2": 1000.0,
+      "Bounds_XY": [
+        420.0,
+        45.0,
+        460.0,
+        70.0
+      ],
+      "Description": "Controlled 40 x 25 m reserve for dry/hybrid cooling equipment; final duty and type require heat balance."
+    },
+    {
+      "Object_Name": "REV_P5_MP_CLEAN_SNOW_CONTAINMENT",
+      "Category": "Winter operation",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 4160.0,
+      "Bounds_XY": [
+        250.0,
+        45.0,
+        330.0,
+        97.0
+      ],
+      "Description": "Raised containment/identification boundary for separated snow management."
+    },
+    {
+      "Object_Name": "REV_P5_MP_DIRTY_SNOW_CONTAINMENT",
+      "Category": "Winter operation",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 1050.0,
+      "Bounds_XY": [
+        555.0,
+        120.0,
+        585.0,
+        155.0
+      ],
+      "Description": "Raised containment/identification boundary for separated snow management."
+    },
+    {
+      "Object_Name": "REV_P5_MP_PHASE2_CAPPED_STUBS",
+      "Category": "Phase 2 interfaces",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": null,
+      "Bounds_XY": null,
+      "Description": "Visible capped reserves for FW, CW supply/return, pyrolysis gas, 10 kV and control at the phase-2 boundary."
+    },
+    {
+      "Object_Name": "REV_P5_MP_RAW_LOOP_ONE_WAY_MARKINGS",
+      "Category": "Traffic management",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": null,
+      "Bounds_XY": null,
+      "Description": "One-way circulation markings derived from the accepted D2 axis."
+    },
+    {
+      "Object_Name": "REV_P5_MP_PRODUCT_LOOP_ONE_WAY_MARKINGS",
+      "Category": "Traffic management",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": null,
+      "Bounds_XY": null,
+      "Description": "One-way circulation markings derived from the accepted D5 axis."
+    },
+    {
+      "Object_Name": "REV_P5_MP_BLD05_SERVICE_RAMP_TO_D3",
+      "Category": "Service access",
+      "Data_Status": "CONTROLLED_PRE_FEED",
+      "Area_m2": 688.0306345090615,
+      "Bounds_XY": [
+        420.6000061035156,
+        216.6582790630882,
+        515.7459460550745,
+        252.64649548543085
+      ],
+      "Description": "Dedicated high-level ramp from BLD_05 pyrolysis terrace to D3; replaces the invalid short link to lower D5."
+    },
+    {
+      "Object_Name": "REV_P5_MP_LABORATORY_RESERVE",
+      "Category": "Missing system spatial reserve",
+      "Data_Status": "OPEN_CRITICAL",
+      "Area_m2": 96.0,
+      "Bounds_XY": [
+        310.0,
+        76.0,
+        322.0,
+        84.0
+      ],
+      "Description": "Quality laboratory reserve for feedstock, oil and rCB testing."
+    },
+    {
+      "Object_Name": "REV_P5_MP_WASTEWATER_TREATMENT_RESERVE",
+      "Category": "Missing system spatial reserve",
+      "Data_Status": "OPEN_CRITICAL",
+      "Area_m2": 800.0,
+      "Bounds_XY": [
+        500.0,
+        25.0,
+        540.0,
+        45.0
+      ],
+      "Description": "Reserve for local treatment of process, storm and oily wastewater."
+    },
+    {
+      "Object_Name": "REV_P5_MP_DG_UPS_RESERVE",
+      "Category": "Missing system spatial reserve",
+      "Data_Status": "OPEN_CRITICAL",
+      "Area_m2": 300.0,
+      "Bounds_XY": [
+        395.0,
+        70.0,
+        415.0,
+        85.0
+      ],
+      "Description": "Reserve for emergency generator and UPS supporting safety loads."
+    },
+    {
+      "Object_Name": "REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE",
+      "Category": "Missing system spatial reserve",
+      "Data_Status": "OPEN_CRITICAL",
+      "Area_m2": 288.0,
+      "Bounds_XY": [
+        330.0,
+        70.0,
+        348.0,
+        86.0
+      ],
+      "Description": "Reserve for heat source, HVAC and emergency ventilation equipment."
+    },
+    {
+      "Object_Name": "REV_P5_SAFETY_PRELIM_PYROLYSIS_ZONE",
+      "Category": "Safety annotation",
+      "Data_Status": "OPEN_CRITICAL",
+      "Area_m2": 3033.6005859375,
+      "Bounds_XY": [
+        337.3999938964844,
+        192.39999389648438,
+        432.6000061035156,
+        247.60000610351562
+      ],
+      "Description": "Preliminary spatial envelope for Ex/fire/F&G coordination. It is not a final hazardous-area classification."
+    }
+  ],
+  "required_features": [
+    "REV_P5_MP_ASSEMBLY_PAD_60x40",
+    "REV_P5_MP_HEAVY_HAUL_ROUTE",
+    "REV_P5_MP_CRANE_PAD_01",
+    "REV_P5_MP_CRANE_PAD_02",
+    "REV_P5_MP_D3_EMERGENCY_BAY",
+    "REV_P5_MP_TIRE_QUARANTINE",
+    "REV_P5_MP_PROTECTED_PEDESTRIAN_ROUTE",
+    "REV_P5_MP_DRY_HYBRID_COOLER_RESERVE_40x25",
+    "REV_P5_MP_CLEAN_SNOW_CONTAINMENT",
+    "REV_P5_MP_DIRTY_SNOW_CONTAINMENT",
+    "REV_P5_MP_PHASE2_CAPPED_STUBS",
+    "REV_P5_MP_RAW_LOOP_ONE_WAY_MARKINGS",
+    "REV_P5_MP_PRODUCT_LOOP_ONE_WAY_MARKINGS",
+    "REV_P5_MP_BLD05_SERVICE_RAMP_TO_D3",
+    "REV_P5_MP_LABORATORY_RESERVE",
+    "REV_P5_MP_WASTEWATER_TREATMENT_RESERVE",
+    "REV_P5_MP_DG_UPS_RESERVE",
+    "REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE",
+    "REV_P5_SAFETY_PRELIM_PYROLYSIS_ZONE"
+  ],
+  "missing_required_features": [],
+  "physical_feature_checks": {
+    "assembly": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "crane_1": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "crane_2": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "emergency_bay": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "quarantine": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "cooler": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "bld05_ramp": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "REV_P5_MP_LABORATORY_RESERVE": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "REV_P5_MP_WASTEWATER_TREATMENT_RESERVE": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "REV_P5_MP_DG_UPS_RESERVE": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    },
+    "REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE": {
+      "building_intersection_m2": 0.0,
+      "road_intersection_m2": 0.0
+    }
+  },
+  "bld05_service_ramp": {
+    "line_length_m": 98.56256917362103,
+    "deck_top_z_m": 118.76,
+    "d3_seam_z_m": 117.93415116586557,
+    "grade_pct": 0.8378929659186083,
+    "road_overlap_m2": 0.0,
+    "other_building_overlap_m2": 0.0
+  },
+  "snow_zone_bounds": {
+    "clean_snow": [
+      250.0,
+      45.0,
+      330.0,
+      97.0
+    ],
+    "dirty_snow": [
+      555.0,
+      120.0,
+      585.0,
+      155.0
+    ]
+  },
+  "site_bounds": [
+    [
+      0.0,
+      0.0,
+      95.90552520751953
+    ],
+    [
+      608.0,
+      440.0,
+      143.83999633789062
+    ]
+  ],
+  "out_of_site_features": [],
+  "mesh_quality_new_features": {
+    "REV_P5_MP_ASSEMBLY_PAD_60x40": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          70.0,
+          190.0,
+          126.05995178222656
+        ],
+        [
+          130.0,
+          230.0,
+          126.40995178222656
+        ]
+      ]
+    },
+    "REV_P5_MP_HEAVY_HAUL_ROUTE": {
+      "vertices": 9288,
+      "faces": 13932,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          129.86434389787453,
+          100.225,
+          105.80500000131053
+        ],
+        [
+          603.2709180817893,
+          345.275,
+          133.84499999734282
+        ]
+      ]
+    },
+    "REV_P5_MP_CRANE_PAD_01": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          326.0,
+          207.0,
+          119.7451889038086
+        ],
+        [
+          344.0,
+          221.0,
+          120.0451889038086
+        ]
+      ]
+    },
+    "REV_P5_MP_CRANE_PAD_02": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          429.0,
+          227.0,
+          119.01145477294922
+        ],
+        [
+          447.0,
+          241.0,
+          119.31145477294922
+        ]
+      ]
+    },
+    "REV_P5_MP_D3_EMERGENCY_BAY": {
+      "vertices": 268,
+      "faces": 528,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          550.5,
+          235.0,
+          115.84656211128788
+        ],
+        [
+          566.5,
+          248.0,
+          116.12656211128788
+        ]
+      ]
+    },
+    "REV_P5_MP_TIRE_QUARANTINE": {
+      "vertices": 40,
+      "faces": 60,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          177.95,
+          349.95,
+          143.35741760253907
+        ],
+        [
+          238.05,
+          385.05,
+          145.63741760253907
+        ]
+      ]
+    },
+    "REV_P5_MP_PROTECTED_PEDESTRIAN_ROUTE": {
+      "vertices": 56,
+      "faces": 84,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          176.99940892865015,
+          90.75,
+          105.24645561432104
+        ],
+        [
+          352.620898079709,
+          261.0860159833929,
+          126.22651106310401
+        ]
+      ]
+    },
+    "REV_P5_MP_DRY_HYBRID_COOLER_RESERVE_40x25": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          420.0,
+          45.0,
+          102.46532775878906
+        ],
+        [
+          460.0,
+          70.0,
+          102.66532775878906
+        ]
+      ]
+    },
+    "REV_P5_MP_CLEAN_SNOW_CONTAINMENT": {
+      "vertices": 32,
+      "faces": 48,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          249.91,
+          44.91,
+          103.63735656738281
+        ],
+        [
+          330.09,
+          97.09,
+          104.18735656738282
+        ]
+      ]
+    },
+    "REV_P5_MP_DIRTY_SNOW_CONTAINMENT": {
+      "vertices": 32,
+      "faces": 48,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          554.91,
+          119.91,
+          104.45255737304687
+        ],
+        [
+          585.09,
+          155.09,
+          105.00255737304688
+        ]
+      ]
+    },
+    "REV_P5_MP_PHASE2_CAPPED_STUBS": {
+      "vertices": 352,
+      "faces": 664,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          459.595,
+          336.595,
+          132.48345031738282
+        ],
+        [
+          464.6,
+          362.6,
+          135.475
+        ]
+      ]
+    },
+    "REV_P5_MP_RAW_LOOP_ONE_WAY_MARKINGS": {
+      "vertices": 56,
+      "faces": 96,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          300.14712230215827,
+          306.95,
+          133.78999999999996
+        ],
+        [
+          440.05,
+          383.05,
+          133.82499999999996
+        ]
+      ]
+    },
+    "REV_P5_MP_PRODUCT_LOOP_ONE_WAY_MARKINGS": {
+      "vertices": 56,
+      "faces": 96,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          366.9592448527304,
+          148.95,
+          108.83094078225767
+        ],
+        [
+          509.3381676579456,
+          151.05,
+          109.07084330189203
+        ]
+      ]
+    },
+    "REV_P5_MP_BLD05_SERVICE_RAMP_TO_D3": {
+      "vertices": 4720,
+      "faces": 9436,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          420.6000061,
+          216.6582791,
+          117.63415116586557
+        ],
+        [
+          515.7459461,
+          252.6464955,
+          118.76
+        ]
+      ]
+    },
+    "REV_P5_MP_LABORATORY_RESERVE": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          310.0,
+          76.0,
+          104.95524932861328
+        ],
+        [
+          322.0,
+          84.0,
+          105.13524932861328
+        ]
+      ]
+    },
+    "REV_P5_MP_WASTEWATER_TREATMENT_RESERVE": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          500.0,
+          25.0,
+          99.03444244384765
+        ],
+        [
+          540.0,
+          45.0,
+          99.21444244384766
+        ]
+      ]
+    },
+    "REV_P5_MP_DG_UPS_RESERVE": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          395.0,
+          70.0,
+          104.02
+        ],
+        [
+          415.0,
+          85.0,
+          104.2
+        ]
+      ]
+    },
+    "REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE": {
+      "vertices": 8,
+      "faces": 12,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          330.0,
+          70.0,
+          104.02
+        ],
+        [
+          348.0,
+          86.0,
+          104.2
+        ]
+      ]
+    },
+    "REV_P5_SAFETY_PRELIM_PYROLYSIS_ZONE": {
+      "vertices": 3876,
+      "faces": 7752,
+      "finite_coordinates": true,
+      "zero_area_faces": 0,
+      "watertight": true,
+      "winding_consistent": true,
+      "open_or_nonmanifold_edges": 0,
+      "bounds": [
+        [
+          337.3999939,
+          192.3999939,
+          118.79
+        ],
+        [
+          432.6000061,
+          247.6000061,
+          118.84
+        ]
+      ]
+    }
+  },
+  "acceptance": {
+    "road_building_clashes": [],
+    "open_external_critical_clashes": 0,
+    "terrain_above_road_points": 0,
+    "non_adjacent_road_triangle_self_intersections": 0,
+    "duplicated_top_faces": 0,
+    "non_manifold_edges": 0,
+    "required_masterplan_features_present": true,
+    "new_physical_feature_building_overlap_m2": 0.0,
+    "new_physical_feature_unintended_road_overlap_m2": 0.0,
+    "bld05_ramp_grade_pct": 0.8378929659186083,
+    "masterplan_status": "PASS_CONTROLLED_PRE_FEED"
+  },
+  "remaining_hold_points": [
+    "Survey CRS/DTM and engineering surveys are pending.",
+    "Vendor-frozen GA/PFD/P&ID/load data are pending.",
+    "HAZID/HAZOP, final Ex/fire/F&G/ESD classification is pending.",
+    "Certified AutoTURN or equivalent swept-path report is pending.",
+    "The laboratory, wastewater, HVAC and DG/UPS objects are spatial reserves, not detailed systems."
+  ],
+  "exports": {
+    "26_Модель_A1_RevP5_Integrated_preFEED.glb": {
+      "size_bytes": 17682276,
+      "sha256": "2b2eec90e071905e4d225925ae9a24b3431c48bc703216f5da775c72b04f8b68",
+      "geometry_count": 1776,
+      "bounds": [
+        [
+          0.0,
+          0.0,
+          89.45000457763672
+        ],
+        [
+          608.0,
+          440.05999755859375,
+          155.89810180664062
+        ]
+      ]
+    },
+    "26_Модель_A1_RevP5_Integrated_preFEED.obj": {
+      "size_bytes": 53087233,
+      "sha256": "f6407e6940c60267d79b2df4f37af31e3c6333b4c1b4ed8a0dbbfdc8c8f6f3f3",
+      "geometry_count": 1,
+      "bounds": [
+        [
+          0.0,
+          0.0,
+          89.45000458
+        ],
+        [
+          608.0,
+          440.05999756,
+          155.89810181
+        ]
+      ]
+    }
+  }
+}
