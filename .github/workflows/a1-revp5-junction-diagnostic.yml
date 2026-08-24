@@ -13,6 +13,18 @@ on:
       - tools/patch_revp5_d5_through_route.py
       - tools/diagnose_revp5_d3_d5_junction.py
       - .github/workflows/a1-revp5-junction-diagnostic.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp5_d2_topology.py
+      - tools/patch_revp5_d5_topology.py
+      - tools/patch_revp3_interface_completion.py
+      - tools/patch_revp5_d5_through_route.py
+      - tools/diagnose_revp5_d3_d5_junction.py
+      - .github/workflows/a1-revp5-junction-diagnostic.yml
   workflow_dispatch:
 
 permissions:
