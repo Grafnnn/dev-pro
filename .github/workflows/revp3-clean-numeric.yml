@@ -13,6 +13,7 @@ on:
       - tools/patch_revp3_solid_mesh.py
       - tools/patch_revp3_mesh_repair.py
       - tools/patch_revp3_boundary_seal.py
+      - tools/patch_revp3_edge_diag.py
       - tools/patch_revp3_qa_hardening.py
       - .github/workflows/revp3-clean-numeric.yml
   pull_request:
@@ -27,6 +28,7 @@ on:
       - tools/patch_revp3_solid_mesh.py
       - tools/patch_revp3_mesh_repair.py
       - tools/patch_revp3_boundary_seal.py
+      - tools/patch_revp3_edge_diag.py
       - tools/patch_revp3_qa_hardening.py
       - .github/workflows/revp3-clean-numeric.yml
   workflow_dispatch:
@@ -58,6 +60,7 @@ jobs:
           python tools/patch_revp3_solid_mesh.py
           python tools/patch_revp3_mesh_repair.py
           python tools/patch_revp3_boundary_seal.py
+          python tools/patch_revp3_edge_diag.py
           python tools/patch_revp3_qa_hardening.py
       - name: Build Rev.P3 and enforce numerical acceptance
         run: python tools/build_revp3_roadqa.py
