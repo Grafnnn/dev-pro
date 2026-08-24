@@ -1,0 +1,93 @@
+name: Publish Existing A1 RevP2 Files
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp2-exterior-qa
+    paths:
+      - .github/workflows/publish-existing-revp2-files.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_RUN_ID: '32669785346'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp2-exterior-qa
+          fetch-depth: 1
+
+      - name: Download the already-generated Rev.P2 artifacts
+        run: |
+          rm -rf _revp2_download transfer_ready
+          mkdir -p _revp2_download/glb _revp2_download/obj _revp2_download/package _revp2_download/qa transfer_ready
+          gh run download "$SOURCE_RUN_ID" -n a1-revp2-exterior-glb -D _revp2_download/glb
+          gh run download "$SOURCE_RUN_ID" -n a1-revp2-exterior-obj -D _revp2_download/obj
+          gh run download "$SOURCE_RUN_ID" -n a1-revp2-user-package -D _revp2_download/package
+          gh run download "$SOURCE_RUN_ID" -n a1-revp2-qa-reports -D _revp2_download/qa
+          find _revp2_download -type f -printf '%p\t%s bytes\n' | sort
+
+      - name: Copy exact bytes without model conversion or regeneration
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+
+          root = Path('_revp2_download')
+          out = Path('transfer_ready')
+          required = [
+              ('glb', '20_Модель_A1_RevP2_ExteriorQA.glb'),
+              ('obj', '20_Модель_A1_RevP2_ExteriorQA.obj'),
+              ('package', '20_Комплект_A1_RevP2_ExteriorQA.zip'),
+              ('qa', '20_Exterior_QA_Report.json'),
+              ('qa', '20_SHA256SUMS.txt'),
+              ('qa', '20_README_RevP2.md'),
+          ]
+          for folder, filename in required:
+              matches = [p for p in (root / folder).rglob('*') if p.is_file() and p.name == filename]
+              if len(matches) != 1:
+                  raise SystemExit(f'Expected exactly one {filename!r}, found: {matches}')
+              shutil.copyfile(matches[0], out / filename)
+          PY
+
+      - name: Verify published bytes against the existing SHA-256 manifest
+        run: |
+          cd transfer_ready
+          sha256sum 20_Модель_A1_RevP2_ExteriorQA.glb 20_Модель_A1_RevP2_ExteriorQA.obj 20_Комплект_A1_RevP2_ExteriorQA.zip 20_Exterior_QA_Report.json 20_SHA256SUMS.txt 20_README_RevP2.md | tee _published_sha256.txt
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          manifest = Path('20_SHA256SUMS.txt').read_text(encoding='utf-8', errors='replace')
+          required = [
+              '20_Модель_A1_RevP2_ExteriorQA.glb',
+              '20_Модель_A1_RevP2_ExteriorQA.obj',
+              '20_Комплект_A1_RevP2_ExteriorQA.zip',
+          ]
+          for name in required:
+              digest = hashlib.sha256(Path(name).read_bytes()).hexdigest()
+              matching = [line for line in manifest.splitlines() if line.rstrip().endswith(name)]
+              if not matching:
+                  raise SystemExit(f'{name}: not present in existing 20_SHA256SUMS.txt')
+              expected = matching[0].split()[0]
+              if digest.lower() != expected.lower():
+                  raise SystemExit(f'{name}: SHA-256 mismatch: {digest} != {expected}')
+              print(f'VERIFIED {name}: {digest}')
+          PY
+
+      - name: Commit unchanged deliverables to the temporary transfer branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add transfer_ready/
+          git diff --cached --quiet && exit 0
+          git commit -m "Expose unchanged A1 Rev.P2 deliverables for Drive transfer [skip ci]"
+          git push origin HEAD:tmp-a1-revp2-exterior-qa

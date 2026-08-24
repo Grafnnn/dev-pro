@@ -1,0 +1,122 @@
+name: A1 RevP5 RoadQA Build
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp5-integrated-model
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_*.py
+      - tools/patch_revp5_apron_refinement.py
+      - .github/workflows/a1-revp5-roadqa-build.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_*.py
+      - tools/patch_revp5_apron_refinement.py
+      - .github/workflows/a1-revp5-roadqa-build.yml
+  workflow_dispatch:
+
+concurrency:
+  group: a1-revp5-roadqa-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      OUT_ROOT: revp5_roadqa_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp5-integrated-model
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
+      - name: Apply full controlled road-correction chain
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
+          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp3_boolean_slivers.py
+          python tools/patch_revp3_post_apron_sliver.py
+          python tools/patch_revp3_mesh_cleanup.py
+          python tools/patch_revp3_watertight_solids.py
+          python tools/patch_revp3_preserve_topology_indices.py
+          python tools/patch_revp3_triangle_solids.py
+          python tools/patch_revp3_conforming_refinement.py
+          python tools/patch_revp3_degenerate_cleanup.py
+          python tools/patch_revp3_resolution.py
+          python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp3_qa_hardening.py
+          python tools/patch_revp5_apron_refinement.py
+      - name: Build RoadQA with captured log
+        id: model
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p audit/revp5_roadqa_runtime
+          python tools/build_revp3_roadqa.py 2>&1 | tee audit/revp5_roadqa_runtime/build.log
+          status=${PIPESTATUS[0]}
+          echo "$status" > audit/revp5_roadqa_runtime/exit_code.txt
+          if [ -f revp5_roadqa_output/20_Road_QA_Report_RevP3.json ]; then
+            cp revp5_roadqa_output/20_Road_QA_Report_RevP3.json audit/revp5_roadqa_runtime/qa.json
+          fi
+          exit $status
+      - name: Persist diagnostic state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin tmp-a1-revp5-integrated-model
+          git rebase origin/tmp-a1-revp5-integrated-model
+          git add audit/revp5_roadqa_runtime/
+          git diff --cached --quiet || git commit -m "Store Rev.P5 RoadQA diagnostic [skip ci]"
+          git push origin HEAD:tmp-a1-revp5-integrated-model
+      - name: Enforce RoadQA acceptance
+        if: steps.model.outcome == 'success'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('revp5_roadqa_output/20_Road_QA_Report_RevP3.json')
+          q=json.loads(p.read_text(encoding='utf-8'))
+          a=q['acceptance']
+          assert q['road_building_clashes'] == [], q['road_building_clashes']
+          assert a['open_external_critical_clashes'] == 0, a
+          assert a['terrain_above_road_points'] == 0, a
+          assert a['non_adjacent_road_triangle_self_intersections'] == 0, a
+          assert a['duplicated_top_faces'] == 0, a
+          assert a['zero_area_faces'] == 0, a
+          assert a['non_manifold_edges'] == 0, a
+          assert a['inconsistent_normals'] == 0, a
+          assert a['maximum_longitudinal_grade_pct'] <= 6.000001, a
+          assert a['minimum_horizontal_radius_m'] >= 11.999999, a
+          assert a['status'] == 'PASS', a
+          print(json.dumps(a, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload candidate
+        if: steps.model.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp5-roadqa-candidate
+          path: revp5_roadqa_output/
+          retention-days: 7
+          compression-level: 3
+      - name: Fail after diagnostics when model failed
+        if: steps.model.outcome != 'success'
+        run: exit 1
