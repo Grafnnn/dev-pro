@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install geometry dependencies
-        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests networkx
       - name: Apply controlled Rev.P3 patches
         run: |
           python tools/patch_revp3_prebuild.py
