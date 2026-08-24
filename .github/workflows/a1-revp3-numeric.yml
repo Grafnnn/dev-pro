@@ -41,6 +41,7 @@ on:
       - .github/workflows/a1-revp3-numeric.yml
   workflow_dispatch:
 
+# Diagnostic trigger: 2026-08-24T12:00Z
 permissions:
   contents: write
 
