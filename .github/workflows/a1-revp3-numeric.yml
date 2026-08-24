@@ -42,7 +42,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -79,9 +79,28 @@ jobs:
       - name: Print exact horizontal-radius diagnostics
         run: python tools/diagnose_revp3_paths.py
       - name: Build Rev.P3 and enforce numerical acceptance
-        run: python tools/build_revp3_roadqa.py
+        id: revp3_build
+        shell: bash
+        run: |
+          set +e
+          python tools/build_revp3_roadqa.py 2>&1 | tee revp3_build.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit ${status}
       - name: Print QA
+        if: success()
         run: cat revp3_output/20_Road_QA_Report_RevP3.json
+      - name: Persist diagnostic tail
+        if: always()
+        run: |
+          mkdir -p audit
+          if [ -f revp3_build.log ]; then tail -n 400 revp3_build.log > audit/revp3_last_build.log; fi
+          if [ -f revp3_path_diagnostics.json ]; then cp revp3_path_diagnostics.json audit/revp3_path_diagnostics.json; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/revp3_last_build.log audit/revp3_path_diagnostics.json || true
+          git diff --cached --quiet || git commit -m "Store Rev.P3 diagnostic tail [skip ci]"
+          git push origin HEAD:tmp-a1-revp3-road-qa
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -89,5 +108,6 @@ jobs:
           path: |
             revp3_output/
             revp3_path_diagnostics.json
+            revp3_build.log
           retention-days: 1
           compression-level: 3
