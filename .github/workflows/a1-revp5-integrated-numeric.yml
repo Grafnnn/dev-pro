@@ -65,6 +65,7 @@ jobs:
           python tools/patch_revp3_degenerate_cleanup.py
           python tools/patch_revp3_final_extrusion.py
           python tools/patch_revp5_robust_extrusion.py
+          python tools/patch_revp5_component_diagnostics.py
           python tools/patch_revp3_qa_hardening.py
       - name: Build accepted RoadQA geometry
         run: python tools/build_revp3_roadqa.py
