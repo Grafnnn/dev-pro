@@ -11,10 +11,10 @@ old = '''    d5_spur_xy = sample_line((558.0, 189.0), (570.0, 189.0), 0.6)
     ]'''
 new = '''    # Rev.P5 value-engineered product circulation is one continuous one-way
     # through-route rather than a closed annulus with two T-branches. It enters
-    # from D4, serves the south side of BLD_09/07/08 and exits into D3. The
-    # centreline terminates inside the D3 junction surface, so clipping by D3
-    # produces one clean connected D5 contour without cap/crescent fragments.
-    d5_parts = [np.array([[338.0, 128.0]], dtype=float)]
+    # from inside the D4 junction surface, serves the south side of
+    # BLD_09/07/08 and terminates inside D3. Clipping by the owner roads at both
+    # ends therefore creates one clean connected D5 contour, not cap crescents.
+    d5_parts = [sample_line((326.0, 128.0), (338.0, 128.0), 0.50)]
     d5_shift_angle = math.acos(1.0 - 22.0 / (2.0 * 15.0))
     d5_sbend, _ = sample_s_bend((338.0, 128.0), 0.0, 15.0, d5_shift_angle, +1, 0.70)
     d5_parts.append(d5_sbend[1:])
@@ -24,7 +24,7 @@ new = '''    # Rev.P5 value-engineered product circulation is one continuous one
     d5_parts.append(sample_line(tuple(d5_arc_east[-1]), (562.0, 176.0), 0.65)[1:])
     d5_arc_exit, _ = arc_from_pose((562.0, 176.0), math.pi / 2.0, 13.0, -math.pi / 2.0, 0.65)
     d5_parts.append(d5_arc_exit[1:])
-    d5_parts.append(sample_line(tuple(d5_arc_exit[-1]), (583.0, 189.0), 0.50)[1:])
+    d5_parts.append(sample_line(tuple(d5_arc_exit[-1]), (586.0, 189.0), 0.50)[1:])
     d5_xy = dedupe_points(np.vstack(d5_parts))
     roads["D5"] = [assign_linear_z(d5_xy, 108.7, 110.7)]'''
 if old not in text:
@@ -32,8 +32,8 @@ if old not in text:
 text = text.replace(old, new, 1)
 
 # Align D3/D5 vertical-profile split, junction QA and roadside-detail break to
-# the centreline point inside the common D3 surface.
-text = text.replace("570.0, 189.0", "583.0, 189.0")
+# the point well inside the common D3 surface.
+text = text.replace("570.0, 189.0", "586.0, 189.0")
 
 path.write_text(text, encoding="utf-8")
 print("REV_P5_D5_THROUGH_ROUTE_PATCHED")
