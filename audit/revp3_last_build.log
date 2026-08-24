@@ -18,12 +18,3 @@ CDT_SOLID_START area=3248.863411 bounds=(246.9272, 304.5, 442.5, 385.5) holes=1 
 CDT_PLAN_DONE vertices=3612 faces=6609
 CDT_SOLID_PASS vertices=7224 faces=14448
 CDT_SOLID_START area=7848.119076 bounds=(444.0, 79.5, 607.9955, 349.5) holes=0 thickness=0.550
-CDT_PLAN_DONE vertices=20193 faces=38343
-CDT_SOLID_PASS vertices=40386 faces=80768
-CDT_SOLID_START area=6541.347885 bounds=(443.25, 80.25, 607.2455, 348.75) holes=0 thickness=0.300
-CDT_PLAN_DONE vertices=12724 faces=23405
-CDT_SOLID_PASS vertices=25448 faces=50892
-CDT_SOLID_START area=5234.077233 bounds=(442.5, 81.0, 606.4955, 348.0) holes=0 thickness=0.280
-CDT_PLAN_DONE vertices=12124 faces=22204
-CDT_SOLID_PASS vertices=24248 faces=48492
-CDT_SOLID_START area=2036.872373 bounds=(171.5, 95.0, 343.5, 133.5) holes=0 thickness=0.550
