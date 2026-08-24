@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Rev.P3 controlled validation trigger: constrained-triangulation solid builder.
 path = Path("tools/build_revp3_roadqa.py")
 text = path.read_text(encoding="utf-8")
 
