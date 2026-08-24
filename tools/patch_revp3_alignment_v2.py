@@ -39,5 +39,32 @@ new = '''    d3_parts = [sample_line((439.0, 345.0), (590.0, 345.0), 1.2)]
 
 if old not in text:
     raise RuntimeError("Generated D3 Rev.P3 block not found")
-path.write_text(text.replace(old, new, 1), encoding="utf-8")
-print("REV_P3_D3_ALIGNMENT_V2_PATCHED")
+text = text.replace(old, new, 1)
+
+# The original D5 connector retained a 12 m theoretical curve which evaluated
+# below 12 m after discretisation. Increase it to 13 m and shift the loop's
+# west tangent to x=351 m, keeping a genuinely tangent and continuous route.
+replacements = [
+    (
+        '    arc, _ = arc_from_pose((338.0, 128.0), 0.0, 12.0, math.pi / 2.0, 0.7)',
+        '    arc, _ = arc_from_pose((338.0, 128.0), 0.0, 13.0, math.pi / 2.0, 0.7)',
+        "D5 connector radius",
+    ),
+    (
+        '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (350.0, 168.0), 1.0)[1:])',
+        '    d5_connector_parts.append(sample_line(tuple(arc[-1]), (351.0, 168.0), 1.0)[1:])',
+        "D5 tangent endpoint",
+    ),
+    (
+        'd5_loop_xy = rounded_rectangle_centerline(350.0, 155.0, 558.0, 199.0, 13.0, 0.9)',
+        'd5_loop_xy = rounded_rectangle_centerline(351.0, 155.0, 558.0, 199.0, 13.0, 0.9)',
+        "D5 loop west tangent",
+    ),
+]
+for old_text, new_text, label in replacements:
+    if old_text not in text:
+        raise RuntimeError(f"Generated patch target not found: {label}")
+    text = text.replace(old_text, new_text, 1)
+
+path.write_text(text, encoding="utf-8")
+print("REV_P3_ALIGNMENT_V2_PATCHED")
