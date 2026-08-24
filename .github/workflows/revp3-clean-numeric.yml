@@ -1,0 +1,109 @@
+name: Isolated A1 RevP3 Numeric QA
+
+on:
+  push:
+    branches:
+      - tmp-a1-revp3-clean-v1
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_connector_overlap.py
+      - tools/patch_revp3_connector_redesign.py
+      - tools/patch_revp3_polygon_regularize.py
+      - tools/patch_revp3_junction_trim.py
+      - tools/patch_revp3_apron_blend.py
+      - tools/patch_revp3_solid_mesh.py
+      - tools/patch_revp3_mesh_repair.py
+      - tools/patch_revp3_boundary_seal.py
+      - tools/patch_revp3_edge_diag.py
+      - tools/patch_revp3_qa_hardening.py
+      - .github/workflows/revp3-clean-numeric.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_connector_overlap.py
+      - tools/patch_revp3_connector_redesign.py
+      - tools/patch_revp3_polygon_regularize.py
+      - tools/patch_revp3_junction_trim.py
+      - tools/patch_revp3_apron_blend.py
+      - tools/patch_revp3_solid_mesh.py
+      - tools/patch_revp3_mesh_repair.py
+      - tools/patch_revp3_boundary_seal.py
+      - tools/patch_revp3_edge_diag.py
+      - tools/patch_revp3_qa_hardening.py
+      - .github/workflows/revp3-clean-numeric.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numeric-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OUT_ROOT: revp3_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp3-clean-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests networkx
+      - name: Apply controlled Rev.P3 patches
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp3_connector_overlap.py
+          python tools/patch_revp3_connector_redesign.py
+          python tools/patch_revp3_polygon_regularize.py
+          python tools/patch_revp3_junction_trim.py
+          python tools/patch_revp3_apron_blend.py
+          python tools/patch_revp3_solid_mesh.py
+          python tools/patch_revp3_mesh_repair.py
+          python tools/patch_revp3_boundary_seal.py
+          python tools/patch_revp3_edge_diag.py
+          python tools/patch_revp3_qa_hardening.py
+      - name: Build Rev.P3 and enforce numerical acceptance
+        run: python tools/build_revp3_roadqa.py
+      - name: Validate required acceptance fields
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('revp3_output/20_Road_QA_Report_RevP3.json')
+          q=json.loads(p.read_text(encoding='utf-8'))
+          a=q['acceptance']
+          assert a['status']=='PASS', a
+          assert a['open_external_critical_clashes']==0, a
+          assert q['road_building_clashes']==[], q['road_building_clashes']
+          assert q['road_layer_building_clashes']==[], q['road_layer_building_clashes']
+          assert a['maximum_layer_building_intersection_m2']==0.0, a
+          assert a['maximum_longitudinal_grade_pct'] <= 6.000001, a
+          assert a['minimum_horizontal_radius_m'] >= 12.0, a
+          assert a['maximum_junction_gap_m'] <= 0.005, a
+          assert a['maximum_junction_vertical_step_m'] <= 0.020, a
+          assert a['maximum_road_apron_vertical_step_m'] <= 0.020, a
+          assert a['all_primary_road_contours_connected'] is True, a
+          assert a['non_manifold_edges']==0, a
+          assert a['zero_area_faces']==0, a
+          assert a['duplicate_faces']==0, a
+          assert a['inverted_normal_components']==0, a
+          assert a['plan_self_intersections']==0, a
+          assert len(q['closed_revp2_clashes'])==6
+          assert all(item['revp3_intersection_m2']==0.0 for item in q['closed_revp2_clashes'])
+          print(json.dumps(a, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp3-clean-numeric
+          path: revp3_output/
+          retention-days: 1
+          compression-level: 3
