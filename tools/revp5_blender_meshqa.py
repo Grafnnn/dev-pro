@@ -43,7 +43,13 @@ def non_adjacent_overlaps(obj) -> tuple[int, list[dict]]:
 
 def object_metrics(obj) -> dict:
     zero_area = [int(p.index) for p in obj.data.polygons if p.area <= 1.0e-10]
-    zero_length = [int(e.index) for e in obj.data.edges if e.calc_length() <= 1.0e-9]
+    vertices = obj.data.vertices
+    zero_length = []
+    for edge in obj.data.edges:
+        first = vertices[edge.vertices[0]].co
+        second = vertices[edge.vertices[1]].co
+        if (second - first).length <= 1.0e-9:
+            zero_length.append(int(edge.index))
     self_count, examples = non_adjacent_overlaps(obj)
     return {
         "vertices": len(obj.data.vertices),
