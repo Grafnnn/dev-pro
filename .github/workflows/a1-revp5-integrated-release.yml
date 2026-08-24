@@ -9,6 +9,14 @@ on:
       - tools/render_revp5_masterplan_qa.py
       - tools/package_revp5_integrated.py
       - .github/workflows/a1-revp5-integrated-release.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/revp5_blender_meshqa.py
+      - tools/prepare_revp5_release.py
+      - tools/render_revp5_masterplan_qa.py
+      - tools/package_revp5_integrated.py
+      - .github/workflows/a1-revp5-integrated-release.yml
   workflow_dispatch:
 
 concurrency:
