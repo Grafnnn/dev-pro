@@ -10,6 +10,13 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 path = Path("tools/build_revp3_roadqa.py")
 text = path.read_text(encoding="utf-8")
 
+# Replace the prior cubic smoothstep with a grade-integrated profile. The
+# vertical grade ramps linearly from zero, remains constant, and ramps back to
+# zero. This preserves smooth vertical tangency while guaranteeing <=6%.
+old_vertical = '''def assign_linear_z(path_xy: np.ndarray, z0: float, z1: float) -> np.ndarray:\n    path_xy = np.asarray(path_xy, dtype=float)\n    temp = np.column_stack([path_xy[:, :2], np.zeros(len(path_xy))])\n    station = cumulative_xy(temp)\n    if station[-1] < 1.0e-9:\n        z = np.full(len(path_xy), z0)\n    else:\n        t = station / station[-1]\n        z = z0 + (z1 - z0) * (t * t * (3.0 - 2.0 * t))\n    return np.column_stack([path_xy[:, :2], z])'''
+new_vertical = '''def assign_linear_z(path_xy: np.ndarray, z0: float, z1: float) -> np.ndarray:\n    path_xy = np.asarray(path_xy, dtype=float)\n    temp = np.column_stack([path_xy[:, :2], np.zeros(len(path_xy))])\n    station = cumulative_xy(temp)\n    length = float(station[-1])\n    delta = float(z1 - z0)\n    if length < 1.0e-9 or abs(delta) < 1.0e-12:\n        z = np.full(len(path_xy), z0)\n    else:\n        desired_transition = min(40.0, max(5.0, 0.12 * length))\n        maximum_transition = max(0.0, length - abs(delta) / MAX_GRADE)\n        transition = min(desired_transition, 0.90 * maximum_transition)\n        if transition < 1.0e-6:\n            grade = delta / length\n            z = z0 + grade * station\n        else:\n            grade = delta / (length - transition)\n            z = np.empty(len(station), dtype=float)\n            sign = 1.0 if grade >= 0.0 else -1.0\n            magnitude = abs(grade)\n            for index, s in enumerate(station):\n                if s <= transition:\n                    rise = magnitude * s * s / (2.0 * transition)\n                elif s <= length - transition:\n                    rise = magnitude * transition / 2.0 + magnitude * (s - transition)\n                else:\n                    u = s - (length - transition)\n                    rise = magnitude * transition / 2.0 + magnitude * (length - 2.0 * transition) + magnitude * (u - u * u / (2.0 * transition))\n                z[index] = z0 + sign * rise\n            z[-1] = z1\n    return np.column_stack([path_xy[:, :2], z])'''
+text = replace_once(text, old_vertical, new_vertical, "smooth grade-limited vertical profiles")
+
 # D1 starts its controlled S-bend immediately, so the full subbase and the
 # conservative swept envelopes clear the fixed gatehouse.
 text = replace_once(
@@ -20,7 +27,7 @@ text = replace_once(
 )
 
 # D2 is expanded south/east/north and uses a 13 m tangent connector plus
-# 15 m loop corners.  The resulting widest subbase clears BLD_02/02A and the
+# 15 m loop corners. The resulting widest subbase clears BLD_02/02A and the
 # discretized numerical radius remains strictly above 12 m.
 text = replace_once(
     text,
