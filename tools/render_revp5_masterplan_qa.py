@@ -85,11 +85,16 @@ CAMERA_VIEWS = (
     CameraView("02_Orthographic_Top", (304, 220, 900), (304, 220, 110), 55, 740),
     CameraView(
         "03_West_Logistics_Assembly_Quarantine",
-        (155, 287, 700),
-        (155, 287, 110),
+        (304, 240, 700),
+        (304, 240, 110),
         55,
-        320,
+        650,
         required_after=(
+            "REV_P5_MP_ASSEMBLY_PAD_60x40",
+            "REV_P5_MP_TIRE_QUARANTINE",
+            "REV_P5_MP_HEAVY_HAUL_ROUTE",
+        ),
+        fully_framed_after=(
             "REV_P5_MP_ASSEMBLY_PAD_60x40",
             "REV_P5_MP_TIRE_QUARANTINE",
             "REV_P5_MP_HEAVY_HAUL_ROUTE",
