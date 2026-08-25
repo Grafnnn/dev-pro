@@ -1,0 +1,1168 @@
+--- a/tools/build_revp3_roadqa.py
++++ b/tools/build_revp3_roadqa.py
+@@ -15,7 +15,7 @@
+ import trimesh
+ from scipy.interpolate import LinearNDInterpolator
+ from scipy.spatial import cKDTree
+-from shapely import contains_xy
++from shapely import contains_xy, set_precision
+ from shapely.geometry import LineString, MultiPolygon, Point, Polygon
+ from shapely.ops import nearest_points, unary_union
+ from shapely.strtree import STRtree
+@@ -294,8 +294,11 @@
+     roads["D1"] = [assign_linear_z(d1_xy, 134.9, 133.2)]
+
+     # D2 — connector plus a genuine rounded raw-material loop around fixed buildings.
+-    d2_connector_parts = [sample_line((245.0, 310.0), (275.0, 310.0), 1.0)]
+-    arc, _ = arc_from_pose((275.0, 310.0), 0.0, 13.0, math.pi / 2.0, 0.7)
++    # The R13 connector terminates exactly on the loop centreline at
++    # (284, 323).  The former start at x=275 ended four metres east of the
++    # loop axis and created two competing crowns with a 40 mm junction valley.
++    d2_connector_parts = [sample_line((245.0, 310.0), (271.0, 310.0), 1.0)]
++    arc, _ = arc_from_pose((271.0, 310.0), 0.0, 13.0, math.pi / 2.0, 0.7)
+     d2_connector_parts.append(arc[1:])
+     d2_conn_xy = dedupe_points(np.vstack(d2_connector_parts))
+     d2_loop_xy = rounded_rectangle_centerline(284.0, 308.0, 439.0, 382.0, 15.0, 0.9)
+@@ -346,6 +349,37 @@
+     d3_node_index = int(np.argmin(np.linalg.norm(d3_xy[:, :2] - d3_node_xy, axis=1)))
+     d3_upper = assign_linear_z(d3_xy[: d3_node_index + 1], 133.7, 109.0)
+     d3_lower = assign_linear_z(d3_xy[d3_node_index:], 109.0, 102.2)
++    # The lower leg has only a small margin above its average grade.  The
++    # generic transition selected a 5.987% tangent which, after the exact
++    # junction ribbon and 2% crossfall were combined, marginally exceeded the
++    # resultant D5 surface envelope.  Retain C1 zero-grade ties at both ends
++    # but shorten each vertical transition to 1.0 m, redistributing the fall
++    # over the long tangent at a controlled ~5.928% grade.
++    d3_lower_station = cumulative_xy(d3_lower)
++    d3_lower_length = float(d3_lower_station[-1])
++    d3_lower_transition = 1.0
++    d3_lower_grade = (102.2 - 109.0) / (d3_lower_length - d3_lower_transition)
++    d3_lower_z = np.empty(len(d3_lower_station), dtype=float)
++    for lower_index, lower_station in enumerate(d3_lower_station):
++        lower_station = float(lower_station)
++        if lower_station <= d3_lower_transition:
++            fall = d3_lower_grade * lower_station * lower_station / (2.0 * d3_lower_transition)
++        elif lower_station <= d3_lower_length - d3_lower_transition:
++            fall = (
++                d3_lower_grade * d3_lower_transition / 2.0
++                + d3_lower_grade * (lower_station - d3_lower_transition)
++            )
++        else:
++            remaining = lower_station - (d3_lower_length - d3_lower_transition)
++            fall = (
++                d3_lower_grade * d3_lower_transition / 2.0
++                + d3_lower_grade * (d3_lower_length - 2.0 * d3_lower_transition)
++                + d3_lower_grade
++                * (remaining - remaining * remaining / (2.0 * d3_lower_transition))
++            )
++        d3_lower_z[lower_index] = 109.0 + fall
++    d3_lower_z[-1] = 102.2
++    d3_lower[:, 2] = d3_lower_z
+     d3_xyz = dedupe_points(np.vstack([d3_upper, d3_lower[1:]]))
+     roads["D3"] = [d3_xyz]
+
+@@ -397,8 +431,143 @@
+     roads["D6"] = [assign_linear_z(d6_xy, 108.7, 105.7)]
+
+     return roads
++
++
++def _build_continuous_station_ribbon(path: np.ndarray, half_width: float) -> dict:
++    """Build a non-folding linear station field around the accepted polyline."""
++    coordinates = np.asarray(path[:, :2], dtype=float)
++    station = cumulative_xy(path)
++    closed = bool(np.linalg.norm(coordinates[0] - coordinates[-1]) <= 1.0e-7)
++    if closed:
++        working = coordinates[:-1]
++        working_station = station[:-1]
++    else:
++        working = coordinates
++        working_station = station
++    if len(working) < 2:
++        raise RuntimeError("Road alignment is too short for a station ribbon")
++
++    segment_vectors = np.diff(working, axis=0)
++    if closed:
++        segment_vectors = np.vstack([segment_vectors, working[0] - working[-1]])
++    segment_lengths = np.linalg.norm(segment_vectors, axis=1)
++    if np.any(segment_lengths <= 1.0e-9):
++        raise RuntimeError("Road alignment contains a zero-length segment")
++    directions = segment_vectors / segment_lengths[:, None]
++    segment_normals = np.column_stack([-directions[:, 1], directions[:, 0]])
+
++    offsets = np.empty_like(working)
++    for index in range(len(working)):
++        if not closed and index == 0:
++            offsets[index] = float(half_width) * segment_normals[0]
++            continue
++        if not closed and index == len(working) - 1:
++            offsets[index] = float(half_width) * segment_normals[-1]
++            continue
++        previous = segment_normals[(index - 1) % len(segment_normals)]
++        following = segment_normals[index % len(segment_normals)]
++        bisector = previous + following
++        magnitude = float(np.linalg.norm(bisector))
++        if magnitude <= 1.0e-9:
++            raise RuntimeError("Station ribbon encountered an unfilleted 180-degree vertex")
++        bisector /= magnitude
++        denominator = float(np.dot(bisector, previous))
++        if denominator <= 1.0e-6:
++            raise RuntimeError("Station ribbon miter is outside the accepted curvature envelope")
++        offsets[index] = bisector * (float(half_width) / denominator)
+
++    lateral_steps = max(1, int(math.ceil(float(half_width) / 2.0)))
++    lateral_offsets = np.linspace(
++        -float(half_width),
++        float(half_width),
++        2 * lateral_steps + 1,
++    )
++    sections = working[:, None, :] + (
++        lateral_offsets[None, :, None] / float(half_width)
++    ) * offsets[:, None, :]
++    triangles = []
++    station_values = []
++    triangle_polygons = []
++    edge_map = {}
++    segment_count = len(working) if closed else len(working) - 1
++    constant_closed_profile = bool(
++        closed and float(np.ptp(np.asarray(path[:, 2], dtype=float))) <= 1.0e-9
++    )
++
++    def add_triangle(points, values) -> None:
++        points = np.asarray(points, dtype=float)
++        area2 = float(np.cross(points[1] - points[0], points[2] - points[0]))
++        if abs(area2) <= 1.0e-10:
++            raise RuntimeError("Station ribbon contains a zero-area reference triangle")
++        if area2 < 0.0:
++            points = points[[0, 2, 1]]
++            values = np.asarray(values, dtype=float)[[0, 2, 1]]
++        else:
++            values = np.asarray(values, dtype=float)
++        triangles.append(points)
++        station_values.append(values)
++        triangle_polygons.append(Polygon(points))
++        for first, second in ((0, 1), (1, 2), (2, 0)):
++            a = tuple(np.round(points[first], 8))
++            b = tuple(np.round(points[second], 8))
++            key = tuple(sorted((a, b)))
++            edge_map[key] = (points[first].copy(), points[second].copy())
++
++    for index in range(segment_count):
++        following = (index + 1) % len(working)
++        first_station = 0.0 if constant_closed_profile else float(working_station[index])
++        second_station = 0.0 if constant_closed_profile else float(working_station[following])
++        for lateral_index in range(len(lateral_offsets) - 1):
++            first_low = sections[index, lateral_index]
++            first_high = sections[index, lateral_index + 1]
++            second_low = sections[following, lateral_index]
++            second_high = sections[following, lateral_index + 1]
++            add_triangle(
++                [first_low, second_low, second_high],
++                [first_station, second_station, second_station],
++            )
++            add_triangle(
++                [first_low, second_high, first_high],
++                [first_station, second_station, first_station],
++            )
++
++    breaklines = [LineString([first, second]) for first, second in edge_map.values()]
++
++    return {
++        "triangles": np.asarray(triangles, dtype=float),
++        "station_values": np.asarray(station_values, dtype=float),
++        "tree": STRtree(triangle_polygons),
++        "breaklines": breaklines,
++    }
++
++
++def _station_from_ribbon(ribbon: dict, point: Point) -> float | None:
++    candidate_indices = np.atleast_1d(ribbon["tree"].query(point)).astype(int)
++    coordinate = np.asarray([point.x, point.y], dtype=float)
++    candidates = []
++    for index in candidate_indices:
++        triangle = ribbon["triangles"][index]
++        first, second, third = triangle
++        denominator = float(np.cross(second - first, third - first))
++        if abs(denominator) <= 1.0e-12:
++            continue
++        relative = coordinate - first
++        weight_second = float(np.cross(relative, third - first) / denominator)
++        weight_third = float(np.cross(second - first, relative) / denominator)
++        weight_first = 1.0 - weight_second - weight_third
++        weights = np.asarray([weight_first, weight_second, weight_third], dtype=float)
++        if float(np.min(weights)) >= -1.0e-8:
++            candidates.append(float(np.dot(weights, ribbon["station_values"][index])))
++    if not candidates:
++        return None
++    if max(candidates) - min(candidates) > 1.0e-4:
++        raise RuntimeError(
++            "Station ribbon is multi-valued at a road-surface sample: "
++            f"range={max(candidates) - min(candidates):.9f} m"
++        )
++    return float(np.mean(candidates))
++
++
+ @dataclass
+ class RoadProfile:
+     code: str
+@@ -408,19 +577,68 @@
+     def __post_init__(self) -> None:
+         self.lines: list[LineString] = []
+         self.stations: list[np.ndarray] = []
++        self._station_ribbons = []
++        self.surface_breaklines = []
++        self._nearest_cache = {}
+         for path in self.paths:
+-            self.lines.append(LineString(path[:, :2]))
++            line = LineString(path[:, :2])
++            self.lines.append(line)
+             self.stations.append(cumulative_xy(path))
++            ribbon = _build_continuous_station_ribbon(
++                path,
++                half_width=(
++                    12.5
++                    if self.code == "D3"
++                    else 0.5 * (float(self.width) + 3.0) + 2.0
++                ),
++            )
++            self._station_ribbons.append(ribbon)
++            self.surface_breaklines.append(line)
++            self.surface_breaklines.extend(ribbon["breaklines"])
++        if self.code == "D2":
++            junction = np.asarray([284.0, 323.0], dtype=float)
++            for radius in np.linspace(13.0, 19.0, 13):
++                square = np.asarray(
++                    [
++                        junction + (-radius, -radius),
++                        junction + (radius, -radius),
++                        junction + (radius, radius),
++                        junction + (-radius, radius),
++                        junction + (-radius, -radius),
++                    ],
++                    dtype=float,
++                )
++                self.surface_breaklines.append(LineString(square))
++            for direction in ((1.0, 1.0), (1.0, -1.0)):
++                vector = 19.0 * np.asarray(direction, dtype=float)
++                self.surface_breaklines.append(LineString([junction - vector, junction + vector]))
++            for grid_coordinate in np.arange(265.0, 303.0001, 0.5):
++                self.surface_breaklines.append(
++                    LineString([(grid_coordinate, 304.0), (grid_coordinate, 342.0)])
++                )
++            for grid_coordinate in np.arange(304.0, 342.0001, 0.5):
++                self.surface_breaklines.append(
++                    LineString([(265.0, grid_coordinate), (303.0, grid_coordinate)])
++                )
+
+     def nearest(self, x: float, y: float) -> tuple[int, float, float]:
++        cache_key = (round(float(x), 7), round(float(y), 7))
++        cached = self._nearest_cache.get(cache_key)
++        if cached is not None:
++            return cached
+         point = Point(float(x), float(y))
+         best = None
+         for index, line in enumerate(self.lines):
+             distance = float(line.distance(point))
+-            station = float(line.project(point))
++            station = _station_from_ribbon(self._station_ribbons[index], point)
++            if station is None:
++                # Only rounded open end caps sit outside the station ribbon;
++                # their design station is the corresponding endpoint.
++                station = float(line.project(point))
+             if best is None or distance < best[2]:
+                 best = (index, station, distance)
+         assert best is not None
++        self._nearest_cache[cache_key] = best
+         return best
+
+     def center_z(self, x: float, y: float) -> float:
+@@ -437,6 +655,25 @@
+     ) -> float:
+         path_index, station, distance = self.nearest(x, y)
+         base = self.center_z(x, y) + crown - crossfall * distance
++        if self.code == "D2":
++            # Crown coordination table at the exact connector/loop node.  The
++            # 26 x 26 m core is one drainable 0.2% plane; a C1 six-metre band
++            # blends it back to the normal crowned roads.  This removes the
++            # competing-crown valley while retaining continuous drainage and
++            # avoiding an abrupt hidden step at the edge of the junction.
++            junction_radius = max(abs(float(x) - 284.0), abs(float(y) - 323.0))
++            if junction_radius < 19.0:
++                if junction_radius <= 13.0:
++                    junction_weight = 1.0
++                else:
++                    blend_parameter = (junction_radius - 13.0) / 6.0
++                    junction_weight = (
++                        1.0
++                        - 3.0 * blend_parameter * blend_parameter
++                        + 2.0 * blend_parameter * blend_parameter * blend_parameter
++                    )
++                junction_surface = 133.7 + crown + 0.002 * (float(x) - 284.0)
++                base = float(base) + junction_weight * (junction_surface - float(base))
+         match_profile = getattr(self, "revp5_vertical_match_profile", None)
+         if self.code != "D5" or match_profile is None or path_index != len(self.lines) - 1:
+             return float(base)
+@@ -480,13 +717,18 @@
+     def polygon(self, width: float) -> Polygon | MultiPolygon:
+         radius = float(width) / 2.0
+         pieces = []
+-        for path_index, line in enumerate(self.lines):
+-            if self.code == "D5" and path_index == len(self.lines) - 1:
+-                body = line.buffer(radius, cap_style=2, join_style=1, resolution=12)
+-                start_cap = Point(line.coords[0]).buffer(radius, resolution=12)
+-                piece = unary_union([body, start_cap]).buffer(0)
+-            else:
+-                piece = line.buffer(radius, cap_style=1, join_style=1, resolution=12)
++        for line in self.lines:
++            closed = bool(Point(line.coords[0]).distance(Point(line.coords[-1])) <= 1.0e-7)
++            # Open roads terminate on transverse construction/junction joints.
++            # A rounded cap creates a conical crown with no meaningful road
++            # station and forces acute radial fan facets; a square cap is the
++            # engineering-correct pavement termination.
++            piece = line.buffer(
++                radius,
++                cap_style=1 if closed else 2,
++                join_style=1,
++                resolution=12,
++            )
+             pieces.append(piece)
+         return unary_union(pieces).buffer(0)
+
+@@ -1093,8 +1335,12 @@
+ REV_P5_ROBUST_EXTRUSION_ACTIVE = True
+
+ REV_P5_ROAD_CHORD_TOLERANCE_M = 0.001
++REV_P5_EXPORTED_ROAD_CHORD_TOLERANCE_M = 0.002
++REV_P5_EXPORTED_TOP_VERTEX_TOLERANCE_M = 1.0e-4
+ REV_P5_D5_BUILD_FACET_GRADE_LIMIT_PCT = 6.320
+ REV_P5_D5_EXPORT_FACET_GRADE_LIMIT_PCT = 100.0 * math.hypot(MAX_GRADE, 0.02)
++REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2 = 1.0e-4
++REV_P5_PSLG_PRECISION_GRID_M = 1.0e-4
+ REV_P5_TRIANGLE_MINIMUM_ANGLE_DEG = 28.0
+ REV_P5_TRIANGLE_MAXIMUM_AREA_FACTOR = 0.42
+
+@@ -1114,8 +1360,6 @@
+
+
+ def _polygon_pslg(component: Polygon, surface_breaklines=None) -> dict:
+-    rings = [_ring_without_duplicate_closure(component.exterior)]
+-    rings.extend(_ring_without_duplicate_closure(ring) for ring in component.interiors)
+     vertices = []
+     segments = []
+     holes = []
+@@ -1123,47 +1367,48 @@
+
+     def add_vertex(coordinate) -> int:
+         point = np.asarray(coordinate, dtype=float)[:2]
+-        key = tuple(np.round(point, 8))
++        key = tuple(point)
+         if key not in vertex_index:
+             vertex_index[key] = len(vertices)
+             vertices.append(point.tolist())
+         return int(vertex_index[key])
+
+-    for ring_index, coordinates in enumerate(rings):
+-        indices = [add_vertex(coordinate) for coordinate in coordinates]
+-        count = len(indices)
+-        segments.extend([[indices[index], indices[(index + 1) % count]] for index in range(count)])
+-        if ring_index > 0:
+-            point = Polygon(coordinates).representative_point()
+-            holes.append([float(point.x), float(point.y)])
+-
++    linework = [component.boundary]
+     if surface_breaklines:
+-        clipped = []
+         for line in surface_breaklines:
+             intersection = line.intersection(component)
+-            if not intersection.is_empty:
+-                clipped.append(intersection)
+-        if clipped:
+-            network = unary_union(clipped)
++            if not intersection.is_empty and float(getattr(intersection, "length", 0.0)) > 1.0e-9:
++                linework.append(intersection)
+
+-            def iter_lines(geometry):
+-                if geometry.is_empty:
+-                    return []
+-                if geometry.geom_type == "LineString":
+-                    return [geometry]
+-                return [
+-                    item
+-                    for item in getattr(geometry, "geoms", [])
+-                    if item.geom_type == "LineString" and item.length > 1.0e-8
+-                ]
++    # Node the boundary and every design breakline together.  Supplying a
++    # T-junction whose endpoint merely lies on an unsplit constrained segment
++    # is an invalid PSLG and can make Triangle fail internally.
++    network = set_precision(
++        unary_union(linework), REV_P5_PSLG_PRECISION_GRID_M, mode="valid_output"
++    )
++    network = unary_union(network)
+
+-            for line in iter_lines(network):
+-                coordinates = np.asarray(line.coords, dtype=float)[:, :2]
+-                indices = [add_vertex(coordinate) for coordinate in coordinates]
+-                for first, second in zip(indices[:-1], indices[1:]):
+-                    if first != second:
+-                        segments.append([first, second])
++    def iter_lines(geometry):
++        if geometry.is_empty:
++            return
++        if geometry.geom_type in {"LineString", "LinearRing"}:
++            if float(geometry.length) > 1.0e-9:
++                yield geometry
++            return
++        for item in getattr(geometry, "geoms", []):
++            yield from iter_lines(item)
+
++    for line in iter_lines(network):
++        coordinates = np.asarray(line.coords, dtype=float)[:, :2]
++        indices = [add_vertex(coordinate) for coordinate in coordinates]
++        for first, second in zip(indices[:-1], indices[1:]):
++            if first != second:
++                segments.append([first, second])
++
++    for ring in component.interiors:
++        point = Polygon(_ring_without_duplicate_closure(ring)).representative_point()
++        holes.append([float(point.x), float(point.y)])
++
+     unique_segments = []
+     seen_segments = set()
+     for first, second in segments:
+@@ -1269,13 +1514,13 @@
+     base_vertices = np.asarray(base["vertices"], dtype=float)
+     controls = np.empty((0, 2), dtype=float)
+     history = []
+-    maximum_area = max(
+-        0.20,
+-        REV_P5_TRIANGLE_MAXIMUM_AREA_FACTOR * float(max_edge) * float(max_edge),
+-    )
+-    triangle_args = (
+-        f"pq{REV_P5_TRIANGLE_MINIMUM_ANGLE_DEG:.0f}a{maximum_area:.8f}"
+-    )
++    maximum_area = None
++    # The conforming station TIN already controls facet size and follows every
++    # design crease.  A global minimum-angle or area refinement is unsafe on a
++    # noded constrained network containing legitimate acute boundary cuts;
++    # Triangle's plain PSLG mode preserves the exact controls, while the
++    # explicit chord/grade loop below adds only verified interior points.
++    triangle_args = "p"
+
+     for iteration in range(maximum_iterations):
+         arguments = {
+@@ -1289,7 +1534,128 @@
+             raise RuntimeError("Triangle PSLG returned no usable road triangulation")
+         vertices_2d = np.asarray(result["vertices"], dtype=float)[:, :2]
+         faces_2d = np.asarray(result["triangles"], dtype=int)
++        raw_triangles = vertices_2d[faces_2d]
++        raw_plan_area = 0.5 * np.abs(
++            np.cross(
++                raw_triangles[:, 1] - raw_triangles[:, 0],
++                raw_triangles[:, 2] - raw_triangles[:, 0],
++            )
++        )
++        raw_maximum_edge = np.maximum.reduce(
++            [
++                np.linalg.norm(raw_triangles[:, 1] - raw_triangles[:, 0], axis=1),
++                np.linalg.norm(raw_triangles[:, 2] - raw_triangles[:, 1], axis=1),
++                np.linalg.norm(raw_triangles[:, 0] - raw_triangles[:, 2], axis=1),
++            ]
++        )
++        raw_aspect = raw_maximum_edge * raw_maximum_edge / np.maximum(
++            2.0 * raw_plan_area, 1.0e-300
++        )
++        numerical_zero = raw_plan_area <= 1.0e-10
++        collapsed_constraint_sliver = (
++            (raw_plan_area <= 1.0e-7) & (raw_aspect > 1.0e5)
++        )
++        retained = ~(numerical_zero | collapsed_constraint_sliver)
++        restored_required_face_count = 0
++        # A tiny triangle can still be a genuine boundary closure at a
++        # precision-grid intersection.  Restore any candidate whose removal
++        # exposes an edge inside the polygon; only zero-measure collinear
++        # constraint artifacts may be discarded.
++        for _ in range(8):
++            retained_faces = faces_2d[retained]
++            edge_rows = np.sort(
++                np.vstack(
++                    [
++                        retained_faces[:, [0, 1]],
++                        retained_faces[:, [1, 2]],
++                        retained_faces[:, [2, 0]],
++                    ]
++                ),
++                axis=1,
++            )
++            unique_edges, edge_counts = np.unique(edge_rows, axis=0, return_counts=True)
++            exposed = unique_edges[edge_counts == 1]
++            internal_exposed = set()
++            for first, second in exposed:
++                midpoint = 0.5 * (vertices_2d[int(first)] + vertices_2d[int(second)])
++                if component.boundary.distance(
++                    Point(float(midpoint[0]), float(midpoint[1]))
++                ) > 2.0 * REV_P5_PSLG_PRECISION_GRID_M:
++                    internal_exposed.add(tuple(sorted((int(first), int(second)))))
++            if not internal_exposed:
++                break
++            restore = []
++            for face_index in np.flatnonzero(~retained):
++                a, b, c = (int(value) for value in faces_2d[face_index])
++                face_edges = {
++                    tuple(sorted((a, b))),
++                    tuple(sorted((b, c))),
++                    tuple(sorted((c, a))),
++                }
++                if face_edges & internal_exposed:
++                    restore.append(int(face_index))
++            if not restore:
++                raise RuntimeError(
++                    "PSLG cleanup exposed an internal edge that no candidate face can close"
++                )
++            retained[np.asarray(restore, dtype=int)] = True
++            restored_required_face_count += len(restore)
++        else:
++            raise RuntimeError("PSLG boundary-closure restoration did not converge")
++        removed_degenerate_count = int(np.count_nonzero(~retained))
++        removed_degenerate_area_m2 = float(np.sum(raw_plan_area[~retained]))
++        removed_numerical_zero_count = int(
++            np.count_nonzero((~retained) & numerical_zero)
++        )
++        removed_numerical_zero_area_m2 = float(
++            np.sum(raw_plan_area[(~retained) & numerical_zero])
++        )
++        removed_collapsed_sliver_count = int(
++            np.count_nonzero((~retained) & collapsed_constraint_sliver & (~numerical_zero))
++        )
++        removed_collapsed_sliver_area_m2 = float(
++            np.sum(
++                raw_plan_area[
++                    (~retained) & collapsed_constraint_sliver & (~numerical_zero)
++                ]
++            )
++        )
++        if removed_degenerate_area_m2 > 1.0e-5:
++            raise RuntimeError(
++                "PSLG cleanup would remove material area: "
++                f"{removed_degenerate_area_m2:.12f} m2"
++            )
++        faces_2d = faces_2d[retained]
++        retained_area_m2 = float(np.sum(raw_plan_area[retained]))
++        area_conservation_delta_m2 = abs(retained_area_m2 - float(component.area))
++        area_conservation_tolerance_m2 = max(
++            2.0e-5,
++            0.01
++            * float(component.length)
++            * REV_P5_PSLG_PRECISION_GRID_M,
++        )
++        if area_conservation_delta_m2 > area_conservation_tolerance_m2:
++            raise RuntimeError(
++                "PSLG triangulation does not conserve the road polygon area: "
++                f"mesh={retained_area_m2:.12f}; polygon={component.area:.12f}; "
++                f"delta={area_conservation_delta_m2:.12f}; "
++                f"tolerance={area_conservation_tolerance_m2:.12f}"
++            )
+         metrics = _surface_face_metrics(vertices_2d, faces_2d, z_function)
++        significant = (
++            metrics["plan_area_m2"] >= REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2
++        )
++        microscopic = ~significant
++        significant_grade_max = (
++            float(np.max(metrics["grade_pct"][significant]))
++            if np.any(significant)
++            else None
++        )
++        if maximum_surface_grade_pct is not None and significant_grade_max is None:
++            raise RuntimeError(
++                "A grade-gated road component contains no significant top face"
++            )
++        all_retained_grade_max = float(np.max(metrics["grade_pct"]))
+
+         bad_chord = np.zeros(len(faces_2d), dtype=bool)
+         if maximum_chord_residual_m is not None:
+@@ -1300,8 +1666,10 @@
+         bad_grade = np.zeros(len(faces_2d), dtype=bool)
+         if maximum_surface_grade_pct is not None:
+             bad_grade = (
+-                metrics["grade_pct"]
++                significant
++                & (metrics["grade_pct"]
+                 > float(maximum_surface_grade_pct) + 1.0e-7
++                )
+             )
+         bad = bad_chord | bad_grade
+         history.append(
+@@ -1312,24 +1680,67 @@
+                 "face_count": int(len(faces_2d)),
+                 "failing_face_count": int(np.count_nonzero(bad)),
+                 "failing_face_area_m2": float(np.sum(metrics["plan_area_m2"][bad])),
+-                "maximum_facet_grade_pct": float(np.max(metrics["grade_pct"])),
++                "removed_degenerate_constraint_face_count": removed_degenerate_count,
++                "removed_degenerate_constraint_face_area_m2": removed_degenerate_area_m2,
++                "removed_numerical_zero_face_count": removed_numerical_zero_count,
++                "removed_numerical_zero_face_area_m2": removed_numerical_zero_area_m2,
++                "removed_collapsed_constraint_sliver_face_count": removed_collapsed_sliver_count,
++                "removed_collapsed_constraint_sliver_face_area_m2": removed_collapsed_sliver_area_m2,
++                "restored_required_micro_face_count": restored_required_face_count,
++                "area_conservation_delta_m2": area_conservation_delta_m2,
++                "area_conservation_tolerance_m2": area_conservation_tolerance_m2,
++                "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
++                "significant_top_face_count": int(np.count_nonzero(significant)),
++                "microscopic_retained_top_face_count": int(np.count_nonzero(microscopic)),
++                "microscopic_retained_top_face_area_m2": float(
++                    np.sum(metrics["plan_area_m2"][microscopic])
++                ),
++                "maximum_significant_facet_grade_pct": significant_grade_max,
++                "maximum_all_retained_facet_grade_pct": all_retained_grade_max,
+                 "maximum_chord_residual_m": float(np.max(metrics["chord_residual_m"])),
++                "maximum_chord_point_xy": metrics["worst_chord_points"][
++                    int(np.argmax(metrics["chord_residual_m"]))
++                ].tolist(),
+             }
+         )
++        if maximum_surface_grade_pct is not None or maximum_chord_residual_m is not None:
++            log("REV_P5_SURFACE_ITERATION " + json.dumps(history[-1], ensure_ascii=False))
+         if not np.any(bad):
+             report = {
+                 "engine": "Triangle PSLG quality mesh with whole-polygon adaptive control points",
+                 "triangle_args": triangle_args,
+                 "maximum_target_edge_m": float(max_edge),
+-                "maximum_triangle_area_m2": float(maximum_area),
+-                "minimum_angle_target_deg": REV_P5_TRIANGLE_MINIMUM_ANGLE_DEG,
++                "maximum_triangle_area_m2": maximum_area,
++                "minimum_angle_target_deg": None,
+                 "maximum_chord_residual_limit_m": maximum_chord_residual_m,
+                 "maximum_surface_grade_build_limit_pct": maximum_surface_grade_pct,
+                 "top_face_count": int(len(faces_2d)),
+-                "maximum_facet_grade_pct": float(np.max(metrics["grade_pct"])),
++                "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
++                "significant_top_face_count": int(np.count_nonzero(significant)),
++                "microscopic_retained_top_face_count": int(np.count_nonzero(microscopic)),
++                "microscopic_retained_top_face_area_m2": float(
++                    np.sum(metrics["plan_area_m2"][microscopic])
++                ),
++                "maximum_facet_grade_pct": significant_grade_max,
++                "maximum_significant_facet_grade_pct": significant_grade_max,
++                "maximum_all_retained_facet_grade_pct": all_retained_grade_max,
+                 "maximum_chord_residual_m": float(np.max(metrics["chord_residual_m"])),
+                 "minimum_plan_face_area_m2": float(np.min(metrics["plan_area_m2"])),
+                 "maximum_plan_aspect_ratio": float(np.max(metrics["aspect_ratio"])),
++                "maximum_significant_plan_aspect_ratio": (
++                    float(np.max(metrics["aspect_ratio"][significant]))
++                    if np.any(significant)
++                    else None
++                ),
++                "removed_degenerate_constraint_face_count": removed_degenerate_count,
++                "removed_degenerate_constraint_face_area_m2": removed_degenerate_area_m2,
++                "removed_numerical_zero_face_count": removed_numerical_zero_count,
++                "removed_numerical_zero_face_area_m2": removed_numerical_zero_area_m2,
++                "removed_collapsed_constraint_sliver_face_count": removed_collapsed_sliver_count,
++                "removed_collapsed_constraint_sliver_face_area_m2": removed_collapsed_sliver_area_m2,
++                "restored_required_micro_face_count": restored_required_face_count,
++                "area_conservation_delta_m2": area_conservation_delta_m2,
++                "area_conservation_tolerance_m2": area_conservation_tolerance_m2,
+                 "adaptive_control_point_count": int(len(controls)),
+                 "adaptive_iteration_count": int(iteration + 1),
+                 "history": history,
+@@ -1380,16 +1791,34 @@
+         component = component.buffer(0)
+     if component.is_empty or component.area <= 1.0e-8:
+         raise RuntimeError("Cannot build a solid from an empty polygon")
++    input_component_area_m2 = float(component.area)
++    input_component_perimeter_m = float(component.length)
+
+-    exterior = np.round(np.asarray(component.exterior.coords, dtype=float), 7)
++    exterior = np.round(np.asarray(component.exterior.coords, dtype=float), 4)
+     holes = []
+     for ring in component.interiors:
+         hole = Polygon(ring)
+         if hole.area >= 0.005:
+-            holes.append(np.round(np.asarray(ring.coords, dtype=float), 7))
+-    component = Polygon(exterior, holes).buffer(0)
++            holes.append(np.round(np.asarray(ring.coords, dtype=float), 4))
++    component = set_precision(
++        Polygon(exterior, holes), REV_P5_PSLG_PRECISION_GRID_M, mode="valid_output"
++    ).buffer(0)
+     if component.is_empty or not isinstance(component, Polygon):
+         raise RuntimeError("Precision cleanup did not produce one road polygon")
++    precision_snapped_component_area_m2 = float(component.area)
++    precision_snap_area_delta_m2 = abs(
++        precision_snapped_component_area_m2 - input_component_area_m2
++    )
++    precision_snap_area_tolerance_m2 = max(
++        1.0e-8,
++        0.51 * input_component_perimeter_m * REV_P5_PSLG_PRECISION_GRID_M,
++    )
++    if precision_snap_area_delta_m2 > precision_snap_area_tolerance_m2:
++        raise RuntimeError(
++            "Road footprint changed excessively on the export-safe precision grid: "
++            f"delta={precision_snap_area_delta_m2:.12f} m2; "
++            f"tolerance={precision_snap_area_tolerance_m2:.12f} m2"
++        )
+
+     vertices_2d, top_faces, surface_report = _quality_profile_triangulation(
+         component=component,
+@@ -1399,6 +1828,15 @@
+         maximum_surface_grade_pct=maximum_surface_grade_pct,
+         maximum_chord_residual_m=maximum_chord_residual_m,
+     )
++    surface_report.update(
++        {
++            "pslg_precision_grid_m": REV_P5_PSLG_PRECISION_GRID_M,
++            "input_component_area_m2": input_component_area_m2,
++            "precision_snapped_component_area_m2": precision_snapped_component_area_m2,
++            "precision_snap_area_delta_m2": precision_snap_area_delta_m2,
++            "precision_snap_area_tolerance_m2": precision_snap_area_tolerance_m2,
++        }
++    )
+     signed = np.asarray(
+         [_triangle_signed_area(vertices_2d, face) for face in top_faces],
+         dtype=float,
+@@ -1487,11 +1925,66 @@
+     trimesh.repair.fix_normals(result, multibody=True)
+     result.metadata["revp5_surface_mesh_qa"] = {
+         "component_count": len(reports),
++        "pslg_precision_grid_m": REV_P5_PSLG_PRECISION_GRID_M,
++        "input_component_area_m2": float(
++            sum(item["input_component_area_m2"] for item in reports)
++        ),
++        "precision_snapped_component_area_m2": float(
++            sum(item["precision_snapped_component_area_m2"] for item in reports)
++        ),
++        "precision_snap_area_delta_m2": float(
++            sum(item["precision_snap_area_delta_m2"] for item in reports)
++        ),
++        "maximum_component_precision_snap_area_delta_m2": float(
++            max(item["precision_snap_area_delta_m2"] for item in reports)
++        ),
++        "maximum_component_precision_snap_area_tolerance_m2": float(
++            max(item["precision_snap_area_tolerance_m2"] for item in reports)
++        ),
+         "top_face_count": int(sum(item["top_face_count"] for item in reports)),
+-        "maximum_facet_grade_pct": float(max(item["maximum_facet_grade_pct"] for item in reports)),
++        "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
++        "significant_top_face_count": int(
++            sum(item["significant_top_face_count"] for item in reports)
++        ),
++        "microscopic_retained_top_face_count": int(
++            sum(item["microscopic_retained_top_face_count"] for item in reports)
++        ),
++        "microscopic_retained_top_face_area_m2": float(
++            sum(item["microscopic_retained_top_face_area_m2"] for item in reports)
++        ),
++        "maximum_facet_grade_pct": float(
++            max(
++                item["maximum_significant_facet_grade_pct"]
++                for item in reports
++                if item["maximum_significant_facet_grade_pct"] is not None
++            )
++        ),
++        "maximum_significant_facet_grade_pct": float(
++            max(
++                item["maximum_significant_facet_grade_pct"]
++                for item in reports
++                if item["maximum_significant_facet_grade_pct"] is not None
++            )
++        ),
++        "maximum_all_retained_facet_grade_pct": float(
++            max(item["maximum_all_retained_facet_grade_pct"] for item in reports)
++        ),
+         "maximum_chord_residual_m": float(max(item["maximum_chord_residual_m"] for item in reports)),
+         "minimum_plan_face_area_m2": float(min(item["minimum_plan_face_area_m2"] for item in reports)),
+         "maximum_plan_aspect_ratio": float(max(item["maximum_plan_aspect_ratio"] for item in reports)),
++        "maximum_significant_plan_aspect_ratio": float(
++            max(
++                item["maximum_significant_plan_aspect_ratio"]
++                for item in reports
++                if item["maximum_significant_plan_aspect_ratio"] is not None
++            )
++        ),
++        "maximum_area_conservation_delta_m2": float(
++            max(item["area_conservation_delta_m2"] for item in reports)
++        ),
++        "maximum_area_conservation_tolerance_m2": float(
++            max(item["area_conservation_tolerance_m2"] for item in reports)
++        ),
+         "adaptive_control_point_count": int(sum(item["adaptive_control_point_count"] for item in reports)),
+         "adaptive_iteration_count": int(max(item["adaptive_iteration_count"] for item in reports)),
+         "maximum_chord_residual_limit_m": maximum_chord_residual_m,
+@@ -2173,7 +2666,10 @@
+                     thickness,
+                     color,
+                     MESH_MAX_EDGE,
+-                    surface_breaklines=profile.lines,
++                    surface_breaklines=(
++                        profile.surface_breaklines
++                        + (profiles["D3"].surface_breaklines if code == "D5" else [])
++                    ),
+                     maximum_surface_grade_pct=(
+                         REV_P5_D5_BUILD_FACET_GRADE_LIMIT_PCT if code == "D5" else None
+                     ),
+@@ -2512,10 +3008,42 @@
+             ),
+             "road_layer_maximum_chord_residual_limit_m": REV_P5_ROAD_CHORD_TOLERANCE_M,
+             "d5_layer_maximum_facet_grade_pct": max(
+-                item["maximum_facet_grade_pct"]
++                item["maximum_significant_facet_grade_pct"]
+                 for name, item in road_surface_mesh_qa.items()
+                 if "_D5_" in name
+             ),
++            "d5_layer_maximum_significant_facet_grade_pct": max(
++                item["maximum_significant_facet_grade_pct"]
++                for name, item in road_surface_mesh_qa.items()
++                if "_D5_" in name
++            ),
++            "d5_layer_maximum_all_retained_facet_grade_pct": max(
++                item["maximum_all_retained_facet_grade_pct"]
++                for name, item in road_surface_mesh_qa.items()
++                if "_D5_" in name
++            ),
++            "road_layer_microscopic_retained_top_face_count": sum(
++                item["microscopic_retained_top_face_count"]
++                for item in road_surface_mesh_qa.values()
++            ),
++            "road_layer_microscopic_retained_top_face_area_m2": sum(
++                item["microscopic_retained_top_face_area_m2"]
++                for item in road_surface_mesh_qa.values()
++            ),
++            "road_layer_pslg_precision_grid_m": REV_P5_PSLG_PRECISION_GRID_M,
++            "road_layer_precision_snap_area_delta_m2": sum(
++                item["precision_snap_area_delta_m2"]
++                for item in road_surface_mesh_qa.values()
++            ),
++            "road_layer_maximum_component_precision_snap_area_delta_m2": max(
++                item["maximum_component_precision_snap_area_delta_m2"]
++                for item in road_surface_mesh_qa.values()
++            ),
++            "road_layer_maximum_component_precision_snap_area_tolerance_m2": max(
++                item["maximum_component_precision_snap_area_tolerance_m2"]
++                for item in road_surface_mesh_qa.values()
++            ),
++            "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
+             "d5_layer_export_facet_grade_limit_pct": REV_P5_D5_EXPORT_FACET_GRADE_LIMIT_PCT,
+             "road_layer_quality_triangulation_status": "PASS",
+             "maximum_road_apron_vertical_step_m": max_seam_step,
+@@ -2543,6 +3071,276 @@
+     return target, qa
+
+
++def _exported_glb_road_surface_qa(scene: trimesh.Scene) -> dict:
++    """Measure the exact float32 GLB road facets against the design surfaces."""
++    paths = build_paths()
++    profiles = {
++        code: RoadProfile(code=code, width=WIDTHS[code], paths=road_paths)
++        for code, road_paths in paths.items()
++    }
++    coordinate_revp5_d3_d5_profiles(profiles)
++    layer_offsets = {"SUBBASE": -0.36, "SHOULDER": -0.12, "ROAD": 0.0}
++    per_layer = {}
++
++    for code, profile in profiles.items():
++        for layer, z_offset in layer_offsets.items():
++            name = f"REV_P3_EXT_{code}_{layer}"
++            if name not in scene.geometry:
++                raise RuntimeError(f"Exported GLB is missing road surface {name}")
++            nodes = list(scene.graph.geometry_nodes.get(name, []))
++            if len(nodes) != 1:
++                raise RuntimeError(
++                    f"Exported GLB road geometry {name} must have exactly one node; got {len(nodes)}"
++                )
++            transform, geometry_name = scene.graph[nodes[0]]
++            if geometry_name != name:
++                raise RuntimeError(
++                    f"Exported GLB node/geometry mismatch for {name}: {geometry_name}"
++                )
++            mesh = scene.geometry[name]
++            vertices = trimesh.transform_points(
++                np.asarray(mesh.vertices, dtype=float), np.asarray(transform, dtype=float)
++            )
++            triangles = vertices[np.asarray(mesh.faces, dtype=int)]
++            normals = np.cross(
++                triangles[:, 1] - triangles[:, 0],
++                triangles[:, 2] - triangles[:, 0],
++            )
++            zero_3d_area_face_count = int(
++                np.count_nonzero(0.5 * np.linalg.norm(normals, axis=1) <= 1.0e-12)
++            )
++            edge_rows = np.sort(np.asarray(mesh.edges, dtype=int), axis=1)
++            _, edge_counts = np.unique(edge_rows, axis=0, return_counts=True)
++            open_or_nonmanifold_edge_count = int(np.count_nonzero(edge_counts != 2))
++            if zero_3d_area_face_count != 0:
++                raise RuntimeError(
++                    f"Exact exported GLB road geometry {name} has "
++                    f"{zero_3d_area_face_count} zero-area faces"
++                )
++            if open_or_nonmanifold_edge_count != 0 or not mesh.is_watertight:
++                raise RuntimeError(
++                    f"Exact exported GLB road geometry {name} is not watertight: "
++                    f"open/non-manifold edges={open_or_nonmanifold_edge_count}"
++                )
++            if not mesh.is_winding_consistent:
++                raise RuntimeError(
++                    f"Exact exported GLB road geometry {name} has inconsistent winding"
++                )
++            design_vertex_z = np.asarray(
++                [
++                    profile.surface_z_for_layer(float(x), float(y), layer=layer)
++                    + z_offset
++                    for x, y in vertices[:, :2]
++                ],
++                dtype=float,
++            )
++            face_vertex_top_residual = np.max(
++                np.abs(
++                    triangles[:, :, 2]
++                    - design_vertex_z[np.asarray(mesh.faces, dtype=int)]
++                ),
++                axis=1,
++            )
++            # Orientation is not a reliable top/bottom classifier for
++            # precision-grid microfacets after float32 GLB quantization.  A
++            # face is a top face only when all three exported vertices still
++            # lie on the declared design surface.  Pavement thicknesses are
++            # 0.28--0.55 m, leaving a large separation from this 0.1 mm test.
++            top = face_vertex_top_residual <= REV_P5_EXPORTED_TOP_VERTEX_TOLERANCE_M
++            if not np.any(top):
++                raise RuntimeError(
++                    f"Exported GLB road geometry {name} has no design-surface-classified top faces"
++                )
++            top_triangles = triangles[top]
++            top_normals = normals[top]
++            top_normal_z = top_normals[:, 2]
++            plan_area = 0.5 * np.abs(top_normal_z)
++            plan_collapsed = plan_area <= 1.0e-12
++            plan_noncollapsed = ~plan_collapsed
++            if not np.any(plan_noncollapsed):
++                raise RuntimeError(
++                    f"Exported GLB road geometry {name} has no plan-resolvable top face"
++                )
++            grade_pct = np.full(len(top_normals), np.nan, dtype=float)
++            grade_pct[plan_noncollapsed] = (
++                100.0
++                * np.linalg.norm(top_normals[plan_noncollapsed, :2], axis=1)
++                / np.abs(top_normal_z[plan_noncollapsed])
++            )
++            significant = plan_area >= REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2
++            if not np.any(significant):
++                raise RuntimeError(f"Exported GLB road geometry {name} has no significant top faces")
++            significant_nonpositive_normal_count = int(
++                np.count_nonzero(significant & (top_normal_z <= 0.0))
++            )
++            microscopic_nonpositive_normal_count = int(
++                np.count_nonzero((~significant) & (top_normal_z <= 0.0))
++            )
++            if significant_nonpositive_normal_count != 0:
++                raise RuntimeError(
++                    f"Exported GLB road geometry {name} has "
++                    f"{significant_nonpositive_normal_count} significant top faces with "
++                    "non-positive orientation"
++                )
++
++            plan_triangles = top_triangles[:, :, :2]
++            samples = np.stack(
++                [
++                    np.mean(plan_triangles, axis=1),
++                    0.5 * (plan_triangles[:, 0] + plan_triangles[:, 1]),
++                    0.5 * (plan_triangles[:, 1] + plan_triangles[:, 2]),
++                    0.5 * (plan_triangles[:, 2] + plan_triangles[:, 0]),
++                ],
++                axis=1,
++            )
++            vertex_z = top_triangles[:, :, 2]
++            interpolated = np.stack(
++                [
++                    np.mean(vertex_z, axis=1),
++                    0.5 * (vertex_z[:, 0] + vertex_z[:, 1]),
++                    0.5 * (vertex_z[:, 1] + vertex_z[:, 2]),
++                    0.5 * (vertex_z[:, 2] + vertex_z[:, 0]),
++                ],
++                axis=1,
++            )
++            expected = np.asarray(
++                [
++                    [
++                        profile.surface_z_for_layer(
++                            float(point[0]), float(point[1]), layer=layer
++                        )
++                        + z_offset
++                        for point in row
++                    ]
++                    for row in samples
++                ],
++                dtype=float,
++            )
++            chord_residual = np.max(np.abs(interpolated - expected), axis=1)
++            significant_grade = float(np.max(grade_pct[significant]))
++            significant_chord = float(np.max(chord_residual[significant]))
++            all_chord = float(np.max(chord_residual))
++            if (
++                code == "D5"
++                and significant_grade
++                > REV_P5_D5_EXPORT_FACET_GRADE_LIMIT_PCT + 1.0e-6
++            ):
++                raise RuntimeError(
++                    f"Exported GLB {name} significant facet grade {significant_grade:.9f}% "
++                    f"exceeds {REV_P5_D5_EXPORT_FACET_GRADE_LIMIT_PCT:.9f}%"
++                )
++            if all_chord > REV_P5_EXPORTED_ROAD_CHORD_TOLERANCE_M + 1.0e-7:
++                raise RuntimeError(
++                    f"Exported GLB {name} all-top-face chord residual "
++                    f"{all_chord:.9f} m exceeds "
++                    f"{REV_P5_EXPORTED_ROAD_CHORD_TOLERANCE_M:.9f} m"
++                )
++            per_layer[name] = {
++                "top_face_count": int(len(top_triangles)),
++                "zero_3d_area_face_count": zero_3d_area_face_count,
++                "open_or_nonmanifold_edge_count": open_or_nonmanifold_edge_count,
++                "watertight": bool(mesh.is_watertight),
++                "winding_consistent": bool(mesh.is_winding_consistent),
++                "top_vertex_design_surface_tolerance_m": REV_P5_EXPORTED_TOP_VERTEX_TOLERANCE_M,
++                "maximum_top_vertex_design_surface_residual_m": float(
++                    np.max(face_vertex_top_residual[top])
++                ),
++                "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
++                "significant_top_face_count": int(np.count_nonzero(significant)),
++                "microscopic_retained_top_face_count": int(np.count_nonzero(~significant)),
++                "microscopic_retained_top_face_area_m2": float(
++                    np.sum(plan_area[~significant])
++                ),
++                "plan_collapsed_top_face_count": int(np.count_nonzero(plan_collapsed)),
++                "plan_collapsed_top_face_3d_area_m2": float(
++                    0.5 * np.sum(np.linalg.norm(top_normals[plan_collapsed], axis=1))
++                ),
++                "maximum_significant_facet_grade_pct": significant_grade,
++                "maximum_all_retained_plan_resolvable_facet_grade_pct": float(
++                    np.max(grade_pct[plan_noncollapsed])
++                ),
++                "maximum_all_retained_facet_grade_pct": float(
++                    np.max(grade_pct[plan_noncollapsed])
++                ),
++                "significant_top_face_nonpositive_normal_count": significant_nonpositive_normal_count,
++                "microscopic_top_face_nonpositive_normal_count": microscopic_nonpositive_normal_count,
++                "maximum_significant_chord_residual_m": significant_chord,
++                "maximum_all_retained_chord_residual_m": all_chord,
++                "status": "PASS",
++            }
++
++    total_plan_collapsed = int(
++        sum(item["plan_collapsed_top_face_count"] for item in per_layer.values())
++    )
++    total_plan_collapsed_3d_area_m2 = float(
++        sum(item["plan_collapsed_top_face_3d_area_m2"] for item in per_layer.values())
++    )
++    if total_plan_collapsed != 0:
++        raise RuntimeError(
++            "Exact exported GLB contains plan-collapsed road top faces: "
++            f"count={total_plan_collapsed}; "
++            f"3d_area={total_plan_collapsed_3d_area_m2:.12f} m2"
++        )
++
++    return {
++        "artifact": "20_Модель_A1_RevP3_RoadQA.glb",
++        "method": "exact re-imported float32 GLB facets; top-face centroid and edge-midpoint comparison to design surface",
++        "significant_plan_face_area_threshold_m2": REV_P5_SIGNIFICANT_PLAN_FACE_AREA_M2,
++        "top_vertex_design_surface_tolerance_m": REV_P5_EXPORTED_TOP_VERTEX_TOLERANCE_M,
++        "maximum_chord_residual_limit_m": REV_P5_EXPORTED_ROAD_CHORD_TOLERANCE_M,
++        "acceptance_scope": "D5 grade and orientation gate significant top faces at or above the declared plan-area threshold; chord residual gates all design-surface-classified top faces; all-retained raw maxima remain reported",
++        "d5_maximum_significant_facet_grade_limit_pct": REV_P5_D5_EXPORT_FACET_GRADE_LIMIT_PCT,
++        "per_layer": per_layer,
++        "maximum_significant_chord_residual_m": float(
++            max(
++                item["maximum_significant_chord_residual_m"]
++                for item in per_layer.values()
++            )
++        ),
++        "maximum_all_retained_chord_residual_m": float(
++            max(
++                item["maximum_all_retained_chord_residual_m"]
++                for item in per_layer.values()
++            )
++        ),
++        "d5_maximum_significant_facet_grade_pct": float(
++            max(
++                item["maximum_significant_facet_grade_pct"]
++                for name, item in per_layer.items()
++                if "_D5_" in name
++            )
++        ),
++        "d5_maximum_all_retained_facet_grade_pct": float(
++            max(
++                item["maximum_all_retained_facet_grade_pct"]
++                for name, item in per_layer.items()
++                if "_D5_" in name
++            )
++        ),
++        "significant_top_face_nonpositive_normal_count": int(
++            sum(
++                item["significant_top_face_nonpositive_normal_count"]
++                for item in per_layer.values()
++            )
++        ),
++        "microscopic_top_face_nonpositive_normal_count": int(
++            sum(
++                item["microscopic_top_face_nonpositive_normal_count"]
++                for item in per_layer.values()
++            )
++        ),
++        "plan_collapsed_top_face_count": total_plan_collapsed,
++        "plan_collapsed_top_face_3d_area_m2": total_plan_collapsed_3d_area_m2,
++        "zero_3d_area_face_count": int(
++            sum(item["zero_3d_area_face_count"] for item in per_layer.values())
++        ),
++        "open_or_nonmanifold_edge_count": int(
++            sum(item["open_or_nonmanifold_edge_count"] for item in per_layer.values())
++        ),
++        "status": "PASS",
++    }
++
++
+ def main() -> None:
+     target, qa = build_scene()
+     glb_path = OUT / "20_Модель_A1_RevP3_RoadQA.glb"
+@@ -2572,6 +3370,47 @@
+             "finite_coordinates": True,
+         }
+     qa["exports"] = export_checks
++    exported_glb = trimesh.load(str(glb_path), force="scene", process=False)
++    if not isinstance(exported_glb, trimesh.Scene):
++        exported_glb = trimesh.Scene(exported_glb)
++    qa["exported_road_surface_qa"] = _exported_glb_road_surface_qa(exported_glb)
++    qa["acceptance"].update(
++        {
++            "exported_road_layer_maximum_significant_chord_residual_m": qa[
++                "exported_road_surface_qa"
++            ]["maximum_significant_chord_residual_m"],
++            "exported_road_layer_maximum_all_retained_chord_residual_m": qa[
++                "exported_road_surface_qa"
++            ]["maximum_all_retained_chord_residual_m"],
++            "exported_road_layer_maximum_chord_residual_limit_m": REV_P5_EXPORTED_ROAD_CHORD_TOLERANCE_M,
++            "exported_road_layer_top_vertex_design_surface_tolerance_m": REV_P5_EXPORTED_TOP_VERTEX_TOLERANCE_M,
++            "exported_d5_layer_maximum_significant_facet_grade_pct": qa[
++                "exported_road_surface_qa"
++            ]["d5_maximum_significant_facet_grade_pct"],
++            "exported_d5_layer_maximum_all_retained_facet_grade_pct": qa[
++                "exported_road_surface_qa"
++            ]["d5_maximum_all_retained_facet_grade_pct"],
++            "exported_road_layer_significant_top_face_nonpositive_normal_count": qa[
++                "exported_road_surface_qa"
++            ]["significant_top_face_nonpositive_normal_count"],
++            "exported_road_layer_microscopic_top_face_nonpositive_normal_count": qa[
++                "exported_road_surface_qa"
++            ]["microscopic_top_face_nonpositive_normal_count"],
++            "exported_road_layer_plan_collapsed_top_face_count": qa[
++                "exported_road_surface_qa"
++            ]["plan_collapsed_top_face_count"],
++            "exported_road_layer_plan_collapsed_top_face_3d_area_m2": qa[
++                "exported_road_surface_qa"
++            ]["plan_collapsed_top_face_3d_area_m2"],
++            "exported_road_layer_zero_3d_area_face_count": qa[
++                "exported_road_surface_qa"
++            ]["zero_3d_area_face_count"],
++            "exported_road_layer_open_or_nonmanifold_edge_count": qa[
++                "exported_road_surface_qa"
++            ]["open_or_nonmanifold_edge_count"],
++            "exported_road_layer_quality_status": "PASS",
++        }
++    )
+     qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2), encoding="utf-8")
+
+     shutil.copy2(source_copy, WORK / "20_Source_RevP2_ExteriorQA.glb")

@@ -1,0 +1,13 @@
+REV_P3_PREBUILD_PATCHED
+REV_P3_ALIGNMENT_V2_PATCHED
+REV_P3_ALIGNMENT_V3_PATCHED
+REV_P3_FINAL_PATCHED
+Traceback (most recent call last):
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1470, in <module>
+    main()
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1435, in main
+    target, qa = build_scene()
+                 ^^^^^^^^^^^^^
+  File "/home/runner/work/dev-pro/dev-pro/tools/build_revp3_roadqa.py", line 1251, in build_scene
+    raise RuntimeError(f"Apron seam step {code} = {seam_step:.4f} m")
+RuntimeError: Apron seam step BLD_02 = 1.5850 m

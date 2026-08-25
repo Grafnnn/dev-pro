@@ -1,0 +1,154 @@
+name: A1 RevP5 Integrated Numeric QA
+
+on:
+  push:
+    branches: [tmp-a1-revp5-integrated-bim]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_*.py
+      - tools/patch_revp5_*.py
+      - tools/integrate_revp5_masterplan.py
+      - .github/workflows/a1-revp5-integrated-numeric.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_*.py
+      - tools/patch_revp5_*.py
+      - tools/integrate_revp5_masterplan.py
+      - .github/workflows/a1-revp5-integrated-numeric.yml
+  workflow_dispatch:
+
+concurrency:
+  group: a1-revp5-integrated-numeric-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp5-integrated-bim
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow triangle
+      - name: Apply accepted road correction chain
+        run: |
+          python tools/patch_revp3_prebuild.py
+          python tools/patch_revp3_alignment_v2.py
+          python tools/patch_revp5_d2_topology.py
+          python tools/patch_revp5_d5_topology.py
+          sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
+          python tools/patch_revp3_interface_completion.py
+          python tools/patch_revp5_d5_through_route.py
+          python tools/patch_revp5_d3_d5_junction.py
+          python tools/patch_revp5_partition_order.py
+          python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp3_resolution.py
+          sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
+          python tools/patch_revp5_road_finalize.py
+          python tools/patch_revp3_boolean_slivers.py
+          python tools/patch_revp3_post_apron_sliver.py
+          python tools/patch_revp3_mesh_cleanup.py
+          python tools/patch_revp3_watertight_solids.py
+          python tools/patch_revp3_preserve_topology_indices.py
+          python tools/patch_revp3_triangle_solids.py
+          python tools/patch_revp3_conforming_refinement.py
+          python tools/patch_revp3_degenerate_cleanup.py
+          python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp5_robust_extrusion.py
+          python tools/patch_revp5_component_diagnostics.py
+          python tools/patch_revp3_qa_hardening.py
+          python tools/patch_revp5_mesh_facet_grades.py
+          python tools/patch_revp5_continuous_station_surface.py
+      - name: Build accepted RoadQA geometry
+        run: python tools/build_revp3_roadqa.py
+      - name: Build integrated Rev.P5 masterplan geometry
+        run: python tools/integrate_revp5_masterplan.py
+      - name: Enforce integrated acceptance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('revp5_output/26_Integrated_QA_Report_RevP5.json').read_text(encoding='utf-8'))
+          a=q['acceptance']
+          assert a['road_building_clashes']==[], a
+          assert a['open_external_critical_clashes']==0, a
+          assert a['terrain_above_road_points']==0, a
+          assert a['non_adjacent_road_triangle_self_intersections']==0, a
+          assert a['duplicated_top_faces']==0, a
+          assert a['non_manifold_edges']==0, a
+          assert a['road_layer_quality_triangulation_status']=='PASS', a
+          assert a['road_layer_maximum_chord_residual_m'] <= a['road_layer_maximum_chord_residual_limit_m'] + 1e-9, a
+          assert a['d5_layer_maximum_significant_facet_grade_pct'] <= a['d5_layer_export_facet_grade_limit_pct'] + 1e-6, a
+          assert a['exported_road_layer_quality_status']=='PASS', a
+          assert a['exported_road_layer_maximum_all_retained_chord_residual_m'] <= a['exported_road_layer_maximum_chord_residual_limit_m'] + 1e-7, a
+          assert a['exported_d5_layer_maximum_significant_facet_grade_pct'] <= a['d5_layer_export_facet_grade_limit_pct'] + 1e-6, a
+          assert a['exported_road_layer_significant_top_face_nonpositive_normal_count']==0, a
+          assert a['exported_road_layer_plan_collapsed_top_face_count']==0, a
+          assert a['exported_road_layer_zero_3d_area_face_count']==0, a
+          assert a['exported_road_layer_open_or_nonmanifold_edge_count']==0, a
+          assert a['d3_d5_junction_status']=='PASS', a
+          assert a['d3_d5_road_final_overlap_m2'] <= 1e-6, a
+          assert a['d3_d5_maximum_full_seam_vertical_step_m'] <= 0.005001, a
+          assert a['d3_d5_blended_maximum_centerline_grade_pct'] <= 6.000001, a
+          assert a['d3_d5_maximum_resultant_surface_grade_pct'] <= 100.0 * (0.06**2 + 0.02**2)**0.5 + 1e-6, a
+          assert a['d3_d5_minimum_road_shoulder_vertical_overlap_m'] > 0.005, a
+          assert a['d3_d5_maximum_road_shoulder_vertical_overlap_m'] <= 0.25, a
+          assert a['d3_d5_minimum_shoulder_subbase_vertical_overlap_m'] > 0.005, a
+          assert a['d3_d5_maximum_shoulder_subbase_vertical_overlap_m'] <= 0.12, a
+          assert a['d3_d5_reverse_grade_sample_count'] == 0, a
+          assert a['d3_d5_protected_sliver_removals']==0, a
+          assert a['required_masterplan_features_present'] is True, a
+          assert a['new_physical_feature_building_overlap_m2'] <= 1e-6, a
+          assert a['new_physical_feature_unintended_road_overlap_m2'] <= 1e-6, a
+          assert a['emergency_bay_plan_component_count'] == 1, a
+          assert a['emergency_bay_mesh_component_count'] == 1, a
+          assert a['emergency_bay_shared_d3_seam_m'] >= 20.0, a
+          assert a['emergency_bay_gap_m'] <= 1e-6, a
+          assert a['emergency_bay_maximum_vertical_step_m'] <= 0.020001, a
+          assert a['emergency_bay_maximum_resultant_grade_pct'] <= 6.000001, a
+          assert a['emergency_bay_maximum_nominal_formation_fill_m'] <= 0.500001, a
+          assert a['emergency_bay_maximum_nominal_formation_cut_m'] <= 1.000001, a
+          assert a['emergency_bay_maximum_actual_unsupported_gap_m'] <= 1e-6, a
+          assert a['emergency_bay_maximum_actual_foundation_cut_m'] <= 0.950001, a
+          assert a['emergency_bay_minimum_residual_ground_key_in_m'] >= 0.099999, a
+          assert a['emergency_bay_minimum_exact_tin_ground_key_in_m'] >= 0.099999, a
+          assert a['emergency_bay_maximum_exact_tin_foundation_cut_m'] <= 0.950001, a
+          assert a['emergency_bay_foundation_bottom_is_single_plane'] is True, a
+          assert a['emergency_bay_foundation_bottom_plane_grade_pct'] <= 6.000001, a
+          assert a['emergency_bay_foundation_bottom_planarity_residual_m'] <= 1e-8, a
+          assert a['emergency_bay_top_affine_residual_m'] <= 1e-8, a
+          assert a['emergency_bay_exact_tin_triangle_count'] > 0, a
+          assert a['emergency_bay_exact_tin_extrema_vertex_count'] >= 3, a
+          assert a['emergency_bay_exact_tin_coverage_delta_m2'] <= 1e-6, a
+          assert a['emergency_bay_outer_foundation_watertight'] is True, a
+          assert a['emergency_bay_outer_foundation_open_or_nonmanifold_edges'] == 0, a
+          assert a['emergency_bay_outer_foundation_connected_components'] == 1, a
+          assert a['emergency_bay_minimum_actual_foundation_thickness_m'] >= 0.499999, a
+          assert a['emergency_bay_maximum_actual_foundation_thickness_m'] <= 1.050001, a
+          assert a['emergency_bay_support_partition_pairwise_overlap_m2'] <= 1e-6, a
+          assert a['emergency_bay_support_partition_coverage_gap_m2'] <= 1e-6, a
+          assert a['emergency_bay_source_terrain_sha_verified'] is True, a
+          assert a['heavy_haul_unapproved_clearance_overlap_count'] == 0, a
+          assert a['bld05_ramp_grade_pct'] <= 6.0, a
+          assert a['masterplan_status']=='PASS_CONTROLLED_PRE_FEED', a
+          print(json.dumps(a,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a1-revp5-integrated-numeric
+          path: |
+            revp5_output/
+            revp3_output/20_Road_QA_Report_RevP3.json
+          retention-days: 3
+          compression-level: 3

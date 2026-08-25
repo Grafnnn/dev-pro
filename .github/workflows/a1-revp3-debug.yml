@@ -1,0 +1,70 @@
+name: A1 RevP3 Persistent Diagnostics
+
+on:
+  push:
+    branches: [tmp-a1-revp3-road-qa]
+    paths:
+      - tools/build_revp3_roadqa.py
+      - tools/patch_revp3_prebuild.py
+      - tools/patch_revp3_alignment_v2.py
+      - tools/patch_revp3_final.py
+      - .github/workflows/a1-revp3-debug.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OUT_ROOT: revp3_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp-a1-revp3-road-qa
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree
+      - name: Apply patches and build with captured output
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p revp3_debug
+          {
+            python tools/patch_revp3_prebuild.py
+            python tools/patch_revp3_alignment_v2.py
+            if [ -f tools/patch_revp3_final.py ]; then python tools/patch_revp3_final.py; fi
+            python tools/build_revp3_roadqa.py
+          } 2>&1 | tee revp3_debug/build.log
+          status=${PIPESTATUS[0]}
+          echo "$status" > revp3_debug/exit_code.txt
+          if [ -f revp3_output/20_Road_QA_Report_RevP3.json ]; then cp revp3_output/20_Road_QA_Report_RevP3.json revp3_debug/qa.json; fi
+          exit $status
+      - name: Persist diagnostic state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p audit/revp3_debug
+          cp -f revp3_debug/* audit/revp3_debug/ 2>/dev/null || true
+          git add audit/revp3_debug/
+          git diff --cached --quiet || git commit -m "Store Rev.P3 build diagnostic [skip ci]"
+          git push origin HEAD:tmp-a1-revp3-road-qa
+      - name: Upload diagnostic and partial outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp3-diagnostic
+          path: |
+            revp3_debug/
+            revp3_output/
+          retention-days: 1
+      - name: Fail if build failed
+        if: steps.build.outcome != 'success'
+        run: exit 1

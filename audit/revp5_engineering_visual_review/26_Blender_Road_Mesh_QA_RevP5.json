@@ -1,0 +1,2574 @@
+{
+  "revision": "A.1/Rev.P5 Integrated pre-FEED Masterplan",
+  "file": "26_Модель_A1_RevP5_Integrated_preFEED.glb",
+  "file_size_bytes": 14719564,
+  "sha256": "f51d40b0d65cb037c6fb014ae9957f93369cc66d19a1f93dce92ac777d52bbf1",
+  "engine": "Blender GLB import + strict road topology + BVHTree exact contacts; shared-index adjacent faces excluded; material crossing requires joint interior clearance above the declared road PSLG precision grid",
+  "import": {
+    "mesh_object_count": 1776,
+    "total_vertices": 376220,
+    "bounds": [
+      [
+        0.0,
+        -155.89810180664062,
+        0.0
+      ],
+      [
+        608.0,
+        -89.45000457763672,
+        440.05999755859375
+      ]
+    ],
+    "spans_by_axis": [
+      608.0,
+      66.4480972290039,
+      440.05999755859375
+    ],
+    "spans_sorted_desc": [
+      608.0,
+      440.05999755859375,
+      66.4480972290039
+    ],
+    "required_feature_count": 19,
+    "required_features_present": true
+  },
+  "road_layer_object_count": 18,
+  "road_codes": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
+  ],
+  "road_layers": [
+    "ROAD",
+    "SHOULDER",
+    "SUBBASE"
+  ],
+  "significant_plan_face_area_threshold_m2": 0.0001,
+  "geometric_exact_epsilon_m": 1e-09,
+  "material_intersection_clearance_m": 0.0001,
+  "d5_significant_facet_grade_limit_pct": 6.324555320336758,
+  "d5_maximum_significant_facet_grade_pct": 5.66383483779848,
+  "d5_maximum_all_upward_plan_resolvable_facet_grade_pct": 1258.395856435202,
+  "non_adjacent_road_triangle_bvh_candidate_pairs": 129,
+  "non_adjacent_road_triangle_exact_contacts": 129,
+  "non_adjacent_road_triangle_boundary_contacts": 129,
+  "non_adjacent_road_triangle_boundary_point_contacts": 3,
+  "non_adjacent_road_triangle_boundary_segment_contacts": 126,
+  "maximum_road_triangle_contact_segment_length_m": 0.2069466836376754,
+  "maximum_road_triangle_joint_interior_clearance_m": 2.7454760480015032e-05,
+  "objects": {
+    "REV_P5_EXT_D1_ROAD": {
+      "vertices": 2048,
+      "edges": 6138,
+      "faces": 4092,
+      "bounds": [
+        [
+          166.89340209960938,
+          -134.94500732421875,
+          301.00140380859375
+        ],
+        [
+          245.0,
+          -132.88499450683594,
+          321.7926940917969
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 1,
+      "non_adjacent_triangle_exact_contacts": 1,
+      "non_adjacent_triangle_boundary_contacts": 1,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 1,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            1077,
+            4043
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.618905171340693e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.3793820486559918e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 4.618905171340693e-06,
+      "maximum_joint_interior_clearance_m": 1.3793820486559918e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 1551,
+        "significant_upward_face_count": 1504,
+        "microscopic_upward_face_count": 47,
+        "maximum_significant_upward_facet_grade_pct": 4.247583029417264,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 14291.854012315112
+      }
+    },
+    "REV_P5_EXT_D1_SHOULDER": {
+      "vertices": 2048,
+      "edges": 6138,
+      "faces": 4092,
+      "bounds": [
+        [
+          166.87339782714844,
+          -134.8249969482422,
+          300.251708984375
+        ],
+        [
+          245.0,
+          -132.72999572753906,
+          322.5426940917969
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 1,
+      "non_adjacent_triangle_exact_contacts": 1,
+      "non_adjacent_triangle_boundary_contacts": 1,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 1,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            2085,
+            3902
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.3713817937870311e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.12610231940176e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 1.3713817937870311e-05,
+      "maximum_joint_interior_clearance_m": 6.12610231940176e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 1552,
+        "significant_upward_face_count": 1505,
+        "microscopic_upward_face_count": 47,
+        "maximum_significant_upward_facet_grade_pct": 4.233068861370088,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 65547.58611314216
+      }
+    },
+    "REV_P5_EXT_D1_SUBBASE": {
+      "vertices": 2046,
+      "edges": 6132,
+      "faces": 4088,
+      "bounds": [
+        [
+          166.8533935546875,
+          -134.5850067138672,
+          299.50201416015625
+        ],
+        [
+          245.0,
+          -132.22500610351562,
+          323.2926940917969
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 2,
+      "non_adjacent_triangle_exact_contacts": 2,
+      "non_adjacent_triangle_boundary_contacts": 2,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 2,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            2463,
+            3296
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 5.649270725940865e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.7663442678625106e-06
+        },
+        {
+          "faces": [
+            1395,
+            3721
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.837906042007442e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8790393318305683e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 5.649270725940865e-06,
+      "maximum_joint_interior_clearance_m": 2.7663442678625106e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 1557,
+        "significant_upward_face_count": 1504,
+        "microscopic_upward_face_count": 53,
+        "maximum_significant_upward_facet_grade_pct": 4.230810815036233,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 4597.994968461797
+      }
+    },
+    "REV_P5_EXT_D2_ROAD": {
+      "vertices": 20406,
+      "edges": 61218,
+      "faces": 40812,
+      "bounds": [
+        [
+          245.0,
+          -133.7711639404297,
+          304.5
+        ],
+        [
+          442.5,
+          -132.89500427246094,
+          385.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 7,
+      "non_adjacent_triangle_exact_contacts": 7,
+      "non_adjacent_triangle_boundary_contacts": 7,
+      "non_adjacent_triangle_boundary_point_contacts": 3,
+      "non_adjacent_triangle_boundary_segment_contacts": 4,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            25319,
+            39733
+          ],
+          "contact_geometry": "POINT_OR_SUB_EPSILON",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 0.0
+        },
+        {
+          "faces": [
+            24888,
+            38440
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00025859632456111826,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.473130480549745e-07
+        },
+        {
+          "faces": [
+            36668,
+            40800
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00025859632456111826,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.473130480549745e-07
+        },
+        {
+          "faces": [
+            36623,
+            40757
+          ],
+          "contact_geometry": "POINT_OR_SUB_EPSILON",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 0.0
+        },
+        {
+          "faces": [
+            35625,
+            37875
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.360826678700034e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.0070962483300916e-08
+        },
+        {
+          "faces": [
+            35353,
+            37790
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00025859632456111826,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.473130480549276e-07
+        },
+        {
+          "faces": [
+            35338,
+            37785
+          ],
+          "contact_geometry": "POINT_OR_SUB_EPSILON",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 0.0
+        }
+      ],
+      "maximum_contact_segment_length_m": 0.00025859632456111826,
+      "maximum_joint_interior_clearance_m": 1.473130480549745e-07,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 18347,
+        "significant_upward_face_count": 17809,
+        "microscopic_upward_face_count": 538,
+        "maximum_significant_upward_facet_grade_pct": 3.6061898340666536,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 226.48429785573845
+      }
+    },
+    "REV_P5_EXT_D2_SHOULDER": {
+      "vertices": 26322,
+      "edges": 78966,
+      "faces": 52644,
+      "bounds": [
+        [
+          245.0,
+          -133.65115356445312,
+          303.75
+        ],
+        [
+          443.25,
+          -132.74000549316406,
+          386.25
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 23592,
+        "significant_upward_face_count": 23148,
+        "microscopic_upward_face_count": 444,
+        "maximum_significant_upward_facet_grade_pct": 3.7659011596216683,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 260.0888869885801
+      }
+    },
+    "REV_P5_EXT_D2_SUBBASE": {
+      "vertices": 28070,
+      "edges": 84210,
+      "faces": 56140,
+      "bounds": [
+        [
+          245.0,
+          -133.41116333007812,
+          303.0
+        ],
+        [
+          444.0,
+          -132.23500061035156,
+          387.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 25360,
+        "significant_upward_face_count": 24883,
+        "microscopic_upward_face_count": 477,
+        "maximum_significant_upward_facet_grade_pct": 4.0571346916489786,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 260.0888869885801
+      }
+    },
+    "REV_P5_EXT_D3_ROAD": {
+      "vertices": 18136,
+      "edges": 54402,
+      "faces": 36268,
+      "bounds": [
+        [
+          442.5,
+          -133.73968505859375,
+          84.0
+        ],
+        [
+          606.4954833984375,
+          -101.90499877929688,
+          348.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 98,
+      "non_adjacent_triangle_exact_contacts": 98,
+      "non_adjacent_triangle_boundary_contacts": 98,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 98,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            24602,
+            32754
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.9519767983151955e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.3355328422462937e-06
+        },
+        {
+          "faces": [
+            24399,
+            35940
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.519386384624551e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.165968828778917e-07
+        },
+        {
+          "faces": [
+            24078,
+            32562
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.135087489117497e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.51964580745363e-06
+        },
+        {
+          "faces": [
+            24002,
+            29252
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 6.525011603602013e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.162791313369033e-06
+        },
+        {
+          "faces": [
+            2704,
+            26373
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 6.5250118131907744e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.162522618997687e-06
+        },
+        {
+          "faces": [
+            22306,
+            32122
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.5691814499920915e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.401614412418134e-06
+        },
+        {
+          "faces": [
+            22321,
+            32118
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.8035201896854057e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.322364271214351e-06
+        },
+        {
+          "faces": [
+            22163,
+            35386
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.6764197658585935e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.20575467356332e-06
+        },
+        {
+          "faces": [
+            22148,
+            35388
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.862370094266945e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8217840587953909e-06
+        },
+        {
+          "faces": [
+            22115,
+            35368
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.7100085399172677e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.065812243285148e-06
+        },
+        {
+          "faces": [
+            22015,
+            35334
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.1024367882123642e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 5.200058786405937e-06
+        },
+        {
+          "faces": [
+            21955,
+            35246
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.0534639972308845e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 5.102824524325717e-06
+        },
+        {
+          "faces": [
+            21788,
+            28834
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 5.299541645919668e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.5670400705559798e-06
+        },
+        {
+          "faces": [
+            21728,
+            28816
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.625141400019182e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.2403559720161518e-06
+        },
+        {
+          "faces": [
+            2531,
+            26293
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.1350888326124133e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.519517407723599e-06
+        },
+        {
+          "faces": [
+            705,
+            30181
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.95197659980301e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.33586786066203e-06
+        },
+        {
+          "faces": [
+            1925,
+            33579
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 6.520248471238529e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.16045598491498e-06
+        },
+        {
+          "faces": [
+            2056,
+            26177
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.005597606580445129,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.2182282572837082e-05
+        },
+        {
+          "faces": [
+            2023,
+            26177
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.016733356020494444,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.218029796831721e-05
+        },
+        {
+          "faces": [
+            2015,
+            26177
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.007861449483017658,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.9471222641946315e-06
+        },
+        {
+          "faces": [
+            2034,
+            30493
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.014493276018955422,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.9067132253638864e-06
+        },
+        {
+          "faces": [
+            1775,
+            30447
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 8.148060008636232e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.948682093629386e-06
+        },
+        {
+          "faces": [
+            1756,
+            30449
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.01161777069348876,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 5.814766102125893e-06
+        },
+        {
+          "faces": [
+            1779,
+            33459
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.006193446736112815,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.0219796130180227e-06
+        },
+        {
+          "faces": [
+            1766,
+            33459
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00892664196390802,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.6474040762331084e-05
+        },
+        {
+          "faces": [
+            1729,
+            33459
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.969740097246737e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.831423630514451e-07
+        },
+        {
+          "faces": [
+            1742,
+            33469
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.003546318283960943,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.2934419391061845e-05
+        },
+        {
+          "faces": [
+            2133,
+            30529
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0016179268262443303,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.491966271696251e-06
+        },
+        {
+          "faces": [
+            1671,
+            26079
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.006188674695826734,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.6723542533279904e-05
+        },
+        {
+          "faces": [
+            1670,
+            26079
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.002209434575150583,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.6596312087684453e-05
+        },
+        {
+          "faces": [
+            1628,
+            33445
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.927159172260161e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.4185444529030595e-07
+        },
+        {
+          "faces": [
+            1634,
+            33445
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.050270530280050206,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.1351031126619438e-06
+        },
+        {
+          "faces": [
+            1659,
+            33445
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0012636233724117145,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.1337841618525892e-06
+        },
+        {
+          "faces": [
+            1646,
+            33497
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00010222848143981852,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.370358552000951e-08
+        },
+        {
+          "faces": [
+            1645,
+            33497
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.4517297638718773e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.358524577765177e-08
+        },
+        {
+          "faces": [
+            1639,
+            33497
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0025826184056897392,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.09131887313037e-05
+        },
+        {
+          "faces": [
+            506,
+            25683
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.956429723051196e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.3378734679074223e-06
+        },
+        {
+          "faces": [
+            21576,
+            35226
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.956430064749704e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.3372961899577928e-06
+        },
+        {
+          "faces": [
+            21449,
+            35182
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.2858640298407964e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.23240678192474e-07
+        },
+        {
+          "faces": [
+            21415,
+            28736
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0023300381808919516,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.818786412305438e-05
+        },
+        {
+          "faces": [
+            21412,
+            28736
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.006339746698772315,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8330825078646815e-05
+        },
+        {
+          "faces": [
+            21519,
+            35182
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.006128008923581227,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.450717067278677e-06
+        },
+        {
+          "faces": [
+            21427,
+            35182
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.05027840532782539,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.459180942581234e-06
+        },
+        {
+          "faces": [
+            21435,
+            31846
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.002565421847470249,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.1502989169668062e-05
+        },
+        {
+          "faces": [
+            21438,
+            31846
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0005989029454372546,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.422653447054149e-07
+        },
+        {
+          "faces": [
+            21442,
+            31846
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0002595195107031058,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.4153796707345396e-07
+        },
+        {
+          "faces": [
+            21157,
+            31786
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.969737320338673e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.832131709994993e-07
+        },
+        {
+          "faces": [
+            21057,
+            31756
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.01449326326554042,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.907052686866932e-06
+        },
+        {
+          "faces": [
+            21170,
+            28666
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 8.148059947254093e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.949260791872981e-06
+        },
+        {
+          "faces": [
+            21161,
+            31796
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.011617895657039749,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 5.815264766455063e-06
+        },
+        {
+          "faces": [
+            21120,
+            31786
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.008926588034050106,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.6475435995995455e-05
+        },
+        {
+          "faces": [
+            21127,
+            31786
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00619345331761896,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.022155010428868e-06
+        },
+        {
+          "faces": [
+            20994,
+            31732
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.003546671373858198,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.293541280150325e-05
+        },
+        {
+          "faces": [
+            21028,
+            35082
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.016733338944838066,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.2181362541659885e-05
+        },
+        {
+          "faces": [
+            21024,
+            35082
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.007861426838619767,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 6.94770738870428e-06
+        },
+        {
+          "faces": [
+            21031,
+            35082
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.005598226452531546,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.218330293193366e-05
+        },
+        {
+          "faces": [
+            21264,
+            31850
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.5375524726265967e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.6681938708788184e-08
+        },
+        {
+          "faces": [
+            21293,
+            35134
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 8.477651093171986e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.109008863400766e-07
+        },
+        {
+          "faces": [
+            21275,
+            35134
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.05024520173827161,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.7454760480015032e-05
+        },
+        {
+          "faces": [
+            21277,
+            35134
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00914965201706796,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.7358731217579397e-05
+        },
+        {
+          "faces": [
+            20917,
+            31710
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.7427837057969163e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.447091291587476e-08
+        },
+        {
+          "faces": [
+            20919,
+            31710
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.05027274082228639,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 9.570262946686224e-06
+        },
+        {
+          "faces": [
+            20921,
+            31710
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.016758212431082595,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.0487295723382749e-05
+        },
+        {
+          "faces": [
+            6967,
+            34771
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.005147352688687956,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.7005358704204978e-05
+        },
+        {
+          "faces": [
+            6961,
+            34771
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.001986662618082684,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.4487885824220143e-06
+        },
+        {
+          "faces": [
+            6968,
+            34771
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.015433963322402091,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.699706009254573e-05
+        },
+        {
+          "faces": [
+            6946,
+            34767
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 8.455807994309258e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.116480464689263e-08
+        },
+        {
+          "faces": [
+            6941,
+            34767
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.0011927606035792753,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8608554312230997e-07
+        },
+        {
+          "faces": [
+            6918,
+            28165
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.012296179091756931,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.3703595778237124e-06
+        },
+        {
+          "faces": [
+            6935,
+            31433
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.008647321761159647,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.213707492559312e-05
+        },
+        {
+          "faces": [
+            6730,
+            31387
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 7.150616685889904e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.400780119765041e-06
+        },
+        {
+          "faces": [
+            6875,
+            31423
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.015443995397575117,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8070908678195427e-05
+        },
+        {
+          "faces": [
+            6867,
+            31423
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.020054835667978825,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 9.856353554656833e-06
+        },
+        {
+          "faces": [
+            25169,
+            29866
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.234158520635216e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.0536824512807717e-06
+        },
+        {
+          "faces": [
+            25254,
+            29912
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.892544015033179e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8358604607215174e-07
+        },
+        {
+          "faces": [
+            24625,
+            32746
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.986317021633432e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.40845205911907e-06
+        },
+        {
+          "faces": [
+            24792,
+            32792
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.6975663869008465e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.228470444351995e-07
+        },
+        {
+          "faces": [
+            24769,
+            29750
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.057089607410029e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.966538306943745e-06
+        },
+        {
+          "faces": [
+            24768,
+            36054
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.0152675868414397e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.921282088180418e-06
+        },
+        {
+          "faces": [
+            24217,
+            32608
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.112829642965719e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.297879915636824e-07
+        },
+        {
+          "faces": [
+            3769,
+            31011
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.6975663092904818e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.227771028408823e-07
+        },
+        {
+          "faces": [
+            3519,
+            26581
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.986316948999837e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.4086541367310718e-06
+        },
+        {
+          "faces": [
+            3223,
+            30833
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.892542674240035e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8361233587901592e-07
+        },
+        {
+          "faces": [
+            3782,
+            26657
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.0152675907498715e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.920863986686639e-06
+        },
+        {
+          "faces": [
+            3781,
+            34045
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.057089575690987e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.9663711581743034e-06
+        },
+        {
+          "faces": [
+            3291,
+            33887
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.2341578858711613e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.0538335182189057e-06
+        },
+        {
+          "faces": [
+            3597,
+            26621
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.112826609429928e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.298495090430385e-07
+        },
+        {
+          "faces": [
+            1073,
+            25853
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.9863160741100785e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.408653699563006e-06
+        },
+        {
+          "faces": [
+            914,
+            30319
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.1350888326124133e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.519517407723599e-06
+        },
+        {
+          "faces": [
+            813,
+            33243
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.95197659980301e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.33586786064608e-06
+        },
+        {
+          "faces": [
+            25401,
+            32992
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.892544015033179e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.8358604773720432e-07
+        },
+        {
+          "faces": [
+            25237,
+            36164
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.986317021633432e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.4084520462810704e-06
+        },
+        {
+          "faces": [
+            25013,
+            36110
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.0152681037427792e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.921284469766501e-06
+        },
+        {
+          "faces": [
+            24999,
+            29814
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.697566388033861e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.228470445075856e-07
+        },
+        {
+          "faces": [
+            25030,
+            32850
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.057089607410029e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.9665382662208243e-06
+        },
+        {
+          "faces": [
+            24819,
+            32804
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.11282697459889e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.2978788587523294e-07
+        },
+        {
+          "faces": [
+            3910,
+            31077
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.112829277679886e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.2984964240057043e-07
+        },
+        {
+          "faces": [
+            25413,
+            32978
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.234158520635216e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.0536824417386175e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 0.05027840532782539,
+      "maximum_joint_interior_clearance_m": 2.7454760480015032e-05,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 12766,
+        "significant_upward_face_count": 12324,
+        "microscopic_upward_face_count": 442,
+        "maximum_significant_upward_facet_grade_pct": 9.55380276820873,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 1340760.7073769965
+      }
+    },
+    "REV_P5_EXT_D3_SHOULDER": {
+      "vertices": 22186,
+      "edges": 66552,
+      "faces": 44368,
+      "bounds": [
+        [
+          443.25,
+          -133.61708068847656,
+          84.0
+        ],
+        [
+          607.2454833984375,
+          -101.75,
+          348.75
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 16541,
+        "significant_upward_face_count": 16477,
+        "microscopic_upward_face_count": 64,
+        "maximum_significant_upward_facet_grade_pct": 10.350963118023964,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 10.350963118023964
+      }
+    },
+    "REV_P5_EXT_D3_SUBBASE": {
+      "vertices": 22174,
+      "edges": 66516,
+      "faces": 44344,
+      "bounds": [
+        [
+          444.0,
+          -133.37416076660156,
+          84.0
+        ],
+        [
+          607.9954833984375,
+          -101.24500274658203,
+          349.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 16530,
+        "significant_upward_face_count": 16526,
+        "microscopic_upward_face_count": 4,
+        "maximum_significant_upward_facet_grade_pct": 10.341013090359992,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 10.341013090359992
+      }
+    },
+    "REV_P5_EXT_D4_ROAD": {
+      "vertices": 3906,
+      "edges": 11712,
+      "faces": 7808,
+      "bounds": [
+        [
+          177.0,
+          -108.74500274658203,
+          96.5
+        ],
+        [
+          338.0,
+          -107.38500213623047,
+          132.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 1,
+      "non_adjacent_triangle_exact_contacts": 1,
+      "non_adjacent_triangle_boundary_contacts": 1,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 1,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            5140,
+            6540
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.318327111763289e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.917208393636882e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 1.318327111763289e-05,
+      "maximum_joint_interior_clearance_m": 3.917208393636882e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 2980,
+        "significant_upward_face_count": 2924,
+        "microscopic_upward_face_count": 56,
+        "maximum_significant_upward_facet_grade_pct": 2.2792105287210283,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 5524.980674042509
+      }
+    },
+    "REV_P5_EXT_D4_SHOULDER": {
+      "vertices": 3906,
+      "edges": 11712,
+      "faces": 7808,
+      "bounds": [
+        [
+          177.0,
+          -108.625,
+          95.75
+        ],
+        [
+          338.0,
+          -107.2300033569336,
+          132.75
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 2,
+      "non_adjacent_triangle_exact_contacts": 2,
+      "non_adjacent_triangle_boundary_contacts": 2,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 2,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            5292,
+            6550
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.67995426107577e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.6374191730652485e-06
+        },
+        {
+          "faces": [
+            5312,
+            7140
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 6.96980959752814e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 3.2901730963665426e-08
+        }
+      ],
+      "maximum_contact_segment_length_m": 9.67995426107577e-06,
+      "maximum_joint_interior_clearance_m": 4.6374191730652485e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 2989,
+        "significant_upward_face_count": 2924,
+        "microscopic_upward_face_count": 65,
+        "maximum_significant_upward_facet_grade_pct": 2.275344826583228,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 91318.60929064667
+      }
+    },
+    "REV_P5_EXT_D4_SUBBASE": {
+      "vertices": 3908,
+      "edges": 11718,
+      "faces": 7812,
+      "bounds": [
+        [
+          177.0,
+          -108.38500213623047,
+          95.0
+        ],
+        [
+          338.0,
+          -106.7249984741211,
+          133.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 2927,
+        "significant_upward_face_count": 2924,
+        "microscopic_upward_face_count": 3,
+        "maximum_significant_upward_facet_grade_pct": 2.3402622767857144,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 9.027777777777779
+      }
+    },
+    "REV_P5_EXT_D5_ROAD": {
+      "vertices": 4768,
+      "edges": 14298,
+      "faces": 9532,
+      "bounds": [
+        [
+          338.0,
+          -108.98806762695312,
+          124.50090026855469
+        ],
+        [
+          554.647705078125,
+          -108.3949966430664,
+          153.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 8,
+      "non_adjacent_triangle_exact_contacts": 8,
+      "non_adjacent_triangle_boundary_contacts": 8,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 8,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            4796,
+            8528
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00014576428583687638,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.047748272683047e-08
+        },
+        {
+          "faces": [
+            4539,
+            7775
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.924572573022076e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.83567043538432e-08
+        },
+        {
+          "faces": [
+            4145,
+            9042
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.584529283271816e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 7.4335383921883584e-09
+        },
+        {
+          "faces": [
+            4169,
+            8276
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00028617648519808204,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.3379899060499438e-07
+        },
+        {
+          "faces": [
+            4164,
+            8270
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.2069466836376754,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.4592107816175154e-07
+        },
+        {
+          "faces": [
+            4164,
+            9053
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 1.728758147787723e-09,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.643732403278689e-10
+        },
+        {
+          "faces": [
+            3898,
+            8955
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.0059991253982005e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.528343329413164e-08
+        },
+        {
+          "faces": [
+            3773,
+            7531
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 3.7466808132115433e-08,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.1389756206778925e-08
+        }
+      ],
+      "maximum_contact_segment_length_m": 0.2069466836376754,
+      "maximum_joint_interior_clearance_m": 2.4592107816175154e-07,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 3761,
+        "significant_upward_face_count": 3675,
+        "microscopic_upward_face_count": 86,
+        "maximum_significant_upward_facet_grade_pct": 5.66383483779848,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 195.43592285044704
+      }
+    },
+    "REV_P5_EXT_D5_SHOULDER": {
+      "vertices": 6936,
+      "edges": 20802,
+      "faces": 13868,
+      "bounds": [
+        [
+          338.0,
+          -108.85419464111328,
+          123.7510986328125
+        ],
+        [
+          554.098876953125,
+          -108.23999786376953,
+          154.25
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 1,
+      "non_adjacent_triangle_exact_contacts": 1,
+      "non_adjacent_triangle_boundary_contacts": 1,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 1,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            6842,
+            13248
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 5.052546647444004e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 8.805107238393846e-08
+        }
+      ],
+      "maximum_contact_segment_length_m": 5.052546647444004e-06,
+      "maximum_joint_interior_clearance_m": 8.805107238393846e-08,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 5519,
+        "significant_upward_face_count": 5445,
+        "microscopic_upward_face_count": 74,
+        "maximum_significant_upward_facet_grade_pct": 5.471670943339048,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 1258.395856435202
+      }
+    },
+    "REV_P5_EXT_D5_SUBBASE": {
+      "vertices": 7004,
+      "edges": 21006,
+      "faces": 14004,
+      "bounds": [
+        [
+          338.0,
+          -108.60033416748047,
+          123.00129699707031
+        ],
+        [
+          553.5623168945312,
+          -107.73500061035156,
+          155.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 5538,
+        "significant_upward_face_count": 5516,
+        "microscopic_upward_face_count": 22,
+        "maximum_significant_upward_facet_grade_pct": 5.357059656485557,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 9.019749391424494
+      }
+    },
+    "REV_P5_EXT_D6_ROAD": {
+      "vertices": 2570,
+      "edges": 7704,
+      "faces": 5136,
+      "bounds": [
+        [
+          338.0,
+          -108.74500274658203,
+          124.5
+        ],
+        [
+          550.0,
+          -105.3949966430664,
+          145.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 1871,
+        "significant_upward_face_count": 1827,
+        "microscopic_upward_face_count": 44,
+        "maximum_significant_upward_facet_grade_pct": 2.91223959795979,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 986.6948393366397
+      }
+    },
+    "REV_P5_EXT_D6_SHOULDER": {
+      "vertices": 3898,
+      "edges": 11688,
+      "faces": 7792,
+      "bounds": [
+        [
+          338.0,
+          -108.625,
+          123.75
+        ],
+        [
+          550.0,
+          -105.23999786376953,
+          145.75
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 2903,
+        "significant_upward_face_count": 2901,
+        "microscopic_upward_face_count": 2,
+        "maximum_significant_upward_facet_grade_pct": 3.181192984900398,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 3.5817931877195663
+      }
+    },
+    "REV_P5_EXT_D6_SUBBASE": {
+      "vertices": 3492,
+      "edges": 10470,
+      "faces": 6980,
+      "bounds": [
+        [
+          345.5895080566406,
+          -108.33214569091797,
+          123.0
+        ],
+        [
+          550.0,
+          -104.73500061035156,
+          145.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 8,
+      "non_adjacent_triangle_exact_contacts": 8,
+      "non_adjacent_triangle_boundary_contacts": 8,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 8,
+      "boundary_contact_examples": [
+        {
+          "faces": [
+            3319,
+            6392
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 2.7768249160888893e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.351847058886994e-06
+        },
+        {
+          "faces": [
+            796,
+            5399
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.02192314706490863,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.3059356298461055e-06
+        },
+        {
+          "faces": [
+            795,
+            5399
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.00037955013774575657,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.301493654299803e-06
+        },
+        {
+          "faces": [
+            702,
+            5399
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 0.007366031040542473,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.839959534215254e-06
+        },
+        {
+          "faces": [
+            536,
+            5373
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.3828188921941375e-06,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.1335233083422066e-06
+        },
+        {
+          "faces": [
+            542,
+            6387
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 9.448174076302356e-07,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 4.599251666257211e-07
+        },
+        {
+          "faces": [
+            159,
+            5285
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.7272289252070915e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 2.219345554524923e-06
+        },
+        {
+          "faces": [
+            2755,
+            5284
+          ],
+          "contact_geometry": "SEGMENT",
+          "kind": "BOUNDARY_CONTACT",
+          "coplanar": false,
+          "intersection_segment_length_m": 4.727228094445582e-05,
+          "coplanar_overlap_area_m2": 0.0,
+          "joint_interior_clearance_m": 1.5331522619357115e-06
+        }
+      ],
+      "maximum_contact_segment_length_m": 0.02192314706490863,
+      "maximum_joint_interior_clearance_m": 2.219345554524923e-06,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 2596,
+        "significant_upward_face_count": 2559,
+        "microscopic_upward_face_count": 37,
+        "maximum_significant_upward_facet_grade_pct": 3.1803550334872996,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 11417.20563439812
+      }
+    }
+  },
+  "critical_feature_objects": {
+    "REV_P5_MP_D3_EMERGENCY_BAY": {
+      "vertices": 48,
+      "edges": 138,
+      "faces": 92,
+      "bounds": [
+        [
+          541.0,
+          -116.9840316772461,
+          244.0
+        ],
+        [
+          565.0,
+          -115.98699951171875,
+          250.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 22,
+        "significant_upward_face_count": 22,
+        "microscopic_upward_face_count": 0,
+        "maximum_significant_upward_facet_grade_pct": 3.980192691765249,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 3.980192691765249
+      },
+      "failure_counts": {
+        "connected_components": 0,
+        "non_finite_coordinates": 0,
+        "non_adjacent_triangle_self_intersections": 0,
+        "zero_area_faces": 0,
+        "zero_length_edges": 0,
+        "non_manifold_edges": 0,
+        "duplicate_faces": 0,
+        "non_triangle_faces": 0,
+        "loose_vertices": 0
+      },
+      "status": "PASS"
+    },
+    "REV_P5_MP_D3_EMERGENCY_BAY_BASE_TRANSITION": {
+      "vertices": 44,
+      "edges": 126,
+      "faces": 84,
+      "bounds": [
+        [
+          541.25,
+          -116.8404312133789,
+          244.75
+        ],
+        [
+          564.75,
+          -115.78538513183594,
+          245.5
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 20,
+        "significant_upward_face_count": 20,
+        "microscopic_upward_face_count": 0,
+        "maximum_significant_upward_facet_grade_pct": 3.9805850330123516,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 3.9805850330123516
+      },
+      "failure_counts": {
+        "connected_components": 0,
+        "non_finite_coordinates": 0,
+        "non_adjacent_triangle_self_intersections": 0,
+        "zero_area_faces": 0,
+        "zero_length_edges": 0,
+        "non_manifold_edges": 0,
+        "duplicate_faces": 0,
+        "non_triangle_faces": 0,
+        "loose_vertices": 0
+      },
+      "status": "PASS"
+    },
+    "REV_P5_MP_D3_EMERGENCY_BAY_BASE_OUTER": {
+      "vertices": 106,
+      "edges": 312,
+      "faces": 208,
+      "bounds": [
+        [
+          541.5,
+          -116.81682586669922,
+          245.5
+        ],
+        [
+          564.5,
+          -115.01130676269531,
+          250.0
+        ]
+      ],
+      "finite_world_coordinates": true,
+      "connected_components": 1,
+      "loose_vertices": 0,
+      "non_manifold_edges": 0,
+      "non_triangle_faces": 0,
+      "duplicate_faces": 0,
+      "zero_area_faces": 0,
+      "zero_length_edges": 0,
+      "non_adjacent_triangle_self_intersections": 0,
+      "self_intersection_examples": [],
+      "non_adjacent_triangle_bvh_candidate_pairs": 0,
+      "non_adjacent_triangle_exact_contacts": 0,
+      "non_adjacent_triangle_boundary_contacts": 0,
+      "non_adjacent_triangle_boundary_point_contacts": 0,
+      "non_adjacent_triangle_boundary_segment_contacts": 0,
+      "boundary_contact_examples": [],
+      "maximum_contact_segment_length_m": 0.0,
+      "maximum_joint_interior_clearance_m": 0.0,
+      "upward_facet_grade": {
+        "significant_plan_face_area_threshold_m2": 0.0001,
+        "upward_plan_resolvable_face_count": 51,
+        "significant_upward_face_count": 51,
+        "microscopic_upward_face_count": 0,
+        "maximum_significant_upward_facet_grade_pct": 3.980735634456626,
+        "maximum_all_upward_plan_resolvable_facet_grade_pct": 3.980735634456626
+      },
+      "failure_counts": {
+        "connected_components": 0,
+        "non_finite_coordinates": 0,
+        "non_adjacent_triangle_self_intersections": 0,
+        "zero_area_faces": 0,
+        "zero_length_edges": 0,
+        "non_manifold_edges": 0,
+        "duplicate_faces": 0,
+        "non_triangle_faces": 0,
+        "loose_vertices": 0
+      },
+      "status": "PASS"
+    }
+  },
+  "non_adjacent_road_triangle_self_intersections": 0,
+  "zero_area_faces": 0,
+  "zero_length_edges": 0,
+  "non_manifold_edges": 0,
+  "duplicate_faces": 0,
+  "non_triangle_faces": 0,
+  "loose_vertices": 0,
+  "disconnected_road_objects": 0,
+  "non_finite_road_objects": 0,
+  "d5_significant_facet_grade_failures": 0,
+  "status": "PASS"
+}

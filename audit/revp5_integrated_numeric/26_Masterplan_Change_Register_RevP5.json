@@ -1,0 +1,268 @@
+[
+  {
+    "Object_Name": "REV_P5_MP_ASSEMBLY_PAD_60x40",
+    "Category": "Construction logistics",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 2400.0,
+    "Bounds_XY": [
+      70.0,
+      190.0,
+      130.0,
+      230.0
+    ],
+    "Description": "Montage and pre-assembly platform in the west logistics reserve; 60 x 40 m.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_HEAVY_HAUL_ROUTE",
+    "Category": "Construction logistics",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 10626.009880500354,
+    "Bounds_XY": [
+      125.50166775068307,
+      96.0,
+      607.4953929446049,
+      349.5
+    ],
+    "Description": "Preliminary 9 m heavy-haul swept envelope for a 16.5 m articulated screening vehicle; final certified swept path remains HP-07.",
+    "Spatial_Role": "CLEARANCE_ENVELOPE"
+  },
+  {
+    "Object_Name": "REV_P5_MP_CRANE_PAD_01",
+    "Category": "Construction logistics",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 252.0,
+    "Bounds_XY": [
+      326.0,
+      207.0,
+      344.0,
+      221.0
+    ],
+    "Description": "Temporary crane outrigger platform adjacent to the pyrolysis terrace.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_CRANE_PAD_02",
+    "Category": "Construction logistics",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 252.0,
+    "Bounds_XY": [
+      315.0,
+      232.0,
+      333.0,
+      246.0
+    ],
+    "Description": "Temporary crane outrigger platform adjacent to the pyrolysis terrace.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_D3_EMERGENCY_BAY",
+    "Category": "Road safety",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 132.0,
+    "Bounds_XY": [
+      541.0,
+      244.0,
+      565.0,
+      250.0
+    ],
+    "Description": "Connected tapered 24 x 6 m emergency lay-by on the terrain-balanced y=244 D3 reach, with a 20 m stopping edge, full D3 surface continuation and a single engineered foundation plane keyed at least 100 mm into verified source ground.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_TIRE_QUARANTINE",
+    "Category": "Raw material logistics",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 2100.0,
+    "Bounds_XY": [
+      178.0,
+      350.0,
+      238.0,
+      385.0
+    ],
+    "Description": "Fenced quarantine area for nonconforming tyre batches with segregated dirty drainage requirement.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_PROTECTED_PEDESTRIAN_ROUTE",
+    "Category": "Personnel safety",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 783.0163890393324,
+    "Bounds_XY": [
+      175.75,
+      92.0,
+      335.0,
+      253.25
+    ],
+    "Description": "Protected 2.5 m pedestrian corridor with edge bollards from the lower checkpoint to the controlled boundary of the pyrolysis safety zone.",
+    "Spatial_Role": "PERSONNEL_ROUTE"
+  },
+  {
+    "Object_Name": "REV_P5_MP_DRY_HYBRID_COOLER_RESERVE_40x25",
+    "Category": "Utilities",
+    "Data_Status": "OPEN_RFI",
+    "Area_m2": 1000.0,
+    "Bounds_XY": [
+      420.0,
+      45.0,
+      460.0,
+      70.0
+    ],
+    "Description": "Controlled 40 x 25 m reserve for dry/hybrid cooling equipment; final duty and type require heat balance.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_CLEAN_SNOW_CONTAINMENT",
+    "Category": "Winter operation",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 4160.0,
+    "Bounds_XY": [
+      60.0,
+      35.0,
+      140.0,
+      87.0
+    ],
+    "Description": "Relocated graded snow-management pad with raised containment, separated from the corrected road system.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_DIRTY_SNOW_CONTAINMENT",
+    "Category": "Winter operation",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 1050.0,
+    "Bounds_XY": [
+      560.0,
+      25.0,
+      590.0,
+      60.0
+    ],
+    "Description": "Relocated graded snow-management pad with raised containment, separated from the corrected road system.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_PHASE2_CAPPED_STUBS",
+    "Category": "Phase 2 interfaces",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 4.2798996768174185,
+    "Bounds_XY": [
+      461.595,
+      399.595,
+      467.6,
+      425.6
+    ],
+    "Description": "Visible capped reserves for FW, CW supply/return, pyrolysis gas, 10 kV and control at the phase-2 boundary, north of all active road corridors.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_RAW_LOOP_ONE_WAY_MARKINGS",
+    "Category": "Traffic management",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 17.34600000000036,
+    "Bounds_XY": [
+      300.14712230215827,
+      306.95,
+      440.05,
+      383.05
+    ],
+    "Description": "One-way circulation markings derived from the accepted D2 axis.",
+    "Spatial_Role": "TRAFFIC_MARKING"
+  },
+  {
+    "Object_Name": "REV_P5_MP_PRODUCT_LOOP_ONE_WAY_MARKINGS",
+    "Category": "Traffic management",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 17.34599999999977,
+    "Bounds_XY": [
+      366.9592448527304,
+      148.95,
+      509.3381676579456,
+      151.05
+    ],
+    "Description": "One-way circulation markings derived from the accepted D5 axis.",
+    "Spatial_Role": "TRAFFIC_MARKING"
+  },
+  {
+    "Object_Name": "REV_P5_MP_BLD05_SERVICE_RAMP_TO_D3",
+    "Category": "Service access",
+    "Data_Status": "CONTROLLED_PRE_FEED",
+    "Area_m2": 688.0306345090615,
+    "Bounds_XY": [
+      420.6000061035156,
+      216.6582790630882,
+      515.7459460550745,
+      252.64649548543085
+    ],
+    "Description": "Dedicated high-level ramp from BLD_05 pyrolysis terrace to D3; replaces the invalid short link to lower D5.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_LABORATORY_RESERVE",
+    "Category": "Missing system spatial reserve",
+    "Data_Status": "OPEN_CRITICAL",
+    "Area_m2": 96.0,
+    "Bounds_XY": [
+      352.0,
+      70.0,
+      364.0,
+      78.0
+    ],
+    "Description": "Quality laboratory reserve for feedstock, oil and rCB testing; relocated clear of clean-snow storage.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_WASTEWATER_TREATMENT_RESERVE",
+    "Category": "Missing system spatial reserve",
+    "Data_Status": "OPEN_CRITICAL",
+    "Area_m2": 800.0,
+    "Bounds_XY": [
+      500.0,
+      25.0,
+      540.0,
+      45.0
+    ],
+    "Description": "Reserve for local treatment of process, storm and oily wastewater.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_DG_UPS_RESERVE",
+    "Category": "Missing system spatial reserve",
+    "Data_Status": "OPEN_CRITICAL",
+    "Area_m2": 300.0,
+    "Bounds_XY": [
+      395.0,
+      70.0,
+      415.0,
+      85.0
+    ],
+    "Description": "Reserve for emergency generator and UPS supporting safety loads.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE",
+    "Category": "Missing system spatial reserve",
+    "Data_Status": "OPEN_CRITICAL",
+    "Area_m2": 288.0,
+    "Bounds_XY": [
+      340.0,
+      50.0,
+      358.0,
+      66.0
+    ],
+    "Description": "Reserve for heat source, HVAC and emergency ventilation equipment; coordinated outside retaining walls and snow storage.",
+    "Spatial_Role": "PHYSICAL"
+  },
+  {
+    "Object_Name": "REV_P5_SAFETY_PRELIM_PYROLYSIS_ZONE",
+    "Category": "Safety annotation",
+    "Data_Status": "OPEN_CRITICAL",
+    "Area_m2": 3033.6005859375,
+    "Bounds_XY": [
+      337.3999938964844,
+      192.39999389648438,
+      432.6000061035156,
+      247.60000610351562
+    ],
+    "Description": "Preliminary spatial envelope for Ex/fire/F&G coordination. It is not a final hazardous-area classification.",
+    "Spatial_Role": "SAFETY_ANNOTATION"
+  }
+]
