@@ -46,6 +46,15 @@ new_partition = '''def _clean_boolean_micro_slivers(
     polygons = sorted(iter_polygons(geometry), key=lambda polygon: polygon.area, reverse=True)
     if len(polygons) <= 1:
         return geometry
+    if road_code in {"D3", "D5"}:
+        details = [
+            {"area_m2": float(polygon.area), "bounds": [float(value) for value in polygon.bounds]}
+            for polygon in polygons
+        ]
+        raise RuntimeError(
+            f"Protected D3/D5 junction road {road_code} split before sliver cleanup: "
+            + json.dumps(details, ensure_ascii=False)
+        )
     total_area = float(sum(polygon.area for polygon in polygons))
     primary = polygons[0]
     secondary = polygons[1:]

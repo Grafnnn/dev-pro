@@ -56,7 +56,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -78,8 +78,6 @@ jobs:
           python tools/patch_revp3_prebuild.py
           python tools/patch_revp3_alignment_v2.py
           sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
-          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
-          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_apron_grading.py
           python tools/patch_revp3_boolean_slivers.py
@@ -109,17 +107,12 @@ jobs:
       - name: Print QA
         if: success()
         run: cat revp3_output/20_Road_QA_Report_RevP3.json
-      - name: Persist diagnostic tail
+      - name: Collect diagnostic tail
         if: always()
         run: |
           mkdir -p audit
           if [ -f revp3_build.log ]; then tail -n 400 revp3_build.log > audit/revp3_last_build.log; fi
           if [ -f revp3_path_diagnostics.json ]; then cp revp3_path_diagnostics.json audit/revp3_path_diagnostics.json; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add audit/revp3_last_build.log audit/revp3_path_diagnostics.json || true
-          git diff --cached --quiet || git commit -m "Store Rev.P3 diagnostic tail [skip ci]"
-          git push origin HEAD:tmp-a1-revp3-road-qa
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -128,5 +121,7 @@ jobs:
             revp3_output/
             revp3_path_diagnostics.json
             revp3_build.log
+            audit/revp3_last_build.log
+            audit/revp3_path_diagnostics.json
           retention-days: 1
           compression-level: 3

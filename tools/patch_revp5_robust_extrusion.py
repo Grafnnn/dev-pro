@@ -162,5 +162,9 @@ replacement = r'''def _conforming_watertight_solid(
     return mesh
 '''
 
-path.write_text(text[:start] + replacement + text[end:], encoding="utf-8")
+marker = "REV_P5_ROBUST_EXTRUSION_ACTIVE = True\n\n"
+prefix = text[:start]
+if "REV_P5_ROBUST_EXTRUSION_ACTIVE" not in prefix:
+    prefix += marker
+path.write_text(prefix + replacement + text[end:], encoding="utf-8")
 print("REV_P5_ROBUST_EXTRUSION_PATCHED")

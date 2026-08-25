@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import subprocess
 from pathlib import Path
 
 ROAD_ROOT = Path("revp3_output")
@@ -10,7 +11,22 @@ ROOT = Path(os.environ.get("OUT_ROOT", "revp5_output"))
 ROOT.mkdir(parents=True, exist_ok=True)
 
 
+def build_code_commit() -> str:
+    override = os.environ.get("BUILD_CODE_COMMIT")
+    if override:
+        return override
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "local-unversioned"
+
+
 def main() -> None:
+    source_commit = build_code_commit()
     source_qa = ROAD_ROOT / "20_Road_QA_Report_RevP3.json"
     if not source_qa.exists():
         raise FileNotFoundError(source_qa)
@@ -23,7 +39,7 @@ def main() -> None:
         "renames accepted road and apron objects to REV_P5 without changing their geometry."
     )
     qa["integrated_model"] = "26_Модель_A1_RevP5_Integrated_preFEED.glb"
-    qa["build_code_commit"] = os.environ.get("GITHUB_SHA", "local")
+    qa["build_code_commit"] = source_commit
     qa["build_run_id"] = os.environ.get("GITHUB_RUN_ID", "local")
     output_qa = ROOT / "26_Road_QA_Report_RevP5.json"
     output_qa.write_text(json.dumps(qa, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -40,8 +56,9 @@ def main() -> None:
         "STATUS=CONTROLLED_PRE_FEED_NOT_FOR_CONSTRUCTION\n"
         "ROAD_QA=PASS\n"
         "MASTERPLAN_CHANGES=PHYSICALLY_INTEGRATED_IN_GLB_AND_OBJ\n"
+        "ENGINEERING_VISUAL_REVIEW=PENDING\n"
         "SURVEY_VENDOR_PROCESS_SAFETY_HOLD_POINTS=OPEN\n"
-        f"BUILD_CODE_COMMIT={os.environ.get('GITHUB_SHA', 'local')}\n"
+        f"BUILD_CODE_COMMIT={source_commit}\n"
         f"BUILD_RUN_ID={os.environ.get('GITHUB_RUN_ID', 'local')}\n",
         encoding="utf-8",
     )

@@ -70,6 +70,15 @@ def geometry_summary(geometry) -> dict:
     return result
 
 
+def coordinated_profiles(paths) -> dict:
+    profiles = {
+        code: module.RoadProfile(code=code, width=module.WIDTHS[code], paths=road_paths)
+        for code, road_paths in paths.items()
+    }
+    module.coordinate_revp5_d3_d5_profiles(profiles)
+    return profiles
+
+
 def main() -> None:
     paths = module.build_paths()
     d3 = np.asarray(paths["D3"][0], dtype=float)
@@ -80,8 +89,9 @@ def main() -> None:
     for line in d5_lines[1:]:
         d5_union = d5_union.union(line)
 
-    d3_profile = module.RoadProfile(code="D3", width=module.WIDTHS["D3"], paths=[d3])
-    d5_profile = module.RoadProfile(code="D5", width=module.WIDTHS["D5"], paths=d5_paths)
+    diagnostic_profiles = coordinated_profiles(paths)
+    d3_profile = diagnostic_profiles["D3"]
+    d5_profile = diagnostic_profiles["D5"]
     d3_polygon = d3_profile.polygon(module.WIDTHS["D3"])
     d5_polygon = d5_profile.polygon(module.WIDTHS["D5"])
 
@@ -91,11 +101,26 @@ def main() -> None:
 
     intersections = []
     for index, line in enumerate(d5_lines):
+        path_profile = module.RoadProfile(code="D5", width=module.WIDTHS["D5"], paths=[d5_paths[index]])
         intersections.append({
             "d5_path_index": index,
             "line_intersection_with_d3": geometry_summary(line.intersection(d3_line)),
-            "road_polygon_overlap_with_d3_m2": float(line.buffer(module.WIDTHS["D5"] / 2.0, cap_style=1, join_style=1).intersection(d3_polygon).area),
+            "actual_profile_polygon_overlap_with_d3_m2": float(path_profile.polygon(module.WIDTHS["D5"]).intersection(d3_polygon).area),
         })
+
+    layer_polys = {
+        layer: module.partition_polygons(
+            coordinated_profiles(paths),
+            extra_width,
+            None,
+        )
+        for layer, extra_width in (("ROAD", 0.0), ("SHOULDER", 1.5), ("SUBBASE", 3.0))
+    }
+    engineered_qa = module.revp5_d3_d5_junction_qa(
+        diagnostic_profiles,
+        layer_polys,
+        getattr(module, "BOOLEAN_SLIVER_AUDIT", []),
+    )
 
     # Sample D3 stations nearest to the D5 route and endpoint.
     distances = np.array([d5_union.distance(Point(float(x), float(y))) for x, y in d3[:, :2]])
@@ -136,6 +161,13 @@ def main() -> None:
         },
         "line_intersections": intersections,
         "raw_centerline_polygon_overlap_m2": float(d3_polygon.intersection(d5_polygon).area),
+        "historical_failed_geometry_reference": {
+            "overlap_m2": 243.92970324611497,
+            "coincident_centerline_length_m": 19.0,
+            "location": "y=189, x=571..590",
+            "status": "REMOVED_BY_ENGINEERED_TRANSVERSE_BUTT_JUNCTION",
+        },
+        "engineered_junction_qa": engineered_qa,
         "nearest_from_d5_endpoint_to_d3_centerline": {
             "on_d3": [nearest_on_d3_line.x, nearest_on_d3_line.y],
             "on_d5_endpoint": [nearest_from_d5_endpoint.x, nearest_from_d5_endpoint.y],

@@ -1,27 +1,11 @@
-name: A1 RevP5 Integrated Release v2
+name: A1 RevP5 Integrated Release (Canonical Manual)
 
 on:
-  push:
-    branches: [tmp-a1-revp5-integrated-bim]
-    paths:
-      - tools/revp5_blender_meshqa.py
-      - tools/prepare_revp5_release.py
-      - tools/render_revp5_masterplan_qa.py
-      - tools/package_revp5_integrated.py
-      - .github/workflows/a1-revp5-integrated-release-v2.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - tools/revp5_blender_meshqa.py
-      - tools/prepare_revp5_release.py
-      - tools/render_revp5_masterplan_qa.py
-      - tools/package_revp5_integrated.py
-      - .github/workflows/a1-revp5-integrated-release-v2.yml
   workflow_dispatch:
 
 concurrency:
-  group: a1-revp5-integrated-release-v2-${{ github.ref }}
-  cancel-in-progress: true
+  group: a1-revp5-integrated-publish-tmp-a1-revp5-integrated-bim
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -35,11 +19,24 @@ jobs:
         with:
           ref: tmp-a1-revp5-integrated-bim
           fetch-depth: 0
+      - name: Lock source provenance and release tag
+        run: |
+          git fetch origin tmp-a1-revp5-integrated-bim --tags
+          source_sha="$(git rev-parse HEAD)"
+          remote_sha="$(git rev-parse origin/tmp-a1-revp5-integrated-bim)"
+          test "$source_sha" = "$remote_sha"
+          tag="a1-revp5-integrated-prefeed-2026-08-25"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "::error::Release tag already exists: $tag"
+            exit 1
+          fi
+          echo "BUILD_CODE_COMMIT=$source_sha" >> "$GITHUB_ENV"
+          echo "REV_P5_RELEASE_TAG=$tag" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install geometry and packaging dependencies
-        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx pillow triangle
       - name: Apply accepted road correction chain
         run: |
           python tools/patch_revp3_prebuild.py
@@ -49,6 +46,8 @@ jobs:
           sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp5_d5_through_route.py
+          python tools/patch_revp5_d3_d5_junction.py
+          python tools/patch_revp5_partition_order.py
           python tools/patch_revp3_apron_grading.py
           python tools/patch_revp3_resolution.py
           sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
@@ -65,22 +64,31 @@ jobs:
           python tools/patch_revp5_robust_extrusion.py
           python tools/patch_revp5_component_diagnostics.py
           python tools/patch_revp3_qa_hardening.py
+          python tools/patch_revp5_mesh_facet_grades.py
+          python tools/patch_revp5_continuous_station_surface.py
       - name: Build accepted road and apron geometry
         run: python tools/build_revp3_roadqa.py
       - name: Build all masterplan changes into integrated 3D model
         run: python tools/integrate_revp5_masterplan.py
       - name: Install Blender
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
+          blender -b --python-exit-code 1 --python-expr "import numpy; print('BLENDER_NUMPY', numpy.__version__)"
       - name: Run final Blender BVH road-mesh QA on integrated GLB
-        run: blender -b --python tools/revp5_blender_meshqa.py
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+        run: blender -b --python-exit-code 1 --python tools/revp5_blender_meshqa.py
       - name: Prepare controlled RoadQA and release metadata
         run: python tools/prepare_revp5_release.py
       - name: Render identical-camera before and after QA
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
         run: |
-          blender -b --python tools/render_revp5_masterplan_qa.py
+          blender -b --python-exit-code 1 --python tools/render_revp5_masterplan_qa.py
           test "$(find revp5_output/qa_png -maxdepth 1 -name '*_BEFORE_RevP2.png' | wc -l)" -eq 7
           test "$(find revp5_output/qa_png -maxdepth 1 -name '*_AFTER_RevP5.png' | wc -l)" -eq 7
       - name: Preserve reproducible release scripts
@@ -108,19 +116,56 @@ jobs:
             tools/patch_revp3_degenerate_cleanup.py \
             tools/patch_revp3_final_extrusion.py \
             tools/patch_revp3_qa_hardening.py \
+            tools/patch_revp5_mesh_facet_grades.py \
+            tools/patch_revp5_continuous_station_surface.py \
+            tools/patch_revp5_continuous_station_surface.diff \
             tools/patch_revp5_d2_topology.py \
             tools/patch_revp5_d5_topology.py \
             tools/patch_revp5_d5_through_route.py \
+            tools/patch_revp5_d3_d5_junction.py \
+            tools/patch_revp5_partition_order.py \
             tools/patch_revp5_road_finalize.py \
             tools/patch_revp5_robust_extrusion.py \
             tools/patch_revp5_component_diagnostics.py \
             revp5_output/reproducible_scripts/
+      - name: Stage controlled engineering visual review input when supplied
+        run: |
+          review_input="audit/revp5_engineering_visual_review/26_Engineering_Visual_Review_RevP5.json"
+          if [ -f "$review_input" ]; then
+            cp "$review_input" revp5_output/26_Engineering_Visual_Review_RevP5.json
+            echo "Staged existing hash-bound engineering visual review."
+          else
+            echo "No controlled engineering visual review supplied; packaging will create a PENDING review template and stop at the manual gate."
+          fi
       - name: Package model, QA, visual evidence and manifests
+        id: package
+        continue-on-error: true
         run: python tools/package_revp5_integrated.py
+      - name: Upload evidence for manual engineering visual review
+        if: ${{ steps.package.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: a1-revp5-engineering-visual-review-gate-v2
+          path: |
+            revp5_output/26_Модель_A1_RevP5_Integrated_preFEED.glb
+            revp5_output/26_Integrated_QA_Report_RevP5.json
+            revp5_output/26_Visual_QA_Report_RevP5.json
+            revp5_output/26_RevP5_Visual_QA_ContactSheet.jpg
+            revp5_output/26_Engineering_Visual_Review_RevP5.json
+            revp5_output/qa_png/
+            revp5_output/qa_compare/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 3
+      - name: Enforce manual engineering visual review gate
+        if: ${{ steps.package.outcome == 'failure' }}
+        run: |
+          echo "::error::Release remains PENDING until the seven comparison images are reviewed and a hash-bound PASS review is supplied at audit/revp5_engineering_visual_review/26_Engineering_Visual_Review_RevP5.json."
+          exit 1
       - name: Final acceptance and package integrity audit
         run: |
           python - <<'PY'
-          import json, zipfile
+          import csv, json, zipfile
           from pathlib import Path
           root=Path('revp5_output')
           required=[
@@ -130,6 +175,7 @@ jobs:
             '26_Integrated_QA_Report_RevP5.json',
             '26_Road_QA_Report_RevP5.json',
             '26_Blender_Road_Mesh_QA_RevP5.json',
+            '26_Release_Status_RevP5.txt',
             '26_Masterplan_Change_Register_RevP5.json',
             '26_Masterplan_Change_Register_RevP5.csv',
             '26_RevP5_Version_Manifest.json',
@@ -137,6 +183,7 @@ jobs:
             '26_Release_SHA256_RevP5.txt',
             '26_Visual_QA_Report_RevP5.json',
             '26_RevP5_Visual_QA_ContactSheet.jpg',
+            '26_Engineering_Visual_Review_RevP5.json',
             '26_README_RevP5.md',
           ]
           for name in required:
@@ -145,6 +192,41 @@ jobs:
           qa=json.loads((root/'26_Integrated_QA_Report_RevP5.json').read_text(encoding='utf-8'))
           a=qa['acceptance']
           r=qa['road_acceptance_reused']
+          register_schema=['Object_Name','Category','Data_Status','Area_m2','Bounds_XY','Description','Spatial_Role']
+          required_features=[
+              'REV_P5_MP_ASSEMBLY_PAD_60x40',
+              'REV_P5_MP_HEAVY_HAUL_ROUTE',
+              'REV_P5_MP_CRANE_PAD_01',
+              'REV_P5_MP_CRANE_PAD_02',
+              'REV_P5_MP_D3_EMERGENCY_BAY',
+              'REV_P5_MP_TIRE_QUARANTINE',
+              'REV_P5_MP_PROTECTED_PEDESTRIAN_ROUTE',
+              'REV_P5_MP_DRY_HYBRID_COOLER_RESERVE_40x25',
+              'REV_P5_MP_CLEAN_SNOW_CONTAINMENT',
+              'REV_P5_MP_DIRTY_SNOW_CONTAINMENT',
+              'REV_P5_MP_PHASE2_CAPPED_STUBS',
+              'REV_P5_MP_RAW_LOOP_ONE_WAY_MARKINGS',
+              'REV_P5_MP_PRODUCT_LOOP_ONE_WAY_MARKINGS',
+              'REV_P5_MP_BLD05_SERVICE_RAMP_TO_D3',
+              'REV_P5_MP_LABORATORY_RESERVE',
+              'REV_P5_MP_WASTEWATER_TREATMENT_RESERVE',
+              'REV_P5_MP_DG_UPS_RESERVE',
+              'REV_P5_MP_HVAC_HEAT_SOURCE_RESERVE',
+              'REV_P5_SAFETY_PRELIM_PYROLYSIS_ZONE',
+          ]
+          register=json.loads((root/'26_Masterplan_Change_Register_RevP5.json').read_text(encoding='utf-8'))
+          assert len(register)==19,register
+          assert all(list(row)==register_schema for row in register),register
+          assert [row['Object_Name'] for row in register]==required_features,register
+          assert qa['required_features']==required_features,qa['required_features']
+          assert qa['masterplan_changes']==register,qa['masterplan_changes']
+          assert qa['missing_required_features']==[],qa['missing_required_features']
+          with (root/'26_Masterplan_Change_Register_RevP5.csv').open(newline='',encoding='utf-8-sig') as handle:
+              csv_reader=csv.DictReader(handle)
+              csv_rows=list(csv_reader)
+          assert csv_reader.fieldnames==register_schema,csv_reader.fieldnames
+          assert len(csv_rows)==19,csv_rows
+          assert [row['Object_Name'] for row in csv_rows]==required_features,csv_rows
           assert qa['status']=='PASS_CONTROLLED_PRE_FEED',qa['status']
           assert a['road_building_clashes']==[],a
           assert a['open_external_critical_clashes']==0,a
@@ -152,21 +234,87 @@ jobs:
           assert a['non_adjacent_road_triangle_self_intersections']==0,a
           assert a['duplicated_top_faces']==0,a
           assert a['non_manifold_edges']==0,a
+          assert a['road_layer_quality_triangulation_status']=='PASS',a
+          assert a['road_layer_maximum_chord_residual_m']<=a['road_layer_maximum_chord_residual_limit_m']+1e-9,a
+          assert a['d5_layer_maximum_significant_facet_grade_pct']<=a['d5_layer_export_facet_grade_limit_pct']+1e-6,a
+          assert a['exported_road_layer_quality_status']=='PASS',a
+          assert a['exported_road_layer_maximum_all_retained_chord_residual_m']<=a['exported_road_layer_maximum_chord_residual_limit_m']+1e-7,a
+          assert a['exported_d5_layer_maximum_significant_facet_grade_pct']<=a['d5_layer_export_facet_grade_limit_pct']+1e-6,a
+          assert a['exported_road_layer_significant_top_face_nonpositive_normal_count']==0,a
+          assert a['exported_road_layer_plan_collapsed_top_face_count']==0,a
+          assert a['exported_road_layer_zero_3d_area_face_count']==0,a
+          assert a['exported_road_layer_open_or_nonmanifold_edge_count']==0,a
+          assert a['d3_d5_junction_status']=='PASS',a
+          assert a['d3_d5_road_final_overlap_m2']<=1e-6,a
+          assert a['d3_d5_maximum_full_seam_vertical_step_m']<=0.005001,a
+          assert a['d3_d5_blended_maximum_centerline_grade_pct']<=6.000001,a
+          assert a['d3_d5_maximum_resultant_surface_grade_pct']<=100.0*(0.06**2+0.02**2)**0.5+1e-6,a
+          assert a['d3_d5_minimum_road_shoulder_vertical_overlap_m']>0.005,a
+          assert a['d3_d5_maximum_road_shoulder_vertical_overlap_m']<=0.25,a
+          assert a['d3_d5_minimum_shoulder_subbase_vertical_overlap_m']>0.005,a
+          assert a['d3_d5_maximum_shoulder_subbase_vertical_overlap_m']<=0.12,a
+          assert a['d3_d5_reverse_grade_sample_count']==0,a
+          assert a['d3_d5_protected_sliver_removals']==0,a
           assert a['required_masterplan_features_present'] is True,a
           assert a['new_physical_feature_building_overlap_m2']<=1e-6,a
           assert a['new_physical_feature_unintended_road_overlap_m2']<=1e-6,a
+          assert a['emergency_bay_plan_component_count']==1,a
+          assert a['emergency_bay_mesh_component_count']==1,a
+          assert a['emergency_bay_shared_d3_seam_m']>=20.0,a
+          assert a['emergency_bay_gap_m']<=1e-6,a
+          assert a['emergency_bay_maximum_vertical_step_m']<=0.020001,a
+          assert a['emergency_bay_maximum_resultant_grade_pct']<=6.000001,a
+          assert a['emergency_bay_maximum_nominal_formation_fill_m']<=0.500001,a
+          assert a['emergency_bay_maximum_nominal_formation_cut_m']<=1.000001,a
+          assert a['emergency_bay_maximum_actual_unsupported_gap_m']<=1e-6,a
+          assert a['emergency_bay_maximum_actual_foundation_cut_m']<=0.950001,a
+          assert a['emergency_bay_minimum_residual_ground_key_in_m']>=0.099999,a
+          assert a['emergency_bay_minimum_exact_tin_ground_key_in_m']>=0.099999,a
+          assert a['emergency_bay_maximum_exact_tin_foundation_cut_m']<=0.950001,a
+          assert a['emergency_bay_foundation_bottom_is_single_plane'] is True,a
+          assert a['emergency_bay_foundation_bottom_plane_grade_pct']<=6.000001,a
+          assert a['emergency_bay_foundation_bottom_planarity_residual_m']<=1e-8,a
+          assert a['emergency_bay_top_affine_residual_m']<=1e-8,a
+          assert a['emergency_bay_exact_tin_triangle_count']>0,a
+          assert a['emergency_bay_exact_tin_extrema_vertex_count']>=3,a
+          assert a['emergency_bay_exact_tin_coverage_delta_m2']<=1e-6,a
+          assert a['emergency_bay_outer_foundation_watertight'] is True,a
+          assert a['emergency_bay_outer_foundation_open_or_nonmanifold_edges']==0,a
+          assert a['emergency_bay_outer_foundation_connected_components']==1,a
+          assert a['emergency_bay_minimum_actual_foundation_thickness_m']>=0.499999,a
+          assert a['emergency_bay_maximum_actual_foundation_thickness_m']<=1.050001,a
+          assert a['emergency_bay_support_partition_pairwise_overlap_m2']<=1e-6,a
+          assert a['emergency_bay_support_partition_coverage_gap_m2']<=1e-6,a
+          assert a['emergency_bay_source_terrain_sha_verified'] is True,a
+          assert a['heavy_haul_unapproved_clearance_overlap_count']==0,a
           assert a['blender_non_adjacent_road_triangle_self_intersections']==0,a
           assert a['blender_zero_area_faces']==0,a
           assert a['blender_zero_length_edges']==0,a
+          assert a['blender_emergency_bay_connected_components']==1,a
+          assert a['blender_emergency_bay_topology_failures']==0,a
+          assert a['blender_road_layer_object_count']==18,a
+          assert a['blender_d5_significant_facet_grade_failures']==0,a
+          assert a['blender_d5_maximum_significant_facet_grade_pct']<=a['blender_d5_significant_facet_grade_limit_pct']+1e-6,a
           assert r['maximum_longitudinal_grade_pct']<=6.000001,r
           assert r['minimum_horizontal_radius_m']>=11.999999,r
+          review=json.loads((root/'26_Engineering_Visual_Review_RevP5.json').read_text(encoding='utf-8'))
+          assert review['status']=='PASS',review
+          assert review['reviewed_pair_count']==7,review
+          assert review['open_blocking_findings']==[],review
+          release_status=(root/'26_Release_Status_RevP5.txt').read_text(encoding='utf-8')
+          assert 'ENGINEERING_VISUAL_REVIEW=PASS' in release_status,release_status
+          assert 'ENGINEERING_VISUAL_REVIEW=PENDING' not in release_status,release_status
+          manifest=json.loads((root/'26_RevP5_Version_Manifest.json').read_text(encoding='utf-8'))
+          assert manifest['engineering_visual_review']['status']=='PASS',manifest
           assert len(list((root/'qa_png').glob('*.png')))==14
           assert len(list((root/'qa_compare').glob('*.png')))==7
           with zipfile.ZipFile(root/'26_Комплект_A1_RevP5_Integrated_preFEED.zip') as package:
               assert package.testzip() is None
               names=set(package.namelist())
+              assert '26_Комплект_A1_RevP5_Integrated_preFEED.zip' not in names,names
+              assert '26_Release_SHA256_RevP5.txt' not in names,names
               for name in required:
-                  if name!='26_Комплект_A1_RevP5_Integrated_preFEED.zip':
+                  if name not in {'26_Комплект_A1_RevP5_Integrated_preFEED.zip','26_Release_SHA256_RevP5.txt'}:
                       assert name in names,name
           print('REV_P5_FINAL_ACCEPTANCE_PASS')
           PY
@@ -174,21 +322,24 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git restore tools/build_revp3_roadqa.py tools/patch_revp3_interface_completion.py || true
           git fetch origin tmp-a1-revp5-integrated-bim
-          git rebase origin/tmp-a1-revp5-integrated-bim
+          test "$(git rev-parse HEAD)" = "$BUILD_CODE_COMMIT"
+          test "$(git rev-parse origin/tmp-a1-revp5-integrated-bim)" = "$BUILD_CODE_COMMIT"
+          if git ls-remote --exit-code --tags origin "refs/tags/$REV_P5_RELEASE_TAG" >/dev/null 2>&1; then
+            echo "::error::Release tag appeared while the build was running: $REV_P5_RELEASE_TAG"
+            exit 1
+          fi
           rm -rf release_revp5_integrated
           mkdir -p release_revp5_integrated
           cp -a revp5_output/. release_revp5_integrated/
           printf 'PASS_CONTROLLED_PRE_FEED\n' > release_revp5_integrated/SUCCESS_FINAL_PASS.txt
-          git restore tools/build_revp3_roadqa.py tools/patch_revp3_interface_completion.py || true
           git add release_revp5_integrated/
           git commit -m "Publish A.1 Rev.P5 integrated pre-FEED masterplan [skip ci]"
-          git push origin HEAD:tmp-a1-revp5-integrated-bim
           git rev-parse HEAD | tee release_commit_sha.txt
-          tag="a1-revp5-integrated-prefeed-2026-08-25"
-          git tag -f "$tag" HEAD
-          git push -f origin "$tag"
-          printf '%s\n' "$tag" > release_tag.txt
+          git tag "$REV_P5_RELEASE_TAG" HEAD
+          git push --atomic origin HEAD:tmp-a1-revp5-integrated-bim "refs/tags/$REV_P5_RELEASE_TAG"
+          printf '%s\n' "$REV_P5_RELEASE_TAG" > release_tag.txt
       - name: Upload complete controlled release
         uses: actions/upload-artifact@v4
         with:

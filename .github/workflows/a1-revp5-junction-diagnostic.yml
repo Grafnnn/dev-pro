@@ -11,6 +11,11 @@ on:
       - tools/patch_revp5_d5_topology.py
       - tools/patch_revp3_interface_completion.py
       - tools/patch_revp5_d5_through_route.py
+      - tools/patch_revp5_partition_order.py
+      - tools/patch_revp5_d3_d5_junction.py
+      - tools/patch_revp5_mesh_facet_grades.py
+      - tools/patch_revp5_continuous_station_surface.py
+      - tools/patch_revp5_continuous_station_surface.diff
       - tools/diagnose_revp5_d3_d5_junction.py
       - tools/diagnose_revp5_junction_compact.py
       - .github/workflows/a1-revp5-junction-diagnostic.yml
@@ -24,13 +29,22 @@ on:
       - tools/patch_revp5_d5_topology.py
       - tools/patch_revp3_interface_completion.py
       - tools/patch_revp5_d5_through_route.py
+      - tools/patch_revp5_partition_order.py
+      - tools/patch_revp5_d3_d5_junction.py
+      - tools/patch_revp5_mesh_facet_grades.py
+      - tools/patch_revp5_continuous_station_surface.py
+      - tools/patch_revp5_continuous_station_surface.diff
       - tools/diagnose_revp5_d3_d5_junction.py
       - tools/diagnose_revp5_junction_compact.py
       - .github/workflows/a1-revp5-junction-diagnostic.yml
   workflow_dispatch:
 
+concurrency:
+  group: a1-revp5-d3-d5-diagnostic-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   diagnose:
@@ -45,7 +59,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install path dependencies
-        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx
+        run: pip install --disable-pip-version-check 'numpy<2.0' scipy shapely trimesh pygltflib mapbox_earcut requests rtree networkx triangle
       - name: Apply alignment patches used by the integrated build
         run: |
           python tools/patch_revp3_prebuild.py
@@ -53,27 +67,54 @@ jobs:
           python tools/patch_revp5_d2_topology.py
           python tools/patch_revp5_d5_topology.py
           sed -i 's/Intentional road-road junctions; curbs\/rails stop here\./Intentional road-road junctions; roadside curbs\/rails stop here\./g' tools/patch_revp3_interface_completion.py
-          sed -i 's/580\.5, 163\.0/570.0, 189.0/g' tools/patch_revp3_interface_completion.py
-          sed -i 's/558\.0, 168\.0/558.0, 189.0/g' tools/patch_revp3_interface_completion.py
           python tools/patch_revp3_interface_completion.py
           python tools/patch_revp5_d5_through_route.py
+          python tools/patch_revp5_d3_d5_junction.py
+          python tools/patch_revp5_partition_order.py
+          python tools/patch_revp3_apron_grading.py
+          python tools/patch_revp3_resolution.py
+          sed -i 's/MESH_MAX_EDGE = 4.0/MESH_MAX_EDGE = 8.0/g' tools/build_revp3_roadqa.py
+          python tools/patch_revp5_road_finalize.py
+          python tools/patch_revp3_boolean_slivers.py
+          python tools/patch_revp3_post_apron_sliver.py
+          python tools/patch_revp3_mesh_cleanup.py
+          python tools/patch_revp3_watertight_solids.py
+          python tools/patch_revp3_preserve_topology_indices.py
+          python tools/patch_revp3_triangle_solids.py
+          python tools/patch_revp3_conforming_refinement.py
+          python tools/patch_revp3_degenerate_cleanup.py
+          python tools/patch_revp3_final_extrusion.py
+          python tools/patch_revp5_robust_extrusion.py
+          python tools/patch_revp5_component_diagnostics.py
+          python tools/patch_revp3_qa_hardening.py
+          python tools/patch_revp5_mesh_facet_grades.py
+          python tools/patch_revp5_continuous_station_surface.py
       - name: Calculate exact D3-D5 geometry
+        id: junction
+        continue-on-error: true
+        shell: bash
         run: |
-          python tools/diagnose_revp5_d3_d5_junction.py
-          python tools/diagnose_revp5_junction_compact.py
-      - name: Persist diagnostic reports
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git restore tools/build_revp3_roadqa.py tools/patch_revp3_interface_completion.py
-          git add audit/revp5_d3_d5_junction.json audit/revp5_d3_d5_junction_compact.json
-          git diff --cached --quiet || git commit -m "Store Rev.P5 D3-D5 junction diagnostics [skip ci]"
-          git pull --rebase origin tmp-a1-revp5-integrated-bim
-          git push origin HEAD:tmp-a1-revp5-integrated-bim
+          set +e
+          set -o pipefail
+          rm -f audit/revp5_d3_d5_junction.json audit/revp5_d3_d5_junction_compact.json
+          python tools/diagnose_revp5_d3_d5_junction.py 2>&1 | tee audit/revp5_d3_d5_junction.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -eq 0 ]; then
+            python tools/diagnose_revp5_junction_compact.py 2>&1 | tee -a audit/revp5_d3_d5_junction.log
+            status=${PIPESTATUS[0]}
+          fi
+          echo "$status" > audit/revp5_d3_d5_junction_exit_code.txt
+          exit "$status"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: a1-revp5-d3-d5-junction
           path: |
             audit/revp5_d3_d5_junction.json
             audit/revp5_d3_d5_junction_compact.json
+            audit/revp5_d3_d5_junction.log
+            audit/revp5_d3_d5_junction_exit_code.txt
           retention-days: 3
+      - name: Fail after evidence upload
+        if: steps.junction.outcome != 'success'
+        run: exit 1
