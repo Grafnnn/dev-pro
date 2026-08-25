@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "revision": "A.1/Rev.P5 Integrated pre-FEED Masterplan",
+  "status": "PASS",
+  "reviewer": {
+    "name": "OpenAI Codex",
+    "role": "Генпланист / инженерный 3D QA reviewer"
+  },
+  "reviewed_at_utc": "2026-08-25T04:20:06Z",
+  "reviewed_pair_count": 7,
+  "evidence": {
+    "integrated_model": {
+      "file": "26_Модель_A1_RevP5_Integrated_preFEED.glb",
+      "size_bytes": 14719564,
+      "sha256": "f51d40b0d65cb037c6fb014ae9957f93369cc66d19a1f93dce92ac777d52bbf1"
+    },
+    "visual_qa_report": {
+      "file": "26_Visual_QA_Report_RevP5.json",
+      "size_bytes": 8017,
+      "sha256": "75ac70ecfb2f56a844b93928cbdc61497d9b5cb3c9ab6e3598ad6f54df1f74a0"
+    },
+    "contact_sheet": {
+      "file": "26_RevP5_Visual_QA_ContactSheet.jpg",
+      "size_bytes": 500784,
+      "sha256": "29316b9f26163dac2c91d307cba707a844c86405b11397a0eaecec8ff0927023"
+    },
+    "camera_comparisons": [
+      {
+        "camera": "01_Aerial_Masterplan",
+        "file": "qa_compare/26_QA_01_Aerial_Masterplan_COMPARE.png",
+        "size_bytes": 1072409,
+        "sha256": "e3895d87a2d6cffa97c204170b0b90448ae74b44c753f56859a10852474eb548"
+      },
+      {
+        "camera": "02_Orthographic_Top",
+        "file": "qa_compare/26_QA_02_Orthographic_Top_COMPARE.png",
+        "size_bytes": 820779,
+        "sha256": "014c048a2d23e56289c97b037a918caf75b68e37e3b670a6f143ad9904a823ab"
+      },
+      {
+        "camera": "03_West_Logistics_Assembly_Quarantine",
+        "file": "qa_compare/26_QA_03_West_Logistics_Assembly_Quarantine_COMPARE.png",
+        "size_bytes": 881120,
+        "sha256": "ce819f7b06370eab59f4326641ef8efbf7435bab5443062089ba1467b1cc891c"
+      },
+      {
+        "camera": "04_Ramp_Cranes_Pedestrian",
+        "file": "qa_compare/26_QA_04_Ramp_Cranes_Pedestrian_COMPARE.png",
+        "size_bytes": 1136997,
+        "sha256": "3db56fb4e54996f203cc25c797ade9b8240e17f6647af281e6c9040b647fb11e"
+      },
+      {
+        "camera": "05_D3_D5_Emergency",
+        "file": "qa_compare/26_QA_05_D3_D5_Emergency_COMPARE.png",
+        "size_bytes": 937057,
+        "sha256": "9f20ab95cc0c902b3169b27260f862b247296170a3d076f72ad6959e35d4ed57"
+      },
+      {
+        "camera": "06_Relocated_Snow_Lower_Utilities",
+        "file": "qa_compare/26_QA_06_Relocated_Snow_Lower_Utilities_COMPARE.png",
+        "size_bytes": 866225,
+        "sha256": "0215fd8318808f085701e185a2b092f13c305556d6eb27865661aab1c97c931a"
+      },
+      {
+        "camera": "07_Phase2_Capped_Interfaces",
+        "file": "qa_compare/26_QA_07_Phase2_Capped_Interfaces_COMPARE.png",
+        "size_bytes": 793015,
+        "sha256": "266f2ae30f12dbaea81fe8defb7bb5f18a2013cd80ea9ef039ce82725f5a95ba"
+      }
+    ]
+  },
+  "required_checks": {
+    "camera_pair_identity": {
+      "status": "PASS",
+      "comment": "Все семь пар сформированы с идентичными положением, ориентацией и параметрами камеры для Rev.P2 и Rev.P5."
+    },
+    "overall_site_layout_and_feature_visibility": {
+      "status": "PASS",
+      "comment": "Общий и ортографический виды подтверждают физическое включение согласованных объектов и читаемость функционального зонирования."
+    },
+    "terrain_road_and_apron_seating": {
+      "status": "PASS",
+      "comment": "На семи видах не выявлены видимые зависания, провалы, разрывы посадки или нештатные пересечения дорожных и площадочных поверхностей."
+    },
+    "d3_d5_junction_continuity_and_overlap": {
+      "status": "PASS",
+      "comment": "Камера 05 подтверждает непрерывный узел D3–D5 и корректную посадку аварийного кармана без видимого разрыва или наложения."
+    },
+    "bld05_to_d3_service_ramp": {
+      "status": "PASS",
+      "comment": "Камеры 04 и 05 подтверждают непрерывный длинный сервисный ramp BLD_05→D3 и его согласованную посадку у здания и дороги."
+    },
+    "masterplan_additions_clearance_and_collisions": {
+      "status": "PASS",
+      "comment": "После обязательного перекадрирования камера 03 полностью показывает монтажную площадку, карантин шин и весь тяжеловесный маршрут; остальные дополнения также не имеют видимых блокирующих коллизий."
+    }
+  },
+  "camera_reviews": [
+    {
+      "camera": "01_Aerial_Masterplan",
+      "comparison_file": "qa_compare/26_QA_01_Aerial_Masterplan_COMPARE.png",
+      "comparison_sha256": "e3895d87a2d6cffa97c204170b0b90448ae74b44c753f56859a10852474eb548",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "02_Orthographic_Top",
+      "comparison_file": "qa_compare/26_QA_02_Orthographic_Top_COMPARE.png",
+      "comparison_sha256": "014c048a2d23e56289c97b037a918caf75b68e37e3b670a6f143ad9904a823ab",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "03_West_Logistics_Assembly_Quarantine",
+      "comparison_file": "qa_compare/26_QA_03_West_Logistics_Assembly_Quarantine_COMPARE.png",
+      "comparison_sha256": "ce819f7b06370eab59f4326641ef8efbf7435bab5443062089ba1467b1cc891c",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "04_Ramp_Cranes_Pedestrian",
+      "comparison_file": "qa_compare/26_QA_04_Ramp_Cranes_Pedestrian_COMPARE.png",
+      "comparison_sha256": "3db56fb4e54996f203cc25c797ade9b8240e17f6647af281e6c9040b647fb11e",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "05_D3_D5_Emergency",
+      "comparison_file": "qa_compare/26_QA_05_D3_D5_Emergency_COMPARE.png",
+      "comparison_sha256": "9f20ab95cc0c902b3169b27260f862b247296170a3d076f72ad6959e35d4ed57",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "06_Relocated_Snow_Lower_Utilities",
+      "comparison_file": "qa_compare/26_QA_06_Relocated_Snow_Lower_Utilities_COMPARE.png",
+      "comparison_sha256": "0215fd8318808f085701e185a2b092f13c305556d6eb27865661aab1c97c931a",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "camera": "07_Phase2_Capped_Interfaces",
+      "comparison_file": "qa_compare/26_QA_07_Phase2_Capped_Interfaces_COMPARE.png",
+      "comparison_sha256": "266f2ae30f12dbaea81fe8defb7bb5f18a2013cd80ea9ef039ce82725f5a95ba",
+      "status": "PASS",
+      "findings": []
+    }
+  ],
+  "open_blocking_findings": []
+}

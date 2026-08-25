@@ -1,0 +1,265 @@
+{
+  "revision": "A.1/Rev.P5 Integrated pre-FEED Masterplan",
+  "status": "PASS_AUTOMATED_VISUAL_EVIDENCE",
+  "identical_camera_pair_count": 7,
+  "all_images_nonblank": true,
+  "pairs": [
+    {
+      "camera": "01_Aerial_Masterplan",
+      "before": {
+        "file": "26_QA_01_Aerial_Masterplan_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2542.694528044664,
+        "channel_ranges": [
+          172,
+          172,
+          177
+        ],
+        "nonblank": true,
+        "size_bytes": 2206169,
+        "sha256": "04b5600e3b3357be1fb529b3947b020e3b1368ec7e0f1f72f635b6d597a09947"
+      },
+      "after": {
+        "file": "26_QA_01_Aerial_Masterplan_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2824.8022597919276,
+        "channel_ranges": [
+          192,
+          182,
+          194
+        ],
+        "nonblank": true,
+        "size_bytes": 2316834,
+        "sha256": "5cf5e10ba691cf1f35c76c32a61386a8cf9dc9a239d07f8cb9169115a079de02"
+      },
+      "comparison": {
+        "file": "26_QA_01_Aerial_Masterplan_COMPARE.png",
+        "size_bytes": 1072409,
+        "sha256": "e3895d87a2d6cffa97c204170b0b90448ae74b44c753f56859a10852474eb548"
+      }
+    },
+    {
+      "camera": "02_Orthographic_Top",
+      "before": {
+        "file": "26_QA_02_Orthographic_Top_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 1359.6579366143205,
+        "channel_ranges": [
+          187,
+          174,
+          180
+        ],
+        "nonblank": true,
+        "size_bytes": 1821792,
+        "sha256": "12b6ad59538b4d3cdb79a28b1cc3e8dc60ce4eaa005cf3c80295753f921164bc"
+      },
+      "after": {
+        "file": "26_QA_02_Orthographic_Top_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 1664.446724924643,
+        "channel_ranges": [
+          187,
+          182,
+          193
+        ],
+        "nonblank": true,
+        "size_bytes": 1836786,
+        "sha256": "91823515a56de0b87cd473db19fd30104fcad14c330c80ab5d8cd8317f19c602"
+      },
+      "comparison": {
+        "file": "26_QA_02_Orthographic_Top_COMPARE.png",
+        "size_bytes": 820779,
+        "sha256": "014c048a2d23e56289c97b037a918caf75b68e37e3b670a6f143ad9904a823ab"
+      }
+    },
+    {
+      "camera": "03_West_Logistics_Assembly_Quarantine",
+      "before": {
+        "file": "26_QA_03_West_Logistics_Assembly_Quarantine_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 665.7578905098719,
+        "channel_ranges": [
+          188,
+          174,
+          180
+        ],
+        "nonblank": true,
+        "size_bytes": 1887783,
+        "sha256": "8ea997ba389c2a9bf00ec8cf24f82a8c9b45e5f750000f000ad76170ee2cffe5"
+      },
+      "after": {
+        "file": "26_QA_03_West_Logistics_Assembly_Quarantine_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 1053.4340135066157,
+        "channel_ranges": [
+          188,
+          182,
+          193
+        ],
+        "nonblank": true,
+        "size_bytes": 1904096,
+        "sha256": "fae156ff61357d3de4a84efcbfddfafc627b08d1175a5456c4bea75ce936a823"
+      },
+      "comparison": {
+        "file": "26_QA_03_West_Logistics_Assembly_Quarantine_COMPARE.png",
+        "size_bytes": 881120,
+        "sha256": "ce819f7b06370eab59f4326641ef8efbf7435bab5443062089ba1467b1cc891c"
+      }
+    },
+    {
+      "camera": "04_Ramp_Cranes_Pedestrian",
+      "before": {
+        "file": "26_QA_04_Ramp_Cranes_Pedestrian_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 527.700916528056,
+        "channel_ranges": [
+          105,
+          109,
+          114
+        ],
+        "nonblank": true,
+        "size_bytes": 2332094,
+        "sha256": "01d4404c6a2b688198191e561c192bbfcec56c246f852c917828211c6e79b5db"
+      },
+      "after": {
+        "file": "26_QA_04_Ramp_Cranes_Pedestrian_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 987.3736186886052,
+        "channel_ranges": [
+          192,
+          175,
+          194
+        ],
+        "nonblank": true,
+        "size_bytes": 2429496,
+        "sha256": "a43df07e8946b6d246680ffb63227652dd0746161e19b3d37383adadfba72b40"
+      },
+      "comparison": {
+        "file": "26_QA_04_Ramp_Cranes_Pedestrian_COMPARE.png",
+        "size_bytes": 1136997,
+        "sha256": "3db56fb4e54996f203cc25c797ade9b8240e17f6647af281e6c9040b647fb11e"
+      }
+    },
+    {
+      "camera": "05_D3_D5_Emergency",
+      "before": {
+        "file": "26_QA_05_D3_D5_Emergency_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2001.5453067575795,
+        "channel_ranges": [
+          173,
+          174,
+          180
+        ],
+        "nonblank": true,
+        "size_bytes": 1936700,
+        "sha256": "a389baba16a5631382f949319180523083e5a72ab183e18546c76f6802cabd4e"
+      },
+      "after": {
+        "file": "26_QA_05_D3_D5_Emergency_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2378.2020353511707,
+        "channel_ranges": [
+          173,
+          174,
+          193
+        ],
+        "nonblank": true,
+        "size_bytes": 1895807,
+        "sha256": "90a1aa3b9427c0a883ddfb729460e7cece759d363bc6c0c1fef41697f57e21d1"
+      },
+      "comparison": {
+        "file": "26_QA_05_D3_D5_Emergency_COMPARE.png",
+        "size_bytes": 937057,
+        "sha256": "9f20ab95cc0c902b3169b27260f862b247296170a3d076f72ad6959e35d4ed57"
+      }
+    },
+    {
+      "camera": "06_Relocated_Snow_Lower_Utilities",
+      "before": {
+        "file": "26_QA_06_Relocated_Snow_Lower_Utilities_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 1766.9265313527437,
+        "channel_ranges": [
+          192,
+          171,
+          173
+        ],
+        "nonblank": true,
+        "size_bytes": 1957852,
+        "sha256": "4c86985c1d5c3126add910ac5bda4ea0084f52743c14ae620c75ce2709c6894d"
+      },
+      "after": {
+        "file": "26_QA_06_Relocated_Snow_Lower_Utilities_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 1990.3989585891736,
+        "channel_ranges": [
+          192,
+          171,
+          194
+        ],
+        "nonblank": true,
+        "size_bytes": 2007104,
+        "sha256": "18e684c48b48a8da24dfcd3570f6d7e33de356016db783c5cb84a3560aa4d4bf"
+      },
+      "comparison": {
+        "file": "26_QA_06_Relocated_Snow_Lower_Utilities_COMPARE.png",
+        "size_bytes": 866225,
+        "sha256": "0215fd8318808f085701e185a2b092f13c305556d6eb27865661aab1c97c931a"
+      }
+    },
+    {
+      "camera": "07_Phase2_Capped_Interfaces",
+      "before": {
+        "file": "26_QA_07_Phase2_Capped_Interfaces_BEFORE_RevP2.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2224.7954407613715,
+        "channel_ranges": [
+          159,
+          160,
+          161
+        ],
+        "nonblank": true,
+        "size_bytes": 2040491,
+        "sha256": "ba840f789c138595c2c61d2d2dad5ad1c281868143673507d5bd8b9c3e448a81"
+      },
+      "after": {
+        "file": "26_QA_07_Phase2_Capped_Interfaces_AFTER_RevP5.png",
+        "width_px": 1800,
+        "height_px": 1100,
+        "variance": 2326.0565041264435,
+        "channel_ranges": [
+          191,
+          168,
+          190
+        ],
+        "nonblank": true,
+        "size_bytes": 2064149,
+        "sha256": "3f0264edb795a036f959b346cfa38bde055ae0a3ef4ccf77acd78459c9b7934a"
+      },
+      "comparison": {
+        "file": "26_QA_07_Phase2_Capped_Interfaces_COMPARE.png",
+        "size_bytes": 793015,
+        "sha256": "266f2ae30f12dbaea81fe8defb7bb5f18a2013cd80ea9ef039ce82725f5a95ba"
+      }
+    }
+  ],
+  "contact_sheet": {
+    "file": "26_RevP5_Visual_QA_ContactSheet.jpg",
+    "size_bytes": 500784,
+    "sha256": "29316b9f26163dac2c91d307cba707a844c86405b11397a0eaecec8ff0927023"
+  }
+}
